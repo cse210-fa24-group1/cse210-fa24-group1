@@ -1,4 +1,4 @@
-# Feature-Decision: User Financial Management Application
+# Feature-Decision: Expense Tracker Application
 
 ## Status
 **Status**: Proposed  
@@ -10,7 +10,7 @@
 ---
 
 ## Context and Problem Statement
-The team is developing a budget / expense tracker application and needs to define which key features will be implemented to meet business goals. The goal is to enable users to securely manage their finances while ensuring an intuitive, flexible, and visually engaging user experience. These features will enhance the app’s core functionality, such as expense tracking, budgeting, and data security.
+The team is developing a expense tracker application and needs to define which key features will be implemented to meet business goals. The goal is to enable users to securely manage their finances while ensuring an intuitive, flexible, and visually engaging user experience. These features will enhance the app’s core functionality, such as expense tracking, budgeting, and data security.
 
 ---
 
