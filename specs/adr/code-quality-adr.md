@@ -1,4 +1,4 @@
-# [Title of Decision]
+# Code Quality
 
 ## Status
 **Status**: Proposed  
