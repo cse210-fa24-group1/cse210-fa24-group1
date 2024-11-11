@@ -16,5 +16,15 @@ module.exports = {
     semi: ['error', 'always'],
     quotes: ['error', 'single'],
   },
-  ignorePatterns: ['node_modules/', 'coverage/', 'dist/', '*.test.js'],
+  ignorePatterns: [
+    'node_modules/',
+    'coverage/',
+    'dist/',
+    '*.test.js',
+    '*.html',
+  ],
+  settings: {
+    'html/html-extensions': ['.html', '.htm'],
+    'html/report-bad-indent': 'error',
+  },
 };
