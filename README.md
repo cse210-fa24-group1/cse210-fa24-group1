@@ -20,7 +20,7 @@ We appreciate your interest in contributing to the Expense Tracker project! By f
 ### 3. **Create a New Branch**
    - It's best practice to create a new branch for your changes. You can do this by running:
      ```bash
-     git checkout -b feature-name
+     git checkout -b add/feature-name
      ```
    - Replace `feature-name` with a descriptive name for the feature or bug fix you are working on.
 
