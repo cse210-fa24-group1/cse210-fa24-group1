@@ -12,7 +12,7 @@ import { sayHello } from '../../src/script';
 describe('Hello World Application Tests', () => {
   /** @type {Function} Original getElementById method */
   let originalGetElementById;
-  
+
   /** @type {Object} Mock DOM element */
   let mockElement;
 
@@ -36,7 +36,7 @@ describe('Hello World Application Tests', () => {
   beforeEach(() => {
     // Set up the mock DOM element
     mockElement = { textContent: '' };
-    
+
     /**
      * Mock implementation of getElementById
      * @type {jest.SpyInstance}
