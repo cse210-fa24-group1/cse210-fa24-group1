@@ -2,9 +2,9 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, test/cicd]
   pull_request:
-    branches: [main, develop]
+    branches: [main, test/cicd]
 
 jobs:
   lint-and-format:
@@ -26,9 +26,51 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint
-
-  test:
+  jsdoc:
     needs: lint-and-format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate JSDoc Documentation
+        run: npm run jsdoc
+
+      - name: Upload JSDoc Documentation as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: jsdoc
+          path: docs/
+  code-quality:
+    needs: lint-and-format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Codacy Analysis
+        uses: codacy/codacy-analysis-cli-action@v2
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+  test:
+    needs: code-quality
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
