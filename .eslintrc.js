@@ -22,6 +22,7 @@ module.exports = {
     'dist/',
     '*.test.js',
     '*.html',
+    'docs/'
   ],
   settings: {
     'html/html-extensions': ['.html', '.htm'],
