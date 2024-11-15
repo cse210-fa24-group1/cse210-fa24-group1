@@ -78,7 +78,7 @@ We appreciate your interest in contributing to the Expense Tracker project! By f
 
 ## Contribution Guidelines
 
-- **Code Style**: Follow the existing code style[./admin/code-practices.md] in the repository. Pay attention to indentation, naming conventions, and spacing.
+- **Code Style**: Follow the existing [code style](./admin/code-practices.md) in the repository. Pay attention to indentation, naming conventions, and spacing.
 - **Testing**: Please ensure that your changes do not break the existing code. If you add new features, include tests to validate your changes.
 - **Issue Reporting**: If you encounter any bugs or have suggestions for new features, feel free to open an issue in the repository.
 
