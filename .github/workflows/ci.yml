@@ -64,13 +64,13 @@ jobs:
         run: npm ci
 
       - name: Run Codacy Analysis
-        uses: codacy/codacy-analysis-cli-action@v2
+        uses: codacy/codacy-analysis-cli-action@204208f730d99d8b719a271b08e2c5770be8ee6e
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
   test:
-    needs: code-quality
+    needs: lint-and-format
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -88,5 +88,5 @@ jobs:
         run: npm run test:coverage
 
       - name: Upload coverage reports
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@ab904c41d6ece82784817410c45d8b8c02684457
         if: always()
