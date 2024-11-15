@@ -137,3 +137,16 @@
 //     button.download = 'ScreenShot.png'; // download name
 //   });
 // });
+
+function sayHello() {
+    return "Hello World";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const messageElement = document.getElementById("message");
+    if (messageElement) {
+        messageElement.textContent = sayHello();
+    }
+});
+
+module.exports = { sayHello };

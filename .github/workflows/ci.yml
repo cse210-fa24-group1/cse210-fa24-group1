@@ -48,6 +48,7 @@ jobs:
         with:
           name: jsdoc
           path: docs/
+          
   code-quality:
     needs: lint-and-format
     runs-on: ubuntu-latest
