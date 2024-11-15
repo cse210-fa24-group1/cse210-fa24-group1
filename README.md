@@ -6,23 +6,38 @@ We appreciate your interest in contributing to the Expense Tracker project! By f
 
 ## Steps to Contribute
 
-### 1. **Fork the Repository**
-   - Navigate to the Expense Tracker repository on GitHub.
-   - Click on the **Fork** button at the top-right of the repository page to create a copy of the repository under your own GitHub account.
-
-### 2. **Clone the Repository**
-   - After forking, clone the repository to your local machine:
+### 1. **Clone the Repository**
+   - Since you're a part of the repository, clone the repository to your local machine directly:
      ```bash
-     git clone https://github.com/your-username/expense-tracker.git
+     git clone https://github.com/your-username/cse210-fa24-group1.git
      ```
    - Replace `your-username` with your GitHub username.
+
+### 2. **Fetch and Pull Latest Changes**
+   - After cloning, navigate to the project directory:
+     ```bash
+     cd cse210-fa24-group1
+     ```
+   - **Fetch the latest changes** from the repository:
+     ```bash
+     git fetch origin
+     ```
+   - **Pull the latest changes** from the `main` branch (or `master` if that’s the default branch) into your local repository:
+     ```bash
+     git pull origin main
+     ```
+     This ensures that your local copy is up-to-date with the remote repository before creating a new branch.
 
 ### 3. **Create a New Branch**
    - It's best practice to create a new branch for your changes. You can do this by running:
      ```bash
      git checkout -b add/feature-name
      ```
-   - Replace `feature-name` with a descriptive name for the feature or bug fix you are working on.
+     or,
+     ```bash
+     git checkout -b bugfix/feature-name
+     ```
+   - Replace `feature-name` with a descriptive name for the feature you are working on.
 
 ### 4. **Make Your Changes**
    - Navigate to the appropriate file(s) and make your changes.
@@ -40,7 +55,7 @@ We appreciate your interest in contributing to the Expense Tracker project! By f
      ```
 
 ### 6. **Push Your Changes**
-   - Push your changes to your forked repository:
+   - Push your changes to your branch in the repository:
      ```bash
      git push origin feature-name
      ```
@@ -63,11 +78,10 @@ We appreciate your interest in contributing to the Expense Tracker project! By f
 
 ## Contribution Guidelines
 
-- **Code Style**: Follow the existing code style in the repository. Pay attention to indentation, naming conventions, and spacing.
+- **Code Style**: Follow the existing code style[./admin/code-practices.md] in the repository. Pay attention to indentation, naming conventions, and spacing.
 - **Testing**: Please ensure that your changes do not break the existing code. If you add new features, include tests to validate your changes.
 - **Issue Reporting**: If you encounter any bugs or have suggestions for new features, feel free to open an issue in the repository.
 
 ## Code of Conduct
 
 We expect all contributors to adhere to our Code of Conduct and to be respectful and professional when engaging with others in the community.
-
