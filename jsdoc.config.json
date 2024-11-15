@@ -1,8 +1,8 @@
 {
   "source": {
     "include": ["src", "__tests__"],
-    "includePattern": ".+\\.(js|html)$",
-    "excludePattern": "(node_modules/|docs)"
+    "includePattern": ".+\\.(js)$",
+    "excludePattern": "(node_modules/|docs|.+\\.(html)$)"
   },
   "plugins": ["plugins/markdown"],
   "opts": {
