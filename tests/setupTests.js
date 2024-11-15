@@ -1,5 +1,5 @@
 beforeEach(() => {
-    document.body.innerHTML = `
+  document.body.innerHTML = `
       <div id="message"></div>
     `;
-  });
+});

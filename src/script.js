@@ -139,14 +139,14 @@
 // });
 
 function sayHello() {
-    return "Hello World";
+  return 'Hello World';
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    const messageElement = document.getElementById("message");
-    if (messageElement) {
-        messageElement.textContent = sayHello();
-    }
+document.addEventListener('DOMContentLoaded', () => {
+  const messageElement = document.getElementById('message');
+  if (messageElement) {
+    messageElement.textContent = sayHello();
+  }
 });
 
 module.exports = { sayHello };
