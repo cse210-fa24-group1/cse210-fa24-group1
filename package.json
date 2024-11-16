@@ -1,0 +1,33 @@
+{
+  "name": "cse210-fa24-group1",
+  "version": "1.0.0",
+  "description": "Brownfield Development",
+  "main": ".eslintrc.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "lint": "eslint . --ext .js,.html",
+    "lint:fix": "eslint . --ext .js,.html --fix",
+    "format": "prettier --write \"**/*.{html,css,js}\"",
+    "format:check": "prettier --check \"**/*.{html,css,js}\"",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "prepare": "husky install",
+    "docs": "jsdoc -c jsdoc.config.json --destination docs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "babel-jest": "^29.7.0",
+    "eslint": "^8.54.0",
+    "husky": "^8.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdoc": "^4.0.4",
+    "prettier": "^3.1.0"
+  }
+}
