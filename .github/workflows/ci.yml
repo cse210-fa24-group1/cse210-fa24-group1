@@ -67,7 +67,7 @@ jobs:
           npm install -g jsdoc
 
       - name: Generate documentation
-        run: jsdoc -c jsdoc.config.json -d docs/
+        run: npm run docs
 
       - name: Upload JSDoc Documentation as Artifact
         uses: actions/upload-artifact@v3

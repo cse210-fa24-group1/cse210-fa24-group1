@@ -14,7 +14,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "prepare": "husky install",
-    "docs": "jsdoc -c jsdoc.config.json"
+    "docs": "jsdoc -c jsdoc.config.json --destination docs"
   },
   "keywords": [],
   "author": "",
