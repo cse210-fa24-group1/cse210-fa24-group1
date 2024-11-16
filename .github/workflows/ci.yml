@@ -76,7 +76,7 @@ jobs:
           path: docs/
 
   code-quality:
-    needs: lint-and-format
+    needs: jsdocs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
