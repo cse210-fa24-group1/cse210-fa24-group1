@@ -16,6 +16,7 @@ As a result, our team can focus on building new features and improving the appli
 Our CI/CD pipeline runs in a sequential format rather than a parallel format, so that the risk of dependencies from other steps does not occur. The steps in this sequential process are depicted in Figure 1\. We begin by checking the formatting of the code using linting and formatting tools. Next, we run tests to ensure the functionality of the code. After that, we evaluate code quality using Codacy. Finally, we generate documentation with JSDoc and store it as an artifact in the last step. In addition to these automated steps, we also have a human review after all the steps have completed, providing a final check before the pull request is merged into the main branch.
 
 ![Figure 1](cicd.drawio.png)
+
 Figure 1 \- Expense Tracker Project’s CICD Pipeline
 
 **Lint and Format:**
