@@ -54,10 +54,6 @@ input[type="password"] {
     outline: none;
     margin-bottom: 10px;
 }
-
-input[type="password"] {
-    margin-bottom: 25px;
-}
   
 input[type="text"]:focus,
 input[type="password"]:focus {
@@ -67,6 +63,7 @@ input[type="password"]:focus {
 button[type="submit"] {
     width: 80%;
     padding: 16px;
+    margin-top: 20px;
     background-color: #0056b3;
     color: white;
     font-size: 16px;
