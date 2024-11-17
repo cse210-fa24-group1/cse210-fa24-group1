@@ -1,83 +1,72 @@
-<!-- <!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="./style.css" />
-    <title>Expense Tracker</title>
-  </head>
-  <body>
-    <h2>
-      Expense Tracker by Vanilla JS<br />
-      Following Brad Traversy Tutorial
-    </h2>
-
-    <div class="container">
-      <h4>Your Balance</h4>
-      <h1 id="balance">$0.00</h1>
-
-      <div class="inc-exp-container">
-        <div>
-          <h4>Income</h4>
-          <p id="money-plus" class="money plus">+$0.00</p>
-        </div>
-        <div>
-          <h4>Expense</h4>
-          <p id="money-minus" class="money minus">-$0.00</p>
-        </div>
-      </div>
-
-      <h3>History</h3>
-      <ul id="list" class="list"> -->
-<!-- <li class="minus">
-          Cash <span>-$400</span><button class="delete-btn">x</button>
-        </li> -->
-<!-- </ul>
-
-      <h3>Add new transaction</h3>
-      <form id="form">
-        <div class="form-control">
-          <label for="text">Text</label>
-          <input type="text" id="text" placeholder="Enter text..." />
-        </div>
-        <div class="form-control">
-          <label for="amount"
-            >Amount <br />
-            (negative - expense, positive - income)</label
-          >
-          <input type="number" id="amount" placeholder="Enter amount..." />
-        </div>
-        <button class="btn">Add transaction</button>
-      </form>
-
-      <div>
-        <button class="btn" id="capture">Capture ScreenShot</button>
-
-        <div class="box"></div>
-
-        <a
-          href="#"
-          class="btn"
-          id="btn-download"
-          style="text-decoration: none; text-align: center"
-          >Download Expense Report</a
-        >
-      </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="header">
+      <h1>Expense Tracker</h1>
+      <nav>
+        <a href="#">summary</a>
+        <a href="#">logout</a>
+      </nav>
     </div>
-
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <script src="script.js"></script>
-  </body>
-</html> -->
-<!doctype html>
-<html>
-  <head>
-    <title>Hello World</title>
-  </head>
-  <body>
-    <div id="message"></div>
-
-    <script src="script.js"></script>
-  </body>
+  </header>
+  <main>
+    <section class="current-expense">
+      <h2>Current Monthly <span class="highlight">Expense</span></h2>
+      <p class="amount">$2000.00</p>
+      <div class="budget">
+        <button>view / edit budget limit</button>
+        <input type="text" value="$10000" />
+      </div>
+    </section>
+    <section class="content">
+      <div class="history">
+        <h3>History</h3>
+        <div class="transaction">
+          <p>Food <span class="amount">-$20</span></p>
+          <small>10/20/2020</small>
+        </div>
+        <div class="transaction">
+          <p>Shopping <span class="amount">-$20</span></p>
+          <small>10/20/2020</small>
+        </div>
+        <div class="transaction">
+          <p>Rent <span class="amount">-$2000</span></p>
+          <small>10/20/2020</small>
+        </div>
+        <div class="transaction">
+          <p>Fees <span class="amount">-$20</span></p>
+          <small>10/20/2020</small>
+        </div>
+        <div class="transaction">
+          <p>Paycheck <span class="amount">+$20</span></p>
+          <small>10/20/2020</small>
+        </div>
+      </div>
+      <div class="transaction-form">
+        <h3>Enter Transaction</h3>
+        <form>
+          <label>
+            Description
+            <input type="text" name="description" />
+          </label>
+          <label>
+            Amount
+            <input type="text" name="amount" />
+          </label>
+          <div class="buttons">
+            <button type="button" class="expense">Expense</button>
+            <button type="button" class="credit">Credit</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+</body>
 </html>
