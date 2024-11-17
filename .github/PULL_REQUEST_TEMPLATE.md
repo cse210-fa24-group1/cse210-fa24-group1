@@ -7,7 +7,7 @@
 ## Related Issue
 
 > Link to the issue this pull request resolves (if applicable).  
-> Example: Closes #123
+> Example: Closes #issue_number
 
 ## Type of Change
 
