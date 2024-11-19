@@ -79,11 +79,14 @@ button[type="submit"]:hover {
 .footer-links {
     margin-top: 15px;
     font-size: 14px;
+    display: flex;
+    flex-direction: column;
 }
 
 .footer-links a {
     color: #4CAF50;
     text-decoration: none;
+    padding: 5px;
     margin: 0 5px;
 }
 
