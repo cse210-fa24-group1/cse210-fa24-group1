@@ -1,30 +1,34 @@
+<!-- Main login page for the authentication feature -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../styles/login.css" />
+    <link rel="stylesheet" href="../styles/authentication.css" />
     <title>Login Page</title>
   </head>
   <body>
     <div class="login-container">
       <h2>Login</h2>
       <form>
+        <!-- Input username or email -->
         <div class="login-input-group">
           <label for="username">Username/Email:</label>
           <input type="text" id="username" name="username" placeholder="Enter your username or email" required>
         </div>
-
+        <!-- Input password -->
         <div class="login-input-group">
           <label for="password">Password:</label>
           <input type="password" id="password" name="password" placeholder="Enter your password" required>
         </div>
+        <!-- Submit form -->
         <button type="submit">Login</button>
       </form>
 
+      <!-- Links to either create an account or password recovery -->
       <div class="footer-links">
-        <a href="./create_account.html">Create Account</a>
-        <a href="./forgot_password.html">Forgot Password</a>
+        <a href="./create-account-page.html">Create Account</a>
+        <a href="./forgot-password-page.html">Forgot Password</a>
       </div>
     </div>
   </body>
