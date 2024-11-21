@@ -1,143 +1,187 @@
-const form = document.querySelector('form');
-const usernameInput = document.querySelector('#username');
-let passwordInputs;
-
-const isLoginPage = window.location.pathname.includes('login');
-
-if (isLoginPage) {
-  passwordInputs = [document.querySelector('#password')];
-} else {
-  passwordInputs = document.querySelectorAll('input[type="password"]');
-  if (passwordInputs[1]) {
-    passwordInputs[1].id = 'password-confirm';
-  }
-}
-
-function getUsers() {
-  return JSON.parse(localStorage.getItem('users')) || [];
-}
-
-function saveUser(userData) {
-  const users = getUsers();
-  users.push(userData);
-  localStorage.setItem('users', JSON.stringify(users));
-}
-
-function validateCredentials(username, password) {
-  const users = getUsers();
-  const user = users.find((user) => user.username === username);
-  return user && user.password === password ? user : null;
-}
-
-function validatePasswords() {
-  const password1 = passwordInputs[0].value;
-  const password2 = passwordInputs[1]?.value;
-
-  if (password1.length < 6) {
-    alert('Password must be at least 6 characters long!');
-    return false;
+// Wrap the entire script in a function to make it more modular and testable
+(function () {
+  // Utility functions
+  function getUsers() {
+    return JSON.parse(localStorage.getItem('users')) || [];
   }
 
-  if (!isLoginPage && password1 !== password2) {
-    alert('Passwords do not match!');
-    return false;
+  function saveUser(userData) {
+    const users = getUsers();
+    users.push(userData);
+    localStorage.setItem('users', JSON.stringify(users));
   }
 
-  return true;
-}
-
-function isUsernameAvailable(username) {
-  const users = getUsers();
-  return !users.some((user) => user.username === username);
-}
-
-function setUserSession(user) {
-  const session = {
-    username: user.username,
-    loginTime: new Date().toISOString(),
-    isActive: true,
-  };
-  localStorage.setItem('currentSession', JSON.stringify(session));
-}
-
-function checkExistingSession() {
-  const currentSession = JSON.parse(localStorage.getItem('currentSession'));
-  if (currentSession && currentSession.isActive) {
-    window.location.href = './dashboard.html';
-  }
-}
-
-function handleLogin(e) {
-  e.preventDefault();
-
-  const username = usernameInput.value.trim();
-  const password = passwordInputs[0].value;
-
-  if (!username || !password) {
-    alert('Please fill in all fields!');
-    return;
+  function validateCredentials(username, password) {
+    const users = getUsers();
+    const user = users.find((user) => user.username === username);
+    return user && user.password === password ? user : null;
   }
 
-  const user = validateCredentials(username, password);
+  function validatePasswords() {
+    const password1 = passwordInputs[0].value;
+    const password2 = passwordInputs[1]?.value;
 
-  if (user) {
-    try {
-      setUserSession(user);
-      alert('Login successful!');
-      window.location.href = './dashboard.html';
-    } catch (error) {
-      alert('Error during login. Please try again.');
-      console.error('Login error:', error);
+    if (password1.length < 6) {
+      alert('Password must be at least 6 characters long!');
+      return false;
     }
+
+    if (!isLoginPage && password1 !== password2) {
+      alert('Passwords do not match!');
+      return false;
+    }
+
+    return true;
+  }
+
+  function isUsernameAvailable(username) {
+    const users = getUsers();
+    return !users.some((user) => user.username === username);
+  }
+
+  function setUserSession(user) {
+    const session = {
+      username: user.username,
+      loginTime: new Date().toISOString(),
+      isActive: true,
+    };
+    localStorage.setItem('currentSession', JSON.stringify(session));
+  }
+
+  function checkExistingSession() {
+    const currentSession = JSON.parse(localStorage.getItem('currentSession'));
+    if (currentSession && currentSession.isActive) {
+      window.location.href = './dashboard.html';
+    }
+  }
+
+  function togglePasswordVisibility(passwordInput) {
+    const type =
+      passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+  }
+
+  // Determine if it's the login page based on URL or body class
+  const isLoginPage = window.location.pathname.includes('login');
+
+  // Select form and inputs
+  const form = document.querySelector('form');
+  const usernameInput = document.querySelector('#username');
+
+  // Handle password inputs for both login and registration pages
+  let passwordInputs;
+  if (isLoginPage) {
+    passwordInputs = [document.querySelector('#password')];
   } else {
-    alert('Invalid username or password!');
-    passwordInputs[0].value = '';
-  }
-}
-
-function handleRegistration(e) {
-  e.preventDefault();
-
-  const username = usernameInput.value.trim();
-  const password = passwordInputs[0].value;
-
-  if (!username || !password) {
-    alert('Please fill in all fields!');
-    return;
+    passwordInputs = document.querySelectorAll('input[type="password"]');
+    if (passwordInputs[1]) {
+      passwordInputs[1].id = 'password-confirm';
+    }
   }
 
-  if (!validatePasswords()) {
-    return;
+  // Handle login
+  function handleLogin(e) {
+    e.preventDefault();
+
+    const username = usernameInput.value.trim();
+    const password = passwordInputs[0].value;
+
+    if (!username || !password) {
+      alert('Please fill in all fields!');
+      return;
+    }
+
+    const user = validateCredentials(username, password);
+
+    if (user) {
+      try {
+        setUserSession(user);
+        alert('Login successful!');
+        window.location.href = './dashboard.html';
+      } catch (error) {
+        alert('Error during login. Please try again.');
+        console.error('Login error:', error);
+      }
+    } else {
+      alert('Invalid username or password!');
+      passwordInputs[0].value = '';
+    }
   }
 
-  if (!isUsernameAvailable(username)) {
-    alert('Username already exists! Please choose another one.');
-    return;
+  // Handle registration
+  function handleRegistration(e) {
+    e.preventDefault();
+
+    const username = usernameInput.value.trim();
+    const password = passwordInputs[0].value;
+
+    if (!username || !password) {
+      alert('Please fill in all fields!');
+      return;
+    }
+
+    if (!validatePasswords()) {
+      return;
+    }
+
+    if (!isUsernameAvailable(username)) {
+      alert('Username already exists! Please choose another one.');
+      return;
+    }
+
+    const userData = {
+      username: username,
+      password: password,
+      createdAt: new Date().toISOString(),
+    };
+
+    try {
+      saveUser(userData);
+      alert('Account created successfully!');
+      window.location.href = './login-page.html';
+    } catch (error) {
+      alert('Error creating account. Please try again.');
+      console.error('Error:', error);
+    }
   }
 
-  const userData = {
-    username: username,
-    password: password,
-    createdAt: new Date().toISOString(),
-  };
+  // Only add event listeners if DOM elements exist
+  function initializeEventListeners() {
+    // Check if form exists before adding event listener
+    if (form) {
+      form.addEventListener(
+        'submit',
+        isLoginPage ? handleLogin : handleRegistration
+      );
+    }
 
-  try {
-    saveUser(userData);
-    alert('Account created successfully!');
-    window.location.href = './login-page.html';
-  } catch (error) {
-    alert('Error creating account. Please try again.');
-    console.error('Error:', error);
+    // Toggle password visibility
+    const togglePasswordBtn = document.querySelector('.toggle-password');
+    if (togglePasswordBtn && passwordInputs[0]) {
+      togglePasswordBtn.addEventListener('click', () => {
+        togglePasswordVisibility(passwordInputs[0]);
+      });
+    }
+
+    // Check existing session
+    checkExistingSession();
   }
-}
 
-window.addEventListener('DOMContentLoaded', checkExistingSession);
+  // Initialize event listeners when DOM is fully loaded
+  window.addEventListener('DOMContentLoaded', initializeEventListeners);
 
-form.addEventListener('submit', isLoginPage ? handleLogin : handleRegistration);
-
-const togglePasswordBtn = document.querySelector('.toggle-password');
-if (togglePasswordBtn) {
-  togglePasswordBtn.addEventListener('click', () => {
-    togglePasswordVisibility(passwordInputs[0]);
-  });
-}
+  // Export functions for testing
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+      getUsers,
+      saveUser,
+      validateCredentials,
+      validatePasswords,
+      isUsernameAvailable,
+      setUserSession,
+      checkExistingSession,
+      handleLogin,
+      handleRegistration,
+    };
+  }
+})();
