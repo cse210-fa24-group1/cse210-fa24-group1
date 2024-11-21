@@ -3,11 +3,11 @@ import path from 'path';
 
 // Mock DOM setup
 const loginHtml = fs.readFileSync(
-  path.resolve(__dirname, '../../pages/login-page.html'),
+  path.resolve(__dirname, '../../src/pages/login-page.html'),
   'utf8'
 );
 const createUserHtml = fs.readFileSync(
-  path.resolve(__dirname, '../../pages/create-account-page.html'),
+  path.resolve(__dirname, '../../src/pages/create-account-page.html'),
   'utf8'
 );
 
@@ -44,7 +44,7 @@ Object.defineProperty(window, 'location', {
 window.alert = jest.fn();
 
 // Import the script dynamically
-const authScript = require('../../scripts/auth.js');
+const authScript = require('../../src/scripts/auth.js');
 
 describe('Authentication Functions', () => {
   describe('Login Functionality', () => {

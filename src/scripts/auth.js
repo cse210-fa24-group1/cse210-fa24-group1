@@ -7,7 +7,21 @@
 
   function saveUser(userData) {
     const users = getUsers();
-    users.push(userData);
+    const existingUserIndex = users.findIndex(
+      (user) => user.username === userData.username
+    );
+    const existingUserIndexEmail = users.findIndex(
+      (user) => user.email === userData.email
+    );
+
+    if (existingUserIndex !== -1 || existingUserIndexEmail != -1) {
+      // Update existing user
+      users[existingUserIndex] = { ...users[existingUserIndex], ...userData };
+    } else {
+      // Add new user
+      users.push(userData);
+    }
+
     localStorage.setItem('users', JSON.stringify(users));
   }
 
@@ -153,14 +167,6 @@
         'submit',
         isLoginPage ? handleLogin : handleRegistration
       );
-    }
-
-    // Toggle password visibility
-    const togglePasswordBtn = document.querySelector('.toggle-password');
-    if (togglePasswordBtn && passwordInputs[0]) {
-      togglePasswordBtn.addEventListener('click', () => {
-        togglePasswordVisibility(passwordInputs[0]);
-      });
     }
 
     // Check existing session
