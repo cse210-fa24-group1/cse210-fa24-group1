@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check if PR has linked issue
-      run: |
-        # Check if the PR description contains a linked issue (Closes #<issue_number>)
-        if ! grep -q "Closes #[0-9]\+" "$GITHUB_EVENT_PATH"; then
-          echo "Error: Pull request must be linked to an issue (e.g., Closes #123)."
-          exit 1
-        fi
+      - name: Check if PR has linked issue
+        run: |
+          # Check if the PR description contains a linked issue (Closes #<issue_number>)
+          if ! grep -q "Closes #[0-9]\+" "$GITHUB_EVENT_PATH"; then
+            echo "Error: Pull request must be linked to an issue (e.g., Closes #123)."
+            exit 1
+          fi
