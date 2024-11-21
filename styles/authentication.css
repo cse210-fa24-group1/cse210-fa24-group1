@@ -14,7 +14,7 @@ body {
   height: 100vh;
 }
 
-.login-container {
+.authentication-container {
   background-color: white;
   padding: 40px;
   border-radius: 8px;
@@ -24,7 +24,7 @@ body {
   text-align: center;
 }
 
-.login-input-group {
+.authentication-input-group {
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -33,37 +33,35 @@ body {
 
 h2 {
   margin-bottom: 20px;
-  color: #333;
+  color: black;
 }
 
 label {
   font-size: 14px;
-  color: #333;
+  color: black;
   display: block;
   margin-bottom: 5px;
 }
 
-input[type='text'],
-input[type='password'] {
+input {
   width: 100%;
   padding: 6px;
   font-size: 16px;
-  border: 1px solid #ddd;
+  border: 1px solid lightgray;
   border-radius: 4px;
   outline: none;
   margin-bottom: 10px;
 }
 
-input[type='text']:focus,
-input[type='password']:focus {
-  border-color: #0056b3;
+input:focus {
+  border-color: darkblue;
 }
 
-button[type='submit'] {
+button {
   width: 80%;
   padding: 16px;
   margin-top: 20px;
-  background-color: #0056b3;
+  background-color: blue;
   color: white;
   font-size: 16px;
   border: none;
@@ -71,24 +69,24 @@ button[type='submit'] {
   cursor: pointer;
 }
 
-button[type='submit']:hover {
-  background-color: #004085;
+button:hover {
+  background-color: darkblue;
 }
 
-.footer-links {
+nav {
   margin-top: 15px;
   font-size: 14px;
   display: flex;
   flex-direction: column;
 }
 
-.footer-links a {
-  color: #4caf50;
+a {
+  color: green;
   text-decoration: none;
   padding: 5px;
-  margin: 0 5px;
+  font-size: medium;
 }
 
-.footer-links a:hover {
+a:hover {
   text-decoration: underline;
 }
