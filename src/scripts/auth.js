@@ -69,12 +69,6 @@
     }
   }
 
-  function togglePasswordVisibility(passwordInput) {
-    const type =
-      passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordInput.setAttribute('type', type);
-  }
-
   // Determine if it's the login page based on URL or body class
   const isLoginPage = window.location.pathname.includes('login');
 

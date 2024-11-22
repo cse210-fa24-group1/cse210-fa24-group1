@@ -53,8 +53,18 @@ describe('Authentication Functions', () => {
       localStorageMock.clear();
       jest.clearAllMocks();
 
-      // Setup DOM for login page
-      document.body.innerHTML = loginHtml;
+      // Setup DOM for login page using safer DOM methods
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(loginHtml, 'text/html');
+      // Clear existing content
+      while (document.body.firstChild) {
+        document.body.removeChild(document.body.firstChild);
+      }
+      // Append new content
+      Array.from(doc.body.children).forEach((child) => {
+        document.body.appendChild(document.importNode(child, true));
+      });
+
       mockLocation.pathname = '/login-page.html';
     });
 
@@ -88,8 +98,18 @@ describe('Authentication Functions', () => {
       localStorageMock.clear();
       jest.clearAllMocks();
 
-      // Setup DOM for create user page
-      document.body.innerHTML = createUserHtml;
+      // Setup DOM for create user page using safer DOM methods
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(createUserHtml, 'text/html');
+      // Clear existing content
+      while (document.body.firstChild) {
+        document.body.removeChild(document.body.firstChild);
+      }
+      // Append new content
+      Array.from(doc.body.children).forEach((child) => {
+        document.body.appendChild(document.importNode(child, true));
+      });
+
       mockLocation.pathname = '/create-user-page.html';
     });
 
@@ -125,8 +145,18 @@ describe('Authentication Functions', () => {
       localStorageMock.clear();
       jest.clearAllMocks();
 
-      // Setup DOM for login page
-      document.body.innerHTML = loginHtml;
+      // Setup DOM for login page using safer DOM methods
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(loginHtml, 'text/html');
+      // Clear existing content
+      while (document.body.firstChild) {
+        document.body.removeChild(document.body.firstChild);
+      }
+      // Append new content
+      Array.from(doc.body.children).forEach((child) => {
+        document.body.appendChild(document.importNode(child, true));
+      });
+
       mockLocation.pathname = '/login-page.html';
     });
 
