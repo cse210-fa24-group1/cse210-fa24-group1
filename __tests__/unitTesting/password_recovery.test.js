@@ -1,7 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 
-// Mock localStorage
+/**
+ * Mock implementation of localStorage for testing purposes
+ * @type {Object}
+ * @property {jest.Mock} getItem - Mock function to get stored items
+ * @property {jest.Mock} setItem - Mock function to store items
+ * @property {jest.Mock} clear - Mock function to clear storage
+ */
 const localStorageMock = (() => {
   let store = {};
   return {
@@ -15,11 +21,15 @@ const localStorageMock = (() => {
   };
 })();
 
+// Configure mock localStorage
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
 });
 
-// Mock window and document objects
+/**
+ * Mock window location object for testing password reset functionality
+ * @type {Object}
+ */
 Object.defineProperty(window, 'location', {
   value: {
     origin: 'http://localhost',
@@ -35,8 +45,19 @@ const {
 } = require('../../src/scripts/forgot_password.js');
 const { handlePasswordReset } = require('../../src/scripts/reset_password.js');
 
+/**
+ * Integration tests for password recovery functionality
+ * Tests both the forgot password and reset password flows
+ * @group Integration
+ * @group Password-Recovery
+ */
 describe('Password Recovery Functionality', () => {
-  // Setup: Create a mock user before each test
+  /**
+   * Setup before each test:
+   * - Creates a mock user
+   * - Clears mock function calls
+   * - Sets up window.alert and console.log mocks
+   */
   beforeEach(() => {
     const mockUsers = [
       {
@@ -53,7 +74,15 @@ describe('Password Recovery Functionality', () => {
     console.log = jest.fn();
   });
 
+  /**
+   * Tests for the forgot password functionality
+   * @group Forgot-Password
+   */
   describe('Forgot Password', () => {
+    /**
+     * Test: Verify reset token generation for existing user
+     * Should create and store a valid reset token
+     */
     test('sendPasswordResetEmail generates a reset token for existing user', () => {
       // Arrange
       const username = 'testuser';
@@ -76,6 +105,10 @@ describe('Password Recovery Functionality', () => {
       );
     });
 
+    /**
+     * Test: Verify handling of non-existent users
+     * Should return null and show appropriate error message
+     */
     test('sendPasswordResetEmail returns null for non-existing user', () => {
       // Arrange
       const username = 'nonexistentuser';
@@ -89,7 +122,15 @@ describe('Password Recovery Functionality', () => {
     });
   });
 
+  /**
+   * Tests for the password reset functionality
+   * @group Reset-Password
+   */
   describe('Reset Password', () => {
+    /**
+     * Test: Verify successful password reset with valid token
+     * Should update password and remove reset token
+     */
     test('handlePasswordReset successfully resets password with valid token', () => {
       // Arrange
       const users = JSON.parse(localStorage.getItem('users'));
@@ -115,6 +156,10 @@ describe('Password Recovery Functionality', () => {
       expect(window.alert).toHaveBeenCalledWith('Password successfully reset');
     });
 
+    /**
+     * Test: Verify validation of password matching
+     * Should fail when passwords don't match
+     */
     test('handlePasswordReset fails with mismatched passwords', () => {
       // Act
       const result = handlePasswordReset('token', 'password1', 'password2');
@@ -124,6 +169,10 @@ describe('Password Recovery Functionality', () => {
       expect(window.alert).toHaveBeenCalledWith('Passwords do not match!');
     });
 
+    /**
+     * Test: Verify password length validation
+     * Should fail when password is too short
+     */
     test('handlePasswordReset fails with short password', () => {
       // Act
       const result = handlePasswordReset('token', '123', '123');
@@ -135,6 +184,10 @@ describe('Password Recovery Functionality', () => {
       );
     });
 
+    /**
+     * Test: Verify token validation
+     * Should fail with invalid or expired token
+     */
     test('handlePasswordReset fails with invalid or expired token', () => {
       // Arrange
       const expiredToken = 'expiredtoken';

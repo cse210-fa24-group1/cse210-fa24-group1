@@ -1,10 +1,23 @@
+/**
+ * Password Reset module handling the actual password reset process
+ * using token validation and localStorage for data persistence.
+ * @module PasswordResetModule
+ */
 (function () {
-  // Utility function to get users
+  /**
+   * Retrieves all users from localStorage
+   * @returns {Array<Object>} Array of user objects
+   */
   function getUsers() {
     return JSON.parse(localStorage.getItem('users')) || [];
   }
 
-  // Validate passwords
+  /**
+   * Validates password requirements and matching confirmation
+   * @param {string} password1 - New password
+   * @param {string} password2 - Password confirmation
+   * @returns {boolean} True if passwords are valid and match, false otherwise
+   */
   function validatePasswords(password1, password2) {
     if (password1.length < 6) {
       alert('Password must be at least 6 characters long!');
@@ -19,7 +32,13 @@
     return true;
   }
 
-  // Handle password reset
+  /**
+   * Handles the password reset process using a valid token
+   * @param {string} token - Reset token from URL
+   * @param {string} newPassword - New password to set
+   * @param {string} confirmPassword - Password confirmation
+   * @returns {boolean} True if reset successful, false otherwise
+   */
   function handlePasswordReset(token, newPassword, confirmPassword) {
     // Validate passwords
     if (!validatePasswords(newPassword, confirmPassword)) {
@@ -51,7 +70,11 @@
     return true;
   }
 
-  // Initialize reset password page
+  /**
+   * Initializes the reset password page by setting up form submission handler
+   * and token validation
+   * @returns {void}
+   */
   function initializeResetPasswordPage() {
     const resetPasswordForm = document.querySelector('form');
 
@@ -93,7 +116,11 @@
   // Initialize when DOM is loaded
   window.addEventListener('DOMContentLoaded', initializeResetPasswordPage);
 
-  // Export for potential testing
+  /**
+   * @exports PasswordResetModule
+   * @type {Object}
+   * @property {Function} handlePasswordReset - Function to process password reset with token
+   */
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
       handlePasswordReset,

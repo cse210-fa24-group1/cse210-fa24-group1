@@ -1,7 +1,17 @@
+/**
+ * Integration tests for the authentication system
+ * including registration and login functionality.
+ * @module AuthenticationTests
+ */
+
 import fs from 'fs';
 import path from 'path';
 import { JSDOM } from 'jsdom';
-// Suppress specific JSDOM navigation warnings
+
+/**
+ * Suppress specific JSDOM navigation warnings while preserving other console errors
+ * @type {Function}
+ */
 const originalConsoleError = console.error;
 console.error = (...args) => {
   if (
@@ -15,7 +25,13 @@ console.error = (...args) => {
   }
   originalConsoleError(...args);
 };
-// Utility function to create a full JSDOM environment with script
+
+/**
+ * Creates a JSDOM environment with mocked browser APIs for testing
+ * @param {string} html - HTML content to initialize the DOM
+ * @param {string} url - URL to simulate for the environment
+ * @returns {JSDOM} Configured JSDOM instance with mocked localStorage and alert
+ */
 function createDOMEnvironment(html, url) {
   const dom = new JSDOM(html, {
     url: url,
@@ -56,13 +72,23 @@ function createDOMEnvironment(html, url) {
   return dom;
 }
 
+/**
+ * Test suite for the authentication system
+ * @namespace AuthenticationSystemIntegrationTests
+ */
 describe('Authentication System Integration Tests', () => {
   let dom;
   let document;
   let window;
 
-  // Registration page setup
+  /**
+   * Registration page test suite
+   * @namespace RegistrationPageTests
+   */
   describe('Registration Page', () => {
+    /**
+     * Set up fresh DOM environment before each test
+     */
     beforeEach(() => {
       dom = createDOMEnvironment(
         `
@@ -84,10 +110,16 @@ describe('Authentication System Integration Tests', () => {
       document = window.document;
     });
 
+    /**
+     * Clean up DOM environment after each test
+     */
     afterEach(() => {
       dom.window.close();
     });
 
+    /**
+     * Test successful user registration
+     */
     it('should successfully create a new user', () => {
       // Ensure elements exist
       const form = document.querySelector('form');
@@ -117,6 +149,9 @@ describe('Authentication System Integration Tests', () => {
       expect(users[0].username).toBe('testuser');
     });
 
+    /**
+     * Test duplicate username prevention
+     */
     it('should prevent registration with existing username', () => {
       // Preload an existing user
       window.localStorage.setItem(
@@ -150,6 +185,9 @@ describe('Authentication System Integration Tests', () => {
       expect(users.length).toBe(1);
     });
 
+    /**
+     * Test password mismatch validation
+     */
     it('should prevent registration with mismatched passwords', () => {
       const form = document.querySelector('form');
       const usernameInput = document.getElementById('username');
@@ -170,6 +208,9 @@ describe('Authentication System Integration Tests', () => {
       expect(users.length).toBe(0);
     });
 
+    /**
+     * Test password length validation
+     */
     it('should prevent short passwords', () => {
       const form = document.querySelector('form');
       const usernameInput = document.getElementById('username');
@@ -193,8 +234,14 @@ describe('Authentication System Integration Tests', () => {
     });
   });
 
-  // Login page setup
+  /**
+   * Login page test suite
+   * @namespace LoginPageTests
+   */
   describe('Login Page', () => {
+    /**
+     * Set up fresh DOM environment and test user before each test
+     */
     beforeEach(() => {
       dom = createDOMEnvironment(
         `
@@ -231,10 +278,16 @@ describe('Authentication System Integration Tests', () => {
       window.location = { href: '' };
     });
 
+    /**
+     * Clean up DOM environment after each test
+     */
     afterEach(() => {
       dom.window.close();
     });
 
+    /**
+     * Test successful login
+     */
     it('should successfully login with correct credentials', () => {
       const form = document.querySelector('form');
       const usernameInput = document.getElementById('username');
@@ -257,6 +310,9 @@ describe('Authentication System Integration Tests', () => {
       expect(window.location.href).toBe('http://localhost/login-page.html');
     });
 
+    /**
+     * Test invalid credentials handling
+     */
     it('should prevent login with incorrect credentials', () => {
       const form = document.querySelector('form');
       const usernameInput = document.getElementById('username');

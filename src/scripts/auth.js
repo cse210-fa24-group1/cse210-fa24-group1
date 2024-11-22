@@ -1,10 +1,26 @@
-// Wrap the entire script in a function to make it more modular and testable
+/**
+ * Authentication module handling user registration and login functionality
+ * using localStorage for data persistence.
+ * @module AuthenticationModule
+ */
 (function () {
-  // Utility functions
+  /**
+   * Retrieves all users from localStorage
+   * @returns {Array<Object>} Array of user objects
+   */
   function getUsers() {
     return JSON.parse(localStorage.getItem('users')) || [];
   }
 
+  /**
+   * Saves or updates user data in localStorage
+   * @param {Object} userData - The user data to save
+   * @param {string} userData.username - User's username
+   * @param {string} userData.password - User's password
+   * @param {string} [userData.email] - User's email address
+   * @param {string} userData.createdAt - ISO timestamp of account creation
+   * @returns {void}
+   */
   function saveUser(userData) {
     const users = getUsers();
     const existingUserIndex = users.findIndex(
@@ -15,22 +31,30 @@
     );
 
     if (existingUserIndex !== -1 || existingUserIndexEmail != -1) {
-      // Update existing user
       users[existingUserIndex] = { ...users[existingUserIndex], ...userData };
     } else {
-      // Add new user
       users.push(userData);
     }
 
     localStorage.setItem('users', JSON.stringify(users));
   }
 
+  /**
+   * Validates user credentials against stored data
+   * @param {string} username - Username to validate
+   * @param {string} password - Password to validate
+   * @returns {Object|null} User object if credentials are valid, null otherwise
+   */
   function validateCredentials(username, password) {
     const users = getUsers();
     const user = users.find((user) => user.username === username);
     return user && user.password === password ? user : null;
   }
 
+  /**
+   * Validates password requirements and matching confirmation if on registration page
+   * @returns {boolean} True if passwords are valid, false otherwise
+   */
   function validatePasswords() {
     const password1 = passwordInputs[0].value;
     const password2 = passwordInputs[1]?.value;
@@ -48,11 +72,21 @@
     return true;
   }
 
+  /**
+   * Checks if a username is available for registration
+   * @param {string} username - Username to check
+   * @returns {boolean} True if username is available, false if taken
+   */
   function isUsernameAvailable(username) {
     const users = getUsers();
     return !users.some((user) => user.username === username);
   }
 
+  /**
+   * Creates a new user session in localStorage
+   * @param {Object} user - User object for the session
+   * @param {string} user.username - Username for the session
+   */
   function setUserSession(user) {
     const session = {
       username: user.username,
@@ -62,6 +96,10 @@
     localStorage.setItem('currentSession', JSON.stringify(session));
   }
 
+  /**
+   * Checks for an existing active session and redirects to dashboard if found
+   * @returns {void}
+   */
   function checkExistingSession() {
     const currentSession = JSON.parse(localStorage.getItem('currentSession'));
     if (currentSession && currentSession.isActive) {
@@ -87,7 +125,11 @@
     }
   }
 
-  // Handle login
+  /**
+   * Handles the login form submission
+   * @param {Event} e - Submit event object
+   * @returns {void}
+   */
   function handleLogin(e) {
     e.preventDefault();
 
@@ -116,7 +158,11 @@
     }
   }
 
-  // Handle registration
+  /**
+   * Handles the registration form submission
+   * @param {Event} e - Submit event object
+   * @returns {void}
+   */
   function handleRegistration(e) {
     e.preventDefault();
 
@@ -153,9 +199,11 @@
     }
   }
 
-  // Only add event listeners if DOM elements exist
+  /**
+   * Initializes event listeners and checks for existing session
+   * @returns {void}
+   */
   function initializeEventListeners() {
-    // Check if form exists before adding event listener
     if (form) {
       form.addEventListener(
         'submit',
@@ -163,7 +211,6 @@
       );
     }
 
-    // Check existing session
     checkExistingSession();
   }
 

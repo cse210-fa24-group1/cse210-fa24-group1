@@ -1,10 +1,21 @@
+/**
+ * Forgot Password module handling password reset functionality
+ * using localStorage for data persistence and token-based reset.
+ * @module ForgotPasswordModule
+ */
 (function () {
-  // Utility functions specific to forgot password
+  /**
+   * Retrieves all users from localStorage
+   * @returns {Array<Object>} Array of user objects
+   */
   function getUsers() {
     return JSON.parse(localStorage.getItem('users')) || [];
   }
 
-  // Generate a password reset token
+  /**
+   * Generates a random token for password reset
+   * @returns {string} Random string token
+   */
   function generateResetToken() {
     return (
       Math.random().toString(36).substring(2, 15) +
@@ -12,7 +23,11 @@
     );
   }
 
-  // Simulate sending a password reset email
+  /**
+   * Simulates sending a password reset email by generating and storing a reset token
+   * @param {string} username - Username of the account to reset
+   * @returns {string|null} Reset token if successful, null if user not found
+   */
   function sendPasswordResetEmail(username) {
     const users = getUsers();
     const user = users.find((u) => u.username === username);
@@ -45,7 +60,11 @@ The link is valid for 1 hour.`);
     return resetToken;
   }
 
-  // Specifically for forgot password page initialization
+  /**
+   * Initializes the forgot password page by setting up event listeners
+   * and form handling
+   * @returns {void}
+   */
   function initializeForgotPasswordPage() {
     const forgotPasswordForm = document.querySelector('form');
 
@@ -70,7 +89,11 @@ The link is valid for 1 hour.`);
     }
   }
 
-  // Only initialize forgot password functionality if on forgot password page
+  /**
+   * Checks if the current page is the forgot password page and initializes
+   * functionality if it is
+   * @returns {void}
+   */
   function checkAndInitializeForgotPassword() {
     if (window.location.pathname.includes('forgot-password-page.html')) {
       window.addEventListener('DOMContentLoaded', initializeForgotPasswordPage);
@@ -80,7 +103,12 @@ The link is valid for 1 hour.`);
   // Immediately check and potentially initialize
   checkAndInitializeForgotPassword();
 
-  // Export for potential testing
+  /**
+   * @exports ForgotPasswordModule
+   * @type {Object}
+   * @property {Function} sendPasswordResetEmail - Function to handle password reset email
+   * @property {Function} initializeForgotPasswordPage - Function to initialize the forgot password page
+   */
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
       sendPasswordResetEmail,

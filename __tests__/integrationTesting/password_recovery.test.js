@@ -1,23 +1,48 @@
+/**
+ * @file Integration tests for password reset functionality
+ * @requires ../../src/scripts/forgot_password.js
+ * @requires ../../src/scripts/reset_password.js
+ */
+
 const forgotPasswordModule = require('../../src/scripts/forgot_password.js');
 const resetPasswordModule = require('../../src/scripts/reset_password.js');
 
 const assert = require('assert');
 
-// Mock localStorage for testing
+/**
+ * Mock implementation of localStorage for testing purposes
+ * @type {Object}
+ */
 global.localStorage = {
   storage: {},
+  /**
+   * Gets an item from storage
+   * @param {string} key - The key to retrieve
+   * @returns {string|null} The stored value or null if not found
+   */
   getItem: function (key) {
     return this.storage[key];
   },
+  /**
+   * Sets an item in storage
+   * @param {string} key - The key to set
+   * @param {string} value - The value to store
+   */
   setItem: function (key, value) {
     this.storage[key] = value;
   },
+  /**
+   * Clears all items from storage
+   */
   clear: function () {
     this.storage = {};
   },
 };
 
-// Mock window location
+/**
+ * Mock window object for testing
+ * @type {Object}
+ */
 global.window = {
   location: {
     origin: 'http://localhost',
@@ -26,14 +51,22 @@ global.window = {
   },
 };
 
-// Mock alert function
+/**
+ * Mock alert function using Jest
+ * @type {jest.Mock}
+ */
 global.alert = jest.fn();
 
-// Import the functions to test
-// const { sendPasswordResetEmail } = forgotPasswordModule;
-// const { handlePasswordReset } = resetPasswordModule;
-
+/**
+ * Test suite for password reset flow integration
+ * @group Integration
+ * @group PasswordReset
+ */
 describe('Password Reset Flow Integration Test', () => {
+  /**
+   * Set up test data before each test
+   * @beforeEach
+   */
   beforeEach(() => {
     // Set up test data
     const testUsers = [
@@ -46,6 +79,10 @@ describe('Password Reset Flow Integration Test', () => {
     localStorage.setItem('users', JSON.stringify(testUsers));
   });
 
+  /**
+   * Tests the complete password reset flow from request to completion
+   * @test
+   */
   it('should successfully complete the password reset flow', () => {
     // Step 1: Request password reset
     const resetToken = forgotPasswordModule.sendPasswordResetEmail('testuser');
