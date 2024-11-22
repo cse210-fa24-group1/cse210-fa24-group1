@@ -51,7 +51,7 @@
     // In a real-world scenario, you'd send an actual email
     // Here we'll simulate it by logging and showing an alert
     const resetLink = `${window.location.origin}/pages/reset-password.html?token=${resetToken}`;
-    console.log(`Password Reset Link: ${resetLink}`);
+    // console.log(`Password Reset Link: ${resetLink}`);
 
     // Show a more informative alert
     alert(`A password reset link has been sent to the email associated with ${username}. 

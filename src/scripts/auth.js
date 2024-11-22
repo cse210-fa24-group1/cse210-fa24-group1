@@ -150,7 +150,7 @@
         window.location.href = './dashboard.html';
       } catch (error) {
         alert('Error during login. Please try again.');
-        console.error('Login error:', error);
+        // console.error('Login error:', error);
       }
     } else {
       alert('Invalid username or password!');
@@ -195,7 +195,7 @@
       window.location.href = './login-page.html';
     } catch (error) {
       alert('Error creating account. Please try again.');
-      console.error('Error:', error);
+      // console.error('Error:', error);
     }
   }
 
