@@ -1,0 +1,92 @@
+/* Styling CSS for pages related to the authentication feature */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.authentication-container {
+  background-color: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.authentication-input-group {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: black;
+}
+
+label {
+  font-size: 14px;
+  color: black;
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 6px;
+  font-size: 16px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+input:focus {
+  border-color: darkblue;
+}
+
+button {
+  width: 80%;
+  padding: 16px;
+  margin-top: 20px;
+  background-color: blue;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: darkblue;
+}
+
+nav {
+  margin-top: 15px;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: green;
+  text-decoration: none;
+  padding: 5px;
+  font-size: medium;
+}
+
+a:hover {
+  text-decoration: underline;
+}

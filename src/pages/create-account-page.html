@@ -1,0 +1,70 @@
+<!-- Create new account page for authentication feature -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/authentication.css" />
+    <title>Create Account Page</title>
+  </head>
+  <body>
+    <div class="authentication-container">
+      <h2>Create Account</h2>
+      <form>
+        <!-- Input username or email -->
+        <div class="authentication-input-group">
+          <label for="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Enter your username"
+            required
+          />
+        </div>
+        <!-- Input username or email -->
+        <div class="authentication-input-group">
+          <label for="username">Email:</label>
+          <input
+            type="text"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+        <!-- Input password -->
+        <div class="authentication-input-group">
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        <!-- Input password again for password verification -->
+        <div class="authentication-input-group">
+          <label for="password">Enter Password Again:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password again"
+            required
+          />
+        </div>
+
+        <!-- Submit form -->
+        <button type="submit">Create Account</button>
+      </form>
+
+      <!-- Link to go back to main login page -->
+      <nav>
+        <a href="./login-page.html">Back to login</a>
+      </nav>
+    </div>
+    <script src="../scripts/auth.js"></script>
+  </body>
+</html>
