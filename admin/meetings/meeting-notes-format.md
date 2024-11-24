@@ -1,6 +1,6 @@
 # Meeting Notes
 
-**Meeting Title:** [Meeting Type or Topic]  
+**Meeting Title:** Retrospective meeting notes for Sprint Number __ / Sprint Number __ Planning Notes  
 **Date:** [MM/DD/YYYY]  
 **Minutes Taken By:** [Name]  
 **Team/Group Name:** [Team Name]  
