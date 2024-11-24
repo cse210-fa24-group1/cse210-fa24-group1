@@ -32,15 +32,19 @@ The tools must be easily accessible and understandable. This ensures that the te
 
 ## Decision Outcome
 
-**Chosen option**: Currently haven't decided on an option or if we want to combine options together. Will update after getting feedback from the rest of the team
-[Provide a summary of the decision and why this option was chosen.]
+**Chosen option**: ~~Currently haven't decided on an option or if we want to combine options together. Will update after getting feedback from the rest of the team~~
+
+Code quality is checked on three aspects: following code guidelines, automatic checking through the CI/CD pipeline, and manual code reviews.
 
 ---
 
 ## Consequences
 
-- **Positive**: [List positive outcomes of the decision.]
-- **Negative**: [List negative outcomes of the decision.]
+- **Positive**: 
+    - There are three different checks for code quality, meaning that code is checked thoroughly
+    - There is both automated and personal review
+- **Negative**:
+    - Checking code quality could take a while since commits need to go through all three steps before it gets merged to the main branch
 
 ---
 
@@ -65,6 +69,8 @@ The tools must be easily accessible and understandable. This ensures that the te
 
 ## Confirmation
 
-This decision is still being validated by the team. Once a CI/CD pipeline gets established and general structure has been implemented, the team will make a final decision on how to ensure code quality.
+~~This decision is still being validated by the team. Once a CI/CD pipeline gets established and general structure has been implemented, the team will make a final decision on how to ensure code quality.~~
+
+Decision has been finalized now during the Nov 20th meeting.
 
 ---
