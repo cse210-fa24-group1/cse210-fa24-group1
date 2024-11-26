@@ -22,7 +22,8 @@
             <p id="balance" class="amount">$0.00</p>
             <div class="budget">
                 <button id="edit-budget">View / Edit Budget Limit</button>
-                <input type="text" id="budget-limit" value="$10000" />
+                <input type="text" id="budget-limit" value="$10000" disabled/>
+                <span id="budget-warning" class="warning"></span>
             </div>
         </section>
         <section class="content">
@@ -33,9 +34,20 @@
             <div class="transaction-form">
                 <h3>Enter Transaction</h3>
                 <form id="transaction-form">
-                    <label>
+                    <label class="input-container">
                         Description
                         <input type="text" id="text" required />
+                    </label>
+                    <label class="input-container">
+                        Category
+                        <select id="category" required>
+                            <option value="food">Food</option>
+                            <option value="travel">Travel</option>
+                            <option value="credit">Credit</option>
+                            <option value="rent">Rent</option>
+                            <option value="leisure">Leisure</option>
+                            <option value="misc">Misc</option>
+                        </select>
                     </label>
                     <label>
                         Amount
@@ -46,6 +58,8 @@
                         <button type="submit" class="credit" data-type="credit">Credit</button>
                     </div>
                 </form>
+                
+                
             </div>
         </section>
     </main>

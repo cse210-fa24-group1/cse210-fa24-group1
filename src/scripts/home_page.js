@@ -18,6 +18,7 @@ function addTransaction(e) {
     e.preventDefault();
 
     const text = textInput.value.trim();
+    const category = document.getElementById('category').value; // Get selected category
     let amount = parseFloat(amountInput.value.trim());
     const type = e.submitter.dataset.type;
 
@@ -32,6 +33,7 @@ function addTransaction(e) {
     const transaction = {
         id: generateID(),
         text,
+        category, // Add the category to the transaction
         amount,
         date: new Date().toLocaleString()
     };
@@ -45,23 +47,26 @@ function addTransaction(e) {
     checkBudgetLimit();
 }
 
+
 // Generate random ID
 function generateID() {
     return Math.floor(Math.random() * 100000000);
 }
 
-// Add transaction to DOM
+// Add transaction to DOM with aligned description and amount
 function addTransactionDOM(transaction) {
     const sign = transaction.amount < 0 ? '-' : '+';
     const item = document.createElement('li');
     item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
+
     item.innerHTML = `
-        <span>${transaction.text} (${transaction.date})</span>
-        <span>${sign}$${Math.abs(transaction.amount).toFixed(2)}</span>
+        <span>${transaction.text}</span> <!-- Description -->
+        <span class="amount-space">${sign}$${Math.abs(transaction.amount).toFixed(2)}</span> <!-- Amount -->
         <button class="delete-btn" onclick="removeTransaction(${transaction.id})">x</button>
     `;
     list.appendChild(item);
 }
+
 
 // Remove transaction by ID
 function removeTransaction(id) {
@@ -82,10 +87,15 @@ function updateValues() {
 // Check budget limit
 function checkBudgetLimit() {
     const currentTotal = Math.abs(updateValues());
+    const budgetWarning = document.getElementById('budget-warning');
+
     if (currentTotal > budgetLimit) {
-        alert(`Warning: Your expenses (${currentTotal}) have exceeded the budget limit of $${budgetLimit}!`);
+        budgetWarning.innerText = `Exceeded the limit!`; // Display the warning message
+    } else {
+        budgetWarning.innerText = ''; // Clear the warning if the limit is not exceeded
     }
 }
+
 
 // Edit budget limit
 editBudgetBtn.addEventListener('click', () => {
