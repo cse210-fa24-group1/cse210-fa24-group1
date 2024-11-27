@@ -3,7 +3,7 @@
 /**
  * Body styling: Sets the font, removes default margin and padding, and adds a background color.
  */
- body {
+body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
@@ -103,7 +103,7 @@
  */
 .warning {
   color: red;
-  margin-left: 10px; 
+  margin-left: 10px;
   font-weight: bold;
 }
 
@@ -122,8 +122,8 @@
  */
 .input-container {
   display: flex;
-  flex-direction: column; 
-  margin-bottom: 10px; 
+  flex-direction: column;
+  margin-bottom: 10px;
 }
 
 /**
@@ -131,11 +131,11 @@
  */
 #transaction-form input,
 #transaction-form select {
-  width: 100%; 
+  width: 100%;
   padding: 8px;
   font-size: 14px;
   margin-top: 5px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
 
 /**
@@ -206,31 +206,31 @@
  * Transaction history container with scrolling: Limits the height and enables vertical scrolling.
  */
 .history {
-  max-height: 20rem; 
-  overflow-y: auto; 
-  padding-right: 2rem; 
-  border: 1px solid #ddd; 
+  max-height: 20rem;
+  overflow-y: auto;
+  padding-right: 2rem;
+  border: 1px solid #ddd;
 }
 
 /**
  * Custom Scrollbar styles: Adjusts the appearance of the scrollbar for better visuals.
  */
 .list::-webkit-scrollbar {
-  width: 5px; 
+  width: 5px;
 }
 
 .list::-webkit-scrollbar-track {
-  background: #e2dddd; 
-  border-radius: 10px; 
+  background: #e2dddd;
+  border-radius: 10px;
 }
 
 .list::-webkit-scrollbar-thumb {
-  background: #b2b1b1; 
-  border-radius: 10px; 
+  background: #b2b1b1;
+  border-radius: 10px;
 }
 
 .list::-webkit-scrollbar-thumb:hover {
-  background: #828282; 
+  background: #828282;
 }
 
 /* Transaction item layout using flexbox */
@@ -238,13 +238,13 @@
  * Styles for each list item in the transaction history.
  * The item is displayed using flexbox to space the description and amount apart.
  */
- #list li {
+#list li {
   display: flex;
-  justify-content: space-between; 
-  align-items: center; 
-  padding: 8px 0; 
-  border-bottom: 1px solid #ddd; 
-  word-wrap: break-word; 
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+  word-wrap: break-word;
 }
 
 /**
@@ -252,9 +252,9 @@
  * The description takes up the remaining space in the flex container.
  */
 #list li span {
-  flex: 1; 
-  min-width: 0; 
-  white-space: normal; 
+  flex: 1;
+  min-width: 0;
+  white-space: normal;
 }
 
 /**
@@ -263,9 +263,9 @@
  */
 #list li .amount-space {
   margin-left: 10px;
-  text-align: center; 
-  flex-shrink: 0; 
-  word-wrap: break-word; 
+  text-align: center;
+  flex-shrink: 0;
+  word-wrap: break-word;
 }
 
 /* Style for the list item container */
@@ -275,15 +275,15 @@
  */
 .transaction-item {
   display: flex;
-  justify-content: space-between; 
-  width: 100%; 
+  justify-content: space-between;
+  width: 100%;
 }
 
 /**
  * Sets the color of transaction text (e.g., for expense items).
  */
 .transaction {
-  color: green; 
+  color: green;
 }
 
 /* Transaction form styles */
@@ -312,7 +312,7 @@
  */
 .buttons {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
 }
 
 /**
@@ -338,6 +338,5 @@
  * Styles for the credit button (green background).
  */
 .credit {
-  background-color: green; 
+  background-color: green;
 }
-

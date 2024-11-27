@@ -15,109 +15,106 @@ budgetLimitInput.value = `$${budgetLimit}`;
 
 // Add a new transaction
 function addTransaction(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const text = textInput.value.trim();
-    const category = document.getElementById('category').value; // Get selected category
-    let amount = parseFloat(amountInput.value.trim());
-    const type = e.submitter.dataset.type;
+  const text = textInput.value.trim();
+  const category = document.getElementById('category').value; // Get selected category
+  let amount = parseFloat(amountInput.value.trim());
+  const type = e.submitter.dataset.type;
 
-    // Adjust amount based on transaction type
-    amount = type === 'expense' ? -Math.abs(amount) : Math.abs(amount);
+  // Adjust amount based on transaction type
+  amount = type === 'expense' ? -Math.abs(amount) : Math.abs(amount);
 
-    if (text === '' || isNaN(amount)) {
-        alert('Please enter a valid description and amount.');
-        return;
-    }
+  if (text === '' || isNaN(amount)) {
+    alert('Please enter a valid description and amount.');
+    return;
+  }
 
-    const transaction = {
-        id: generateID(),
-        text,
-        category, // Add the category to the transaction
-        amount,
-        date: new Date().toLocaleString()
-    };
+  const transaction = {
+    id: generateID(),
+    text,
+    category, // Add the category to the transaction
+    amount,
+    date: new Date().toLocaleString(),
+  };
 
-    transactions.push(transaction);
-    updateLocalStorage();
-    updateUI();
-    form.reset();
+  transactions.push(transaction);
+  updateLocalStorage();
+  updateUI();
+  form.reset();
 
-    // Check budget limit
-    checkBudgetLimit();
+  // Check budget limit
+  checkBudgetLimit();
 }
-
 
 // Generate random ID
 function generateID() {
-    return Math.floor(Math.random() * 100000000);
+  return Math.floor(Math.random() * 100000000);
 }
 
 // Add transaction to DOM with aligned description and amount
 function addTransactionDOM(transaction) {
-    const sign = transaction.amount < 0 ? '-' : '+';
-    const item = document.createElement('li');
-    item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
+  const sign = transaction.amount < 0 ? '-' : '+';
+  const item = document.createElement('li');
+  item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
 
-    item.innerHTML = `
+  item.innerHTML = `
         <span>${transaction.text}</span> <!-- Description -->
         <span class="amount-space">${sign}$${Math.abs(transaction.amount).toFixed(2)}</span> <!-- Amount -->
         <button class="delete-btn" onclick="removeTransaction(${transaction.id})">x</button>
     `;
-    list.appendChild(item);
+  list.appendChild(item);
 }
-
 
 // Remove transaction by ID
 function removeTransaction(id) {
-    transactions = transactions.filter((transaction) => transaction.id !== id);
-    updateLocalStorage();
-    updateUI();
-    checkBudgetLimit();
+  transactions = transactions.filter((transaction) => transaction.id !== id);
+  updateLocalStorage();
+  updateUI();
+  checkBudgetLimit();
 }
 
 // Update balance
 function updateValues() {
-    const amounts = transactions.map((transaction) => transaction.amount);
-    const total = amounts.reduce((acc, item) => acc + item, 0).toFixed(2);
-    balance.innerText = `$${total}`;
-    return parseFloat(total);
+  const amounts = transactions.map((transaction) => transaction.amount);
+  const total = amounts.reduce((acc, item) => acc + item, 0).toFixed(2);
+  balance.innerText = `$${total}`;
+  return parseFloat(total);
 }
 
 // Check budget limit
 function checkBudgetLimit() {
-    const currentTotal = Math.abs(updateValues());
-    const budgetWarning = document.getElementById('budget-warning');
+  const currentTotal = Math.abs(updateValues());
+  const budgetWarning = document.getElementById('budget-warning');
 
-    if (currentTotal > budgetLimit) {
-        budgetWarning.innerText = `Exceeded the limit!`; // Display the warning message
-    } else {
-        budgetWarning.innerText = ''; // Clear the warning if the limit is not exceeded
-    }
+  if (currentTotal > budgetLimit) {
+    budgetWarning.innerText = `Exceeded the limit!`; // Display the warning message
+  } else {
+    budgetWarning.innerText = ''; // Clear the warning if the limit is not exceeded
+  }
 }
-
 
 // Edit budget limit
 editBudgetBtn.addEventListener('click', () => {
-    const newLimit = prompt('Enter new budget limit:', budgetLimit);
-    if (newLimit !== null) {
-        budgetLimit = parseFloat(newLimit);
-        budgetLimitInput.value = `$${budgetLimit}`;
-        localStorage.setItem('budgetLimit', budgetLimit);
-        checkBudgetLimit();
-    }
+  const newLimit = prompt('Enter new budget limit:', budgetLimit);
+  if (newLimit !== null) {
+    budgetLimit = parseFloat(newLimit);
+    budgetLimitInput.value = `$${budgetLimit}`;
+    localStorage.setItem('budgetLimit', budgetLimit);
+    checkBudgetLimit();
+  }
 });
 
 // Update localStorage
 function updateLocalStorage() {
-    localStorage.setItem('transactions', JSON.stringify(transactions));
+  localStorage.setItem('transactions', JSON.stringify(transactions));
 }
 
 // Initialize UI
 function updateUI() {
-    list.innerHTML = '';
-    transactions.forEach(addTransactionDOM);
-    updateValues();
+  list.innerHTML = '';
+  transactions.forEach(addTransactionDOM);
+  updateValues();
 }
 
 // Event listeners
