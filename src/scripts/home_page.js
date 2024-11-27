@@ -119,7 +119,7 @@ function checkBudgetLimit() {
   const budgetWarning = document.getElementById('budget-warning');
 
   if (currentTotal > budgetLimit) {
-    budgetWarning.innerText = 'Exceeded the limit!'; // Display the warning message
+    budgetWarning.innerText = 'Exceeded the limit.'; // Display the warning message
   } else {
     budgetWarning.innerText = ''; // Clear the warning if the limit is not exceeded
   }
