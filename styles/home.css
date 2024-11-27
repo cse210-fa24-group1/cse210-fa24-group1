@@ -72,6 +72,23 @@ body {
   margin: 10px 0;
 }
 
+/* Positive balance */
+.balance.positive {
+  font-size: 36px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: green;
+}
+
+/* Negative balance */
+.balance.negative {
+  font-size: 36px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: red;
+}
+
+
 /**
  * Budget section: Adds margin-top for spacing.
  */

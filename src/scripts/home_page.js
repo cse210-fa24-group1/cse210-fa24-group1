@@ -54,18 +54,36 @@ function generateID() {
 
 // Add transaction to DOM with aligned description and amount
 function addTransactionDOM(transaction) {
-  const sign = transaction.amount < 0 ? '-' : '+';
-  const item = document.createElement('li');
-  item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
-
-  item.innerHTML = `
-        <span>${transaction.text}</span> <!-- Description -->
-        <span class="amount-space">${sign}$${Math.abs(transaction.amount).toFixed(2)}</span> <!-- Amount -->
-        <button class="delete-btn" onclick="removeTransaction(${transaction.id})">x</button>
-    `;
-  list.appendChild(item);
-}
-
+    const sign = transaction.amount < 0 ? '-' : '+';
+    const item = document.createElement('li');
+    
+    // Add classes based on the amount
+    item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
+  
+    // Create the description span and set text
+    const descriptionSpan = document.createElement('span');
+    descriptionSpan.textContent = transaction.text;  // Safely set text content
+  
+    // Create the amount span and set text
+    const amountSpan = document.createElement('span');
+    amountSpan.classList.add('amount-space');
+    amountSpan.textContent = `${sign}$${Math.abs(transaction.amount).toFixed(2)}`;  // Safely set amount text
+  
+    // Create the delete button
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('delete-btn');
+    deleteButton.textContent = 'x';
+    deleteButton.onclick = () => removeTransaction(transaction.id);  // Set delete button click handler
+  
+    // Append elements to the list item
+    item.appendChild(descriptionSpan);
+    item.appendChild(amountSpan);
+    item.appendChild(deleteButton);
+  
+    // Append the item to the list
+    list.appendChild(item);
+  }
+  
 // Remove transaction by ID
 function removeTransaction(id) {
   transactions = transactions.filter((transaction) => transaction.id !== id);
@@ -74,13 +92,26 @@ function removeTransaction(id) {
   checkBudgetLimit();
 }
 
-// Update balance
+/// Update balance
 function updateValues() {
-  const amounts = transactions.map((transaction) => transaction.amount);
-  const total = amounts.reduce((acc, item) => acc + item, 0).toFixed(2);
-  balance.innerText = `$${total}`;
-  return parseFloat(total);
-}
+    const amounts = transactions.map((transaction) => transaction.amount);
+    const total = amounts.reduce((acc, item) => acc + item, 0).toFixed(2);
+    
+    // Update the balance text
+    balance.innerText = `$${total}`;
+  
+    // Update the balance status (positive or negative)
+    if (parseFloat(total) >= 0) {
+      balance.classList.remove('negative');  // Remove negative class if balance is positive
+      balance.classList.add('positive');     // Add positive class if balance is positive
+    } else {
+      balance.classList.remove('positive');  // Remove positive class if balance is negative
+      balance.classList.add('negative');     // Add negative class if balance is negative
+    }
+  
+    return parseFloat(total);
+  }
+  
 
 // Check budget limit
 function checkBudgetLimit() {
