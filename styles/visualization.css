@@ -1,0 +1,73 @@
+/* Style sheet for Visualization Page*/
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+  }
+  
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: white;
+    border-bottom: 1px solid #ddd;
+  }
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+  
+header nav a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+main{
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: space-around;
+    height: 100vh; 
+}
+
+section{
+    display: flex;
+    justify-content: center;
+}
+
+.section-row-1-col-1{
+    width: 60%;
+}
+
+.section-row-1-col-2{
+    width: 39%;
+}
+
+.section-row-2-col-1,.section-row-2-col-2,.section-row-3{
+    width: 49%;
+}
+
+canvas {
+    margin: 50px;
+}
+
+#export-btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    background-color: #798d7a;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: center; 
+    max-height: 50px; 
+}
+
+#line-chart, #pie-chart {
+    max-height: 300px;  
+}
