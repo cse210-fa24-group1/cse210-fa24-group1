@@ -1,33 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Visualization Page</title>
-    <link rel = "stylesheet" href = "../../styles/visualization.css" />
-<body>
+    <link rel="stylesheet" href="../../styles/visualization.css" />
+  </head>
+  <body>
     <header>
-        <h1>Expense Tracker</h1>
-        <nav>
+      <h1>Expense Tracker</h1>
+      <nav>
         <a href="#">Home</a>
         <a href="#">Logout</a>
-        </nav>
+      </nav>
     </header>
     <main>
-        <section class="section-row-1-col-1">
-            <canvas id="line-chart"></canvas>
-        </section>
-        <section class="section-row-1-col-2">
-            <canvas id="pie-chart"></canvas>
-        </section>
-        <section class="section-row-2-col-1">weekly calendar</section>
-        <section class="section-row-2-col-2">monthly calendar</section>
-        <section class="section-row-3">
-            <button id="export-btn">Export Data</button>
-        </section>
+      <section class="section-row-1-col-1">
+        <canvas id="line-chart"></canvas>
+      </section>
+      <section class="section-row-1-col-2">
+        <canvas id="pie-chart"></canvas>
+      </section>
+      <section class="section-row-2-col-1">weekly calendar</section>
+      <section class="section-row-2-col-2">monthly calendar</section>
+      <section class="section-row-3">
+        <button id="export-btn">Export Data</button>
+      </section>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
     <script src="../scripts/visualization.js"></script>
-</body>
+  </body>
 </html>
