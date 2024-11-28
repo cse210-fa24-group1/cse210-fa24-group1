@@ -33,7 +33,7 @@ function addTransaction(e) {
   const transaction = {
     id: generateID(),
     text,
-    category, // Add the category to the transaction
+    category, 
     amount,
     date: new Date().toLocaleString(),
   };
@@ -49,7 +49,7 @@ function addTransaction(e) {
 
 // Generate random ID
 function generateID() {
-  return Math.floor(Math.random() * 100000000);
+  return Math.floor(Math.random() * 100);
 }
 
 // Add transaction to DOM with aligned description and amount
