@@ -33,7 +33,7 @@ function addTransaction(e) {
   const transaction = {
     id: generateID(),
     text,
-    category, 
+    category,
     amount,
     date: new Date().toLocaleString(),
   };
