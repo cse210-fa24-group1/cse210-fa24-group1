@@ -51,7 +51,7 @@
     localStorage.setItem('users', JSON.stringify(updatedUsers));
 
     // Construct reset link
-    const resetLink = `${window.location.origin}/pages/reset-password.html?token=${resetToken}&username=${username}`;
+    const resetLink = `${window.location.origin}/pages/reset-password-page.html?token=${resetToken}&username=${username}`;
 
     // EmailJS configuration (You'll need to sign up at emailjs.com and get these details)
     emailjs.init('FHzkkOp1lrgWuCbYY'); // Replace with actual User ID from EmailJS
