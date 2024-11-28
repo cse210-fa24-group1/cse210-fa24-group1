@@ -1,19 +1,21 @@
 # Sprint Review Meeting
 
-**Sprint Duration:** Nov 11th - Nov 18th   
+**Sprint Duration:** Nov 11th - Nov 18th  
 **Meeting Date:** Nov 13th  
 **Facilitator:** Ketaki Tank, Chirag Jain
 **Team:** Agile Avengers  
-**Attendees:** Annie Xu, Ketaki Tank, Sania Edlabadkar, Devanshi Chadha, Chirag Jain, June Akpata, Krishi Chawda  
+**Attendees:** Annie Xu, Ketaki Tank, Sania Edlabadkar, Devanshi Chadha, Chirag Jain, June Akpata, Krishi Chawda
 
 ---
 
-## Purpose  
+## Purpose
+
 Review Sprint 1, talk about progress, discuss next steps.
 
 ---
 
-## 1. **Agenda**  
+## 1. **Agenda**
+
 1. Meeting with Professor
 2. CI/CD Pipeline
 3. MD files
@@ -22,49 +24,58 @@ Review Sprint 1, talk about progress, discuss next steps.
 
 ---
 
-## 2. **Sprint Goals Recap**  
-*What were the objectives for this sprint?*  
+## 2. **Sprint Goals Recap**
+
+_What were the objectives for this sprint?_
+
 - Set up CI/CD pipeline
 - Finish writing ADRs
 - Set up templates for pull requests and issues
 
 ---
 
-## 3. **Work Accomplished**  
-*What has been completed during the sprint?*  
+## 3. **Work Accomplished**
 
-| **Work Item/Story** | **Owner**  | **Status**    | **Demo Notes**                          |  
-|----------------------|------------|---------------|-----------------------------------------|  
-| CI/CD pipeline setup     | Sania Edlabadkar, Devanshi Chadha, Ketaki Tank  | Completed     | CI/CD pipeline running when pull request is created |  
-| Feature decision ADR        | Ketaki Tank  | Completed     | Located in the specs/adr folder  |  
-| Technology decision ADR        | Chirag Jain  | Completed     | Located in the specs/adr folder  |  
-| Code practices markdown        | Krishi Chawda  | Completed     | Located in the admin folder  |  
-| Technical decisions ADR        | Chih-Lin (Linda) Wang  | Completed     | Located in the specs/adr folder  |  
-| UI decision ADR        | June Akpata  | Completed     | Located in the specs/adr folder  |  
-| Code quality ADR        | Annie Xu  | Completed     | Located in the specs/adr folder  |  
-| General framework of code (dir structure)       | Sania Edlabadkar  | Completed     | Repo structure  |  
+_What has been completed during the sprint?_
+
+| **Work Item/Story**                       | **Owner**                                      | **Status** | **Demo Notes**                                      |
+| ----------------------------------------- | ---------------------------------------------- | ---------- | --------------------------------------------------- |
+| CI/CD pipeline setup                      | Sania Edlabadkar, Devanshi Chadha, Ketaki Tank | Completed  | CI/CD pipeline running when pull request is created |
+| Feature decision ADR                      | Ketaki Tank                                    | Completed  | Located in the specs/adr folder                     |
+| Technology decision ADR                   | Chirag Jain                                    | Completed  | Located in the specs/adr folder                     |
+| Code practices markdown                   | Krishi Chawda                                  | Completed  | Located in the admin folder                         |
+| Technical decisions ADR                   | Chih-Lin (Linda) Wang                          | Completed  | Located in the specs/adr folder                     |
+| UI decision ADR                           | June Akpata                                    | Completed  | Located in the specs/adr folder                     |
+| Code quality ADR                          | Annie Xu                                       | Completed  | Located in the specs/adr folder                     |
+| General framework of code (dir structure) | Sania Edlabadkar                               | Completed  | Repo structure                                      |
 
 ---
 
-## 4. **Stakeholder Feedback**  
-*Feedback from stakeholders on demonstrated work:*  
+## 4. **Stakeholder Feedback**
+
+_Feedback from stakeholders on demonstrated work:_
+
 - Team has completed their respective tasks, no backlog yet
 - Meeting with Professor
-   - Don't need rigorous backend right at this moment
-   - Need some abstract outlines in our code so that we know the basic layout of our code and project architecture
+  - Don't need rigorous backend right at this moment
+  - Need some abstract outlines in our code so that we know the basic layout of our code and project architecture
 
 ---
 
-## 5. **Next Steps**  
-*Key priorities or adjustments for the next sprint based on feedback:*  
+## 5. **Next Steps**
+
+_Key priorities or adjustments for the next sprint based on feedback:_
+
 - First run of CI/CD
 - Login page and home page UI implementation
-    - Unit tests as well
+  - Unit tests as well
 
 ---
 
-## 6. **Questions and Discussion**  
-*Open floor for questions or additional comments.*  
+## 6. **Questions and Discussion**
+
+_Open floor for questions or additional comments._
+
 - Allocated sprint 2 work
 - Code Practices
   - Branch naming (ex: feature/add-feature)
@@ -78,11 +89,12 @@ Review Sprint 1, talk about progress, discuss next steps.
   - Jest for testing
 - Allocated Additional Work
   - Tasks allocated to everyone until 11/16
-- Continue implementing CI/CD pipeline 
+- Continue implementing CI/CD pipeline
 
 ---
 
-**Meeting Summary:**  
+**Meeting Summary:**
+
 1. Meeting with Professor
    - Don't need rigorous backend right at this moment
    - Need some abstract outlines in our code so that we know the basic layout of our code and project architecture
@@ -100,4 +112,4 @@ Review Sprint 1, talk about progress, discuss next steps.
    - First run of CI/CD
    - Group presentation on reading
 
-**Prepared By:** Annie Xu  
+**Prepared By:** Annie Xu

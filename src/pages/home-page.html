@@ -11,62 +11,61 @@
       <div class="header">
         <h1>Expense Tracker</h1>
         <nav>
-          <a href="#">Summary</a>
-          <a href="#">Logout</a>
+          <a href="#" id="summary-link">Summary</a>
+          <a href="#" id="logout-link">Logout</a>
         </nav>
       </div>
     </header>
     <main>
       <section class="current-expense">
         <h2>Current Monthly <span class="highlight">Expense</span></h2>
-        <p class="amount">$2000.00</p>
+        <p id="balance" class="balance">$0.00</p>
         <div class="budget">
-          <button>View / Edit Budget Limit</button>
-          <input type="text" value="$10000" />
+          <button id="edit-budget">View / Edit Budget Limit</button>
+          <input type="text" id="budget-limit" value="$10000" disabled />
+          <span id="budget-warning" class="warning"></span>
         </div>
       </section>
       <section class="content">
-        <div class="history">
+        <div class="history" id="history-list">
           <h3>History</h3>
-          <div class="transaction">
-            <p>Food <span class="amount">-$20</span></p>
-            <small>10/20/2020</small>
-          </div>
-          <div class="transaction">
-            <p>Shopping <span class="amount">-$20</span></p>
-            <small>10/20/2020</small>
-          </div>
-          <div class="transaction">
-            <p>Rent <span class="amount">-$2000</span></p>
-            <small>10/20/2020</small>
-          </div>
-          <div class="transaction">
-            <p>Fees <span class="amount">-$20</span></p>
-            <small>10/20/2020</small>
-          </div>
-          <div class="transaction">
-            <p>Paycheck <span class="amount">$20</span></p>
-            <small>10/20/2020</small>
-          </div>
+          <ul id="list"></ul>
         </div>
         <div class="transaction-form">
           <h3>Enter Transaction</h3>
-          <form>
-            <label>
+          <form id="transaction-form">
+            <label class="input-container">
               Description
-              <input type="text" name="description" />
+              <input type="text" id="text" required />
+            </label>
+            <label class="input-container">
+              Category
+              <select id="category" required>
+                <option value="food">Food</option>
+                <option value="travel">Travel</option>
+                <option value="credit">Credit</option>
+                <option value="rent">Rent</option>
+                <option value="leisure">Leisure</option>
+                <option value="misc">Misc</option>
+              </select>
             </label>
             <label>
               Amount
-              <input type="text" name="amount" />
+              <input type="number" id="amount" step="0.01" required />
             </label>
             <div class="buttons">
-              <button type="button" class="expense">Expense</button>
-              <button type="button" class="credit">Credit</button>
+              <button type="submit" class="expense" data-type="expense">
+                Expense
+              </button>
+              <button type="submit" class="credit" data-type="credit">
+                Credit
+              </button>
             </div>
           </form>
         </div>
       </section>
     </main>
+
+    <script src="../scripts/home_page.js"></script>
   </body>
 </html>

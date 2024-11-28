@@ -40,11 +40,11 @@ Code quality is checked on three aspects: following code guidelines, automatic c
 
 ## Consequences
 
-- **Positive**: 
-    - There are three different checks for code quality, meaning that code is checked thoroughly
-    - There is both automated and personal review
+- **Positive**:
+  - There are three different checks for code quality, meaning that code is checked thoroughly
+  - There is both automated and personal review
 - **Negative**:
-    - Checking code quality could take a while since commits need to go through all three steps before it gets merged to the main branch
+  - Checking code quality could take a while since commits need to go through all three steps before it gets merged to the main branch
 
 ---
 
