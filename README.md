@@ -1,5 +1,7 @@
 # cse210-fa24-group1
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/1e3059c9b8064e55be72df56ff93c157)](https://app.codacy.com?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+
 # How to Contribute to the Expense Tracker Repository
 
 We appreciate your interest in contributing to the Expense Tracker project! By following these steps, you can help improve and enhance the repository.
