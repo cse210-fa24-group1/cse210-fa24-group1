@@ -23,7 +23,6 @@
    */
   function saveUser(userData) {
     const users = getUsers();
-    console.log(users);
     const existingUserIndex = users.findIndex(
       (user) => user.username === userData.username
     );
@@ -36,7 +35,6 @@
     } else {
       users.push(userData);
     }
-    console.log(users);
     localStorage.setItem('users', JSON.stringify(users));
   }
 
@@ -48,7 +46,6 @@
    */
   function validateCredentials(username, password) {
     const users = getUsers();
-    console.log(users);
     const user = users.find((user) => user.username === username);
     return user && user.password === password ? user : null;
   }
@@ -152,7 +149,6 @@
         window.location.href = '../pages/home-page.html';
       } catch (error) {
         alert('Error during login. Please try again.');
-        // console.error('Login error:', error);
       }
     } else {
       alert('Invalid username or password!');
@@ -199,7 +195,6 @@
       window.location.href = './login-page.html';
     } catch (error) {
       alert('Error creating account. Please try again.');
-      // console.error('Error:', error);
     }
   }
 
