@@ -47,7 +47,9 @@ import * as emailjs from 'emailjs-com';
     };
 
     // Update user in localStorage
-    const updatedUsers = users.map((u) => (u.username === username || u.email === username ? user : u));
+    const updatedUsers = users.map((u) =>
+      u.username === username || u.email === username ? user : u
+    );
     localStorage.setItem('users', JSON.stringify(updatedUsers));
 
     // Construct reset link
@@ -67,12 +69,12 @@ import * as emailjs from 'emailjs-com';
     // Send email using EmailJS
     emailjs
       .send('service_0n5821h', 'template_02gap7y', templateParams)
-      .then((response) => {
+      .then(() => {
         // console.log('Email sent successfully', response);
         alert(`A password reset link has been sent to the email associated with ${username}. 
 The link is valid for 1 hour.`);
       })
-      .catch((error) => {
+      .catch(() => {
         // console.error('Failed to send email', error);
         alert('Failed to send password reset email. Please try again.');
       });

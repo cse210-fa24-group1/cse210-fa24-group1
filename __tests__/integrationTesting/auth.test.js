@@ -141,7 +141,7 @@ describe('Authentication System Integration Tests', () => {
       passwordInput.value = 'password123';
       emailInput.value = 'test@example.com';
       passwordConfirmInput.value = 'password123';
-      
+
       // Trigger form submission
       const submitEvent = new window.Event('submit');
       form.dispatchEvent(submitEvent);
