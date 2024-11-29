@@ -35,7 +35,6 @@
     } else {
       users.push(userData);
     }
-
     localStorage.setItem('users', JSON.stringify(users));
   }
 
@@ -103,7 +102,7 @@
   function checkExistingSession() {
     const currentSession = JSON.parse(localStorage.getItem('currentSession'));
     if (currentSession && currentSession.isActive) {
-      window.location.href = './dashboard.html';
+      window.location.href = '../pages/home-page.html';
     }
   }
 
@@ -113,7 +112,7 @@
   // Select form and inputs
   const form = document.querySelector('form');
   const usernameInput = document.querySelector('#username');
-
+  const emailInput = document.querySelector('#email');
   // Handle password inputs for both login and registration pages
   let passwordInputs;
   if (isLoginPage) {
@@ -147,10 +146,9 @@
       try {
         setUserSession(user);
         alert('Login successful!');
-        window.location.href = './dashboard.html';
+        window.location.href = '../pages/home-page.html';
       } catch (error) {
         alert('Error during login. Please try again.');
-        // console.error('Login error:', error);
       }
     } else {
       alert('Invalid username or password!');
@@ -167,9 +165,10 @@
     e.preventDefault();
 
     const username = usernameInput.value.trim();
+    const email = emailInput.value.trim();
     const password = passwordInputs[0].value;
 
-    if (!username || !password) {
+    if (!username || !password || !email) {
       alert('Please fill in all fields!');
       return;
     }
@@ -186,6 +185,7 @@
     const userData = {
       username: username,
       password: password,
+      email: email,
       createdAt: new Date().toISOString(),
     };
 
@@ -195,7 +195,6 @@
       window.location.href = './login-page.html';
     } catch (error) {
       alert('Error creating account. Please try again.');
-      // console.error('Error:', error);
     }
   }
 

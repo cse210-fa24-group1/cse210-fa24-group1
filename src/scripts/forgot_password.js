@@ -1,3 +1,4 @@
+import * as emailjs from 'emailjs-com';
 /**
  * Forgot Password module handling password reset functionality
  * using localStorage for data persistence and token-based reset.
@@ -30,8 +31,9 @@
    */
   function sendPasswordResetEmail(username) {
     const users = getUsers();
-    const user = users.find((u) => u.username === username);
-
+    const user = users.find(
+      (user) => user.username === username || user.email === username
+    );
     if (!user) {
       alert('User not found');
       return null;
@@ -45,18 +47,39 @@
     };
 
     // Update user in localStorage
-    const updatedUsers = users.map((u) => (u.username === username ? user : u));
+    const updatedUsers = users.map((u) =>
+      u.username === username || u.email === username ? user : u
+    );
     localStorage.setItem('users', JSON.stringify(updatedUsers));
 
-    // In a real-world scenario, you'd send an actual email
-    // Here we'll simulate it by logging and showing an alert
-    // const resetLink = `${window.location.origin}/pages/reset-password.html?token=${resetToken}`;
-    // console.log(`Password Reset Link: ${resetLink}`);
+    // Construct reset link
+    const resetLink = `${window.location.origin}/pages/reset-password-page.html?token=${resetToken}&username=${username}`;
 
-    // Show a more informative alert
-    alert(`A password reset link has been sent to the email associated with ${username}. 
+    // EmailJS configuration (You'll need to sign up at emailjs.com and get these details)
+    // eslint-disable-next-line no-undef
+    emailjs.init('FHzkkOp1lrgWuCbYY'); // Replace with actual User ID from EmailJS
+    // Email parameters
+    const templateParams = {
+      to_email: user.email, // Sender's email
+      from_name: 'Expense Tracker',
+      reset_link: resetLink,
+      reply_to: 'sedlabadkar@ucsd.edu',
+    };
+
+    // Send email using EmailJS
+    emailjs
+      .send('service_0n5821h', 'template_02gap7y', templateParams)
+      .then(() => {
+        // console.log('Email sent successfully', response);
+        alert(`A password reset link has been sent to the email associated with ${username}. 
 The link is valid for 1 hour.`);
+      })
+      .catch(() => {
+        // console.error('Failed to send email', error);
+        alert('Failed to send password reset email. Please try again.');
+      });
 
+    // need a way to return null/resetToken depending on if emailJS works
     return resetToken;
   }
 
