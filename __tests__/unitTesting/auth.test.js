@@ -243,7 +243,7 @@ describe('Authentication Functions', () => {
 
       authScript.checkExistingSession();
 
-      expect(window.location.href).toBe('./dashboard.html');
+      expect(window.location.href).toBe('../pages/home-page.html');
     });
   });
 });

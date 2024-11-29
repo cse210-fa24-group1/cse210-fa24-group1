@@ -97,6 +97,7 @@ describe('Authentication System Integration Tests', () => {
         <body>
           <form>
             <input type="text" id="username" name="username" />
+            <input type="text" id="email" name="email" />
             <input type="password" id="password" name="password" />
             <input type="password" id="password-confirm" name="password-confirm" />
           </form>
@@ -124,20 +125,23 @@ describe('Authentication System Integration Tests', () => {
       // Ensure elements exist
       const form = document.querySelector('form');
       const usernameInput = document.getElementById('username');
+      const emailInput = document.getElementById('email');
       const passwordInput = document.getElementById('password');
       const passwordConfirmInput = document.getElementById('password-confirm');
 
       // Verify inputs are found
       expect(form).not.toBeNull();
       expect(usernameInput).not.toBeNull();
+      expect(emailInput).not.toBeNull();
       expect(passwordInput).not.toBeNull();
       expect(passwordConfirmInput).not.toBeNull();
 
       // Set input values
       usernameInput.value = 'testuser';
       passwordInput.value = 'password123';
+      emailInput.value = 'test@example.com';
       passwordConfirmInput.value = 'password123';
-
+      
       // Trigger form submission
       const submitEvent = new window.Event('submit');
       form.dispatchEvent(submitEvent);
@@ -166,10 +170,12 @@ describe('Authentication System Integration Tests', () => {
 
       const form = document.querySelector('form');
       const usernameInput = document.getElementById('username');
+      const emailInput = document.getElementById('email');
       const passwordInput = document.getElementById('password');
       const passwordConfirmInput = document.getElementById('password-confirm');
 
       usernameInput.value = 'testuser';
+      emailInput.value = 'test@example.com';
       passwordInput.value = 'password123';
       passwordConfirmInput.value = 'password123';
 
@@ -191,10 +197,12 @@ describe('Authentication System Integration Tests', () => {
     it('should prevent registration with mismatched passwords', () => {
       const form = document.querySelector('form');
       const usernameInput = document.getElementById('username');
+      const emailInput = document.getElementById('email');
       const passwordInput = document.getElementById('password');
       const passwordConfirmInput = document.getElementById('password-confirm');
 
       usernameInput.value = 'testuser';
+      emailInput.value = 'test@example.com';
       passwordInput.value = 'password123';
       passwordConfirmInput.value = 'differentpassword';
 
@@ -214,10 +222,12 @@ describe('Authentication System Integration Tests', () => {
     it('should prevent short passwords', () => {
       const form = document.querySelector('form');
       const usernameInput = document.getElementById('username');
+      const emailInput = document.getElementById('email');
       const passwordInput = document.getElementById('password');
       const passwordConfirmInput = document.getElementById('password-confirm');
 
       usernameInput.value = 'testuser';
+      emailInput.value = 'test@example.com';
       passwordInput.value = '12345';
       passwordConfirmInput.value = '12345';
 
