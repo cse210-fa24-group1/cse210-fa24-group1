@@ -72,7 +72,6 @@ const transactionsData = [
     categoryid: 5,
     timestamp: '1636444800000',
   },
-
 ];
 localStorage.setItem('transactions', JSON.stringify(transactionsData));
 
@@ -272,7 +271,7 @@ function getMonthData(monthInput) {
     pieChart.data.datasets[0].data = pieChartData;
     pieChart.data.datasets[0].backgroundColor = pieChartBackgroundColors;
     pieChart.update();
-    return
+    return;
   }
 
   // get the selected year and month
@@ -280,8 +279,9 @@ function getMonthData(monthInput) {
   const currentMonth = monthInput.substring(5);
 
   // get the selected month's labels for the line chart
-  const newLineChartLabels = lineChartLabels.filter((date) => 
-    date.substring(5) === currentYear && date.substring(0, 2) === currentMonth
+  const newLineChartLabels = lineChartLabels.filter(
+    (date) =>
+      date.substring(5) === currentYear && date.substring(0, 2) === currentMonth
   );
 
   // get the selected month's datasets for the line chart
@@ -293,7 +293,7 @@ function getMonthData(monthInput) {
       );
       return transaction ? transaction.amount : 0;
     });
-  
+
     return {
       label: category.name,
       data: amounts,
@@ -311,11 +311,13 @@ function getMonthData(monthInput) {
   // helper function to filter through transactions for data concerning the selected moneth
   function checkDate(t) {
     const currentDate = new Date(Number(t.timestamp)).toLocaleDateString();
-    return currentDate.substring(5) === currentYear 
-      && currentDate.substring(0, 2) === currentMonth;
+    return (
+      currentDate.substring(5) === currentYear &&
+      currentDate.substring(0, 2) === currentMonth
+    );
   }
   // get selected month transactions
-  const newTransactions = transactions.filter(t => checkDate(t))
+  const newTransactions = transactions.filter((t) => checkDate(t));
 
   // get the selected month's category spending for the pie chart
   const newCategorySpending = {};
@@ -351,22 +353,24 @@ function getMonthData(monthInput) {
 
 // Get selected month
 var monthChange = document.getElementById('monthly-calender');
-monthChange.addEventListener("change", function(event) {
+monthChange.addEventListener('change', function (event) {
   // update both charts to reflect the selected month's data
   getMonthData(event.currentTarget.value);
 });
 
 function getStartOfISOWeek(weekInput) {
-  const [year, week] = weekInput.split("-W").map(Number);
+  const [year, week] = weekInput.split('-W').map(Number);
   const jan4 = new Date(year, 0, 4); // January 4th is always in the first ISO week
-  const startOfISOYear = new Date(jan4.setDate(jan4.getDate() - (jan4.getDay() + 6) % 7)); // Adjust to Monday
-  return new Date(startOfISOYear.setDate(startOfISOYear.getDate() + (week - 1) * 7)); // Add weeks
+  const startOfISOYear = new Date(
+    jan4.setDate(jan4.getDate() - ((jan4.getDay() + 6) % 7))
+  ); // Adjust to Monday
+  return new Date(
+    startOfISOYear.setDate(startOfISOYear.getDate() + (week - 1) * 7)
+  ); // Add weeks
 }
 
-
 function getWeekData(weekInput) {
-
-  if (!weekInput){
+  if (!weekInput) {
     lineChart.data.labels = lineChartLabels;
     lineChart.data.datasets = lineChartDatasets;
     lineChart.update();
@@ -375,7 +379,7 @@ function getWeekData(weekInput) {
     pieChart.data.datasets[0].data = pieChartData;
     pieChart.data.datasets[0].backgroundColor = pieChartBackgroundColors;
     pieChart.update();
-    return
+    return;
   }
   // Calculate the start and end dates of the selected week
   const startOfWeek = getStartOfISOWeek(weekInput);
@@ -393,8 +397,7 @@ function getWeekData(weekInput) {
     const categoryTransactions = transactionsByCategory[category.id];
     const amounts = newLineChartLabels.map((date) => {
       const transaction = categoryTransactions.find(
-        (t) =>
-          new Date(Number(t.timestamp)).toLocaleDateString() === date
+        (t) => new Date(Number(t.timestamp)).toLocaleDateString() === date
       );
       return transaction ? transaction.amount : 0;
     });
@@ -454,10 +457,9 @@ function getWeekData(weekInput) {
   pieChart.update();
 }
 
-
 // Get selected week
 var weekChange = document.getElementById('weekly-calender');
-weekChange.addEventListener("change", function(event) {
+weekChange.addEventListener('change', function (event) {
   // update both charts to reflect the selected week's data
   getWeekData(event.currentTarget.value);
 });
