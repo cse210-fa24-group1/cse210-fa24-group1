@@ -265,7 +265,6 @@ function getMonthData(monthInput) {
   // get the selected year and month
   const currentYear = monthInput.substring(0, 4);
   const currentMonth = monthInput.substring(5);
-
   // get the selected month's labels for the line chart
   const newLineChartLabels = lineChartLabels.filter((date) => 
     date.substring(5) === currentYear && date.substring(0, 2) === currentMonth
@@ -341,6 +340,112 @@ var monthChange = document.getElementById('monthly-calender');
 monthChange.addEventListener("change", function(event) {
   // update both charts to reflect the selected month's data
   getMonthData(event.currentTarget.value);
+});
+
+function getStartOfISOWeek(weekInput) {
+  const [year, week] = weekInput.split("-W").map(Number);
+  const jan4 = new Date(year, 0, 4); // January 4th is always in the first ISO week
+  const startOfISOYear = new Date(jan4.setDate(jan4.getDate() - (jan4.getDay() + 6) % 7)); // Adjust to Monday
+  return new Date(startOfISOYear.setDate(startOfISOYear.getDate() + (week - 1) * 7)); // Add weeks
+}
+
+
+function getWeekData(weekInput) {
+
+  if (!weekInput){
+    lineChart.data.labels = lineChartLabels;
+    lineChart.data.datasets = lineChartDatasets;
+    lineChart.update();
+
+    pieChart.data.labels = pieChartLabels;
+    pieChart.data.datasets[0].data = pieChartData;
+    pieChart.data.datasets[0].backgroundColor = pieChartBackgroundColors;
+    pieChart.update();
+    return
+  }
+  // Calculate the start and end dates of the selected week
+  const startOfWeek = getStartOfISOWeek(weekInput);
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 6); // End of the week (Sunday)
+
+  // Filter line chart labels for the selected week
+  const newLineChartLabels = lineChartLabels.filter((date) => {
+    const currentDate = new Date(date);
+    return currentDate >= startOfWeek && currentDate <= endOfWeek;
+  });
+
+  // Get the selected week's datasets for the line chart
+  const newLineChartDatasets = categories.map((category) => {
+    const categoryTransactions = transactionsByCategory[category.id];
+    const amounts = newLineChartLabels.map((date) => {
+      const transaction = categoryTransactions.find(
+        (t) =>
+          new Date(Number(t.timestamp)).toLocaleDateString() === date
+      );
+      return transaction ? transaction.amount : 0;
+    });
+
+    return {
+      label: category.name,
+      data: amounts,
+      fill: false,
+      borderColor: getRandomColor(),
+      tension: 0.1,
+    };
+  });
+
+  // Update the line chart to the selected week's data
+  lineChart.data.labels = newLineChartLabels;
+  lineChart.data.datasets = newLineChartDatasets;
+  lineChart.update();
+
+  // Helper function to filter transactions for the selected week
+  function checkDate(t) {
+    const transactionDate = new Date(Number(t.timestamp));
+    return transactionDate >= startOfWeek && transactionDate <= endOfWeek;
+  }
+
+  // Get selected week's transactions
+  const newTransactions = transactions.filter((t) => checkDate(t));
+
+  // Get the selected week's category spending for the pie chart
+  const newCategorySpending = {};
+  newTransactions.forEach((transaction) => {
+    const categoryId = transaction.categoryid;
+    const amount = transaction.amount;
+    if (newCategorySpending[categoryId]) {
+      newCategorySpending[categoryId] += amount;
+    } else {
+      newCategorySpending[categoryId] = amount;
+    }
+  });
+
+  // Get the selected week's labels, datasets, and background colors for the pie chart
+  const newPieChartLabels = [];
+  const newPieChartData = [];
+  const newPieChartBackgroundColors = [];
+  categories.forEach((category) => {
+    const categoryId = category.id;
+    if (newCategorySpending[categoryId]) {
+      newPieChartLabels.push(category.name);
+      newPieChartData.push(newCategorySpending[categoryId]);
+      newPieChartBackgroundColors.push(getRandomColor());
+    }
+  });
+
+  // Update the pie chart to the selected week's data
+  pieChart.data.labels = newPieChartLabels;
+  pieChart.data.datasets[0].data = newPieChartData;
+  pieChart.data.datasets[0].backgroundColor = newPieChartBackgroundColors;
+  pieChart.update();
+}
+
+
+// Get selected week
+var weekChange = document.getElementById('weekly-calender');
+weekChange.addEventListener("change", function(event) {
+  // update both charts to reflect the selected week's data
+  getWeekData(event.currentTarget.value);
 });
 
 // Print a pdf from the Export button
