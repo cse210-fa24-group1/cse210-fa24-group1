@@ -262,6 +262,19 @@ const pieChart = new Chart(pieChartCtx, {
 
 // get the selected month's data and update the charts accordingly
 function getMonthData(monthInput) {
+  // if there is no month input aka user selected "clear", return the total data
+  if (!monthInput) {
+    lineChart.data.labels = lineChartLabels;
+    lineChart.data.datasets = lineChartDatasets;
+    lineChart.update();
+
+    pieChart.data.labels = pieChartLabels;
+    pieChart.data.datasets[0].data = pieChartData;
+    pieChart.data.datasets[0].backgroundColor = pieChartBackgroundColors;
+    pieChart.update();
+    return
+  }
+
   // get the selected year and month
   const currentYear = monthInput.substring(0, 4);
   const currentMonth = monthInput.substring(5);
@@ -340,6 +353,7 @@ function getMonthData(monthInput) {
 var monthChange = document.getElementById('monthly-calender');
 monthChange.addEventListener("change", function(event) {
   // update both charts to reflect the selected month's data
+  console.log(event.target.value);
   getMonthData(event.currentTarget.value);
 });
 
