@@ -358,9 +358,12 @@ monthChange.addEventListener("change", function(event) {
 
 function getStartOfISOWeek(weekInput) {
   const [year, week] = weekInput.split("-W").map(Number);
-  const jan4 = new Date(year, 0, 4); // January 4th is always in the first ISO week
-  const startOfISOYear = new Date(jan4.setDate(jan4.getDate() - (jan4.getDay() + 6) % 7)); // Adjust to Monday
-  return new Date(startOfISOYear.setDate(startOfISOYear.getDate() + (week - 1) * 7)); // Add weeks
+  // January 4th is always in the first ISO week
+  const jan4 = new Date(year, 0, 4); 
+  // Adjust to Monday
+  const startOfISOYear = new Date(jan4.setDate(jan4.getDate() - (jan4.getDay() + 6) % 7)); 
+  // Add weeks
+  return new Date(startOfISOYear.setDate(startOfISOYear.getDate() + (week - 1) * 7));
 }
 
 
