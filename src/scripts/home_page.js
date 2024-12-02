@@ -85,7 +85,7 @@ function addTransactionDOM(transaction) {
   // Create the amount span and set text
   const amountSpan = document.createElement('span');
   amountSpan.classList.add('amount-space');
-  amountSpan.textContent = `${sign}$${transaction.amount.toFixed(2)}`;
+  amountSpan.textContent = `${sign}$${transaction.amount}`;
 
   // Create the delete button
   const deleteButton = document.createElement('button');
