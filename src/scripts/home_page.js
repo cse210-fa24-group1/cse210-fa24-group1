@@ -11,7 +11,7 @@ let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let budgetLimit = parseFloat(localStorage.getItem('budgetLimit')) || 10000;
 
 // Update budget limit display
-budgetLimitInput && ( budgetLimitInput.value = `$${budgetLimit}`);
+budgetLimitInput && (budgetLimitInput.value = `$${budgetLimit}`);
 
 // Add a new transaction
 function addTransaction(e) {
@@ -101,7 +101,7 @@ function updateValues() {
   balance && (balance.innerText = `$${total}`);
 
   // Update the balance status (positive or negative)
-  if (parseFloat(total) >= 0 ) {
+  if (parseFloat(total) >= 0) {
     balance && balance.classList.remove('negative'); // Remove negative class if balance is positive
     balance && balance.classList.add('positive'); // Add positive class if balance is positive
   } else {
@@ -125,15 +125,16 @@ function checkBudgetLimit() {
 }
 
 // Edit budget limit
-editBudgetBtn && editBudgetBtn.addEventListener('click', () => {
-  const newLimit = prompt('Enter new budget limit:', budgetLimit);
-  if (newLimit !== null) {
-    budgetLimit = parseFloat(newLimit);
-    budgetLimitInput.value = `$${budgetLimit}`;
-    localStorage.setItem('budgetLimit', budgetLimit);
-    checkBudgetLimit();
-  }
-});
+editBudgetBtn &&
+  editBudgetBtn.addEventListener('click', () => {
+    const newLimit = prompt('Enter new budget limit:', budgetLimit);
+    if (newLimit !== null) {
+      budgetLimit = parseFloat(newLimit);
+      budgetLimitInput.value = `$${budgetLimit}`;
+      localStorage.setItem('budgetLimit', budgetLimit);
+      checkBudgetLimit();
+    }
+  });
 
 // Update localStorage
 function updateLocalStorage() {
@@ -154,9 +155,14 @@ form && form.addEventListener('submit', addTransaction);
 updateUI();
 checkBudgetLimit();
 
-
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
-    generateID, addTransaction, removeTransaction, transactions, updateValues, updateLocalStorage, checkBudgetLimit
+    generateID,
+    addTransaction,
+    removeTransaction,
+    transactions,
+    updateValues,
+    updateLocalStorage,
+    checkBudgetLimit,
   };
 }

@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 
-
 const homeHtml = fs.readFileSync(
   path.resolve(__dirname, '../../src/pages/home-page.html'),
   'utf8'
@@ -52,7 +51,6 @@ Object.defineProperty(window, 'location', {
  */
 window.alert = jest.fn();
 
-
 describe('Home Functions', () => {
   beforeEach(() => {
     localStorageMock.clear();
@@ -82,13 +80,15 @@ describe('Home Functions', () => {
   });
 
   test('removeTransaction should remove a transaction by ID', () => {
-    const transactions = [{
-      id: 1,
-      text: "bought apples",
-      category: "Food",
-      amount: 50,
-      date: new Date().toLocaleString()
-    }];
+    const transactions = [
+      {
+        id: 1,
+        text: 'bought apples',
+        category: 'Food',
+        amount: 50,
+        date: new Date().toLocaleString(),
+      },
+    ];
 
     homeScript.transactions = transactions;
     homeScript.updateLocalStorage();
@@ -99,7 +99,8 @@ describe('Home Functions', () => {
   });
 
   test('addTransaction should add a new transaction', () => {
-    const initialTransactionCount = document.querySelectorAll('#list li').length;
+    const initialTransactionCount =
+      document.querySelectorAll('#list li').length;
     document.getElementById('text').value = 'Grocery';
     document.getElementById('amount').value = '50';
     document.getElementById('category').value = 'Food';
@@ -111,7 +112,4 @@ describe('Home Functions', () => {
     const updatedTransactionCount = document.querySelectorAll('#list').length;
     expect(updatedTransactionCount).toBe(initialTransactionCount + 1);
   });
-
-
-
 });
