@@ -1,6 +1,6 @@
 # Sprint Review Meeting
 
-**Sprint Duration:** 25th November - 02nd December 2024 
+**Sprint Duration:** 25th November - 02nd December 2024
 **Meeting Date:** 01st December 2024
 **Facilitator:** Ketaki Tank
 **Team:** Agile Avengers
@@ -39,13 +39,14 @@ _What were the objectives for this sprint?_
 
 _What has been completed during the sprint?_
 
-| **Work Item/Story** | **Owner** | **Status** | **Demo Notes**                          |
-| ------------------- | --------- | ---------- | --------------------------------------- |
-| Linking Home page to Authentication Page       | Sania Edlabadkar | Completed  | Pushed to repository |
-| Code review      | Krishi Chawda | Completed  | Scrutinized |
-| Making home page dynamic       | Krishi Chawda, Ketaki Tank | Completed  | Pushed to repository |
-| Visualizations Page      | Devanshi Chadha, Annie Xu, Chih-Lin (Linda) Wang, June Akpata| Completed  | Pushed to Repository |
-| Home Page unit testing     | Chirag Jain| Backlog  | Moved to sprint 4 |
+| **Work Item/Story**                      | **Owner**                                                     | **Status** | **Demo Notes**       |
+| ---------------------------------------- | ------------------------------------------------------------- | ---------- | -------------------- |
+| Linking Home page to Authentication Page | Sania Edlabadkar                                              | Completed  | Pushed to repository |
+| Code review                              | Krishi Chawda                                                 | Completed  | Scrutinized          |
+| Making home page dynamic                 | Krishi Chawda, Ketaki Tank                                    | Completed  | Pushed to repository |
+| Visualizations Page                      | Devanshi Chadha, Annie Xu, Chih-Lin (Linda) Wang, June Akpata | Completed  | Pushed to Repository |
+| Home Page unit testing                   | Chirag Jain                                                   | Backlog    | Moved to sprint 4    |
+
 ---
 
 ## 4. **Stakeholder Feedback**

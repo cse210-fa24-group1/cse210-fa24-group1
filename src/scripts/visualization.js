@@ -80,7 +80,7 @@ const categoriesData = [
   { id: 2, name: 'Travel' },
   { id: 3, name: 'Rent' },
   { id: 4, name: 'Leisure' },
-  { id: 5, name: 'Miscellaneous' },
+  { id: 5, name: 'Misc' },
   { id: 6, name: 'Credit' },
 ];
 localStorage.setItem('category', JSON.stringify(categoriesData));

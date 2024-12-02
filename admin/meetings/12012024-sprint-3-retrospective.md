@@ -10,12 +10,12 @@
 
 _What went well during the sprint?_
 
-- Cross-team collaboration 
-- Pair programming 
+- Cross-team collaboration
+- Pair programming
 
 ### Examples:
 
-- Having 4 people work on the various functionalities of the visualizations page was risky since it involved possible introduction of different styles of writing code. 
+- Having 4 people work on the various functionalities of the visualizations page was risky since it involved possible introduction of different styles of writing code.
 - However due to agreement on a code quality document, we were able to ensure code quality & uniformity across teams.
 
 ---
@@ -29,7 +29,7 @@ _What could have been better or brought the team closer to success?_
 
 ### Examples:
 
-- Infrequent communication between manager & pair programmer 
+- Infrequent communication between manager & pair programmer
 
 ---
 
@@ -53,7 +53,7 @@ _What do we desire to enhance success or morale in future sprints?_
 
 ### Examples:
 
-- Planning an informal mid sprint review 
+- Planning an informal mid sprint review
 
 ---
 

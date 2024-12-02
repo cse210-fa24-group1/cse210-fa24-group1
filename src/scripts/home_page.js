@@ -9,6 +9,14 @@ const editBudgetBtn = document.getElementById('edit-budget');
 // Fetch transactions from localStorage or initialize empty
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let budgetLimit = parseFloat(localStorage.getItem('budgetLimit')) || 10000;
+const categoriesData = [
+  { id: 1, name: 'Food' },
+  { id: 2, name: 'Travel' },
+  { id: 3, name: 'Rent' },
+  { id: 4, name: 'Leisure' },
+  { id: 5, name: 'Misc' },
+  { id: 6, name: 'Credit' },
+];
 
 // Update budget limit display
 budgetLimitInput && (budgetLimitInput.value = `$${budgetLimit}`);
@@ -20,30 +28,40 @@ function addTransaction(e) {
   const text = textInput && textInput.value.trim();
   const category = document.getElementById('category').value; // Get selected category
   let amount = amountInput && parseFloat(amountInput.value.trim());
-  const type = e.submitter.dataset.type;
+  const type = e.submitter.dataset.type; // Get the transaction type (expense or credit)
 
   // Adjust amount based on transaction type
-  amount = type === 'expense' ? -Math.abs(amount) : Math.abs(amount);
+  const isExpense = type === 'expense';
+  amount = amount; // Ensure amount is always positive
 
+  // Map category string to category ID using categoriesData
+  const categoryObj = categoriesData.find(
+    (cat) => cat.name.toLowerCase() === category.toLowerCase()
+  );
+  const categoryId = categoryObj ? categoryObj.id : null; // Find the category ID or set null if not found
+
+  // Validate inputs
   if (text === '' || isNaN(amount)) {
     alert('Please enter a valid description and amount.');
     return;
   }
 
   const transaction = {
-    id: generateID(),
-    text,
-    category,
+    transactionId: generateID(),
+    isExpense,
     amount,
-    date: new Date().toLocaleString(),
+    categoryid: categoryId, // Assuming category is an ID from the dropdown
+    timestamp: Date.now().toString(), // Epoch timestamp in milliseconds as a string
+    description: text, // Add the description
   };
 
+  // Push new transaction to the transactions array
   transactions.push(transaction);
   updateLocalStorage();
   updateUI();
   form && form.reset();
 
-  // Check budget limit
+  // Update balance after transaction
   checkBudgetLimit();
 }
 
@@ -54,26 +72,26 @@ function generateID() {
 
 // Add transaction to DOM with aligned description and amount
 function addTransactionDOM(transaction) {
-  const sign = transaction.amount < 0 ? '-' : '+';
+  const sign = transaction.isExpense ? '-' : '+';
   const item = document.createElement('li');
 
-  // Add classes based on the amount
-  item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
+  // Add classes based on whether it's an expense or income
+  item.classList.add(transaction.isExpense ? 'minus' : 'plus');
 
   // Create the description span and set text
   const descriptionSpan = document.createElement('span');
-  descriptionSpan.textContent = transaction.text; // Safely set text content
+  descriptionSpan.textContent = transaction.description;
 
   // Create the amount span and set text
   const amountSpan = document.createElement('span');
   amountSpan.classList.add('amount-space');
-  amountSpan.textContent = `${sign}$${Math.abs(transaction.amount).toFixed(2)}`; // Safely set amount text
+  amountSpan.textContent = `${sign}$${transaction.amount.toFixed(2)}`;
 
   // Create the delete button
   const deleteButton = document.createElement('button');
   deleteButton.classList.add('delete-btn');
   deleteButton.textContent = 'x';
-  deleteButton.onclick = () => removeTransaction(transaction.id); // Set delete button click handler
+  deleteButton.onclick = () => removeTransaction(transaction.transactionId); // Set delete button click handler
 
   // Append elements to the list item
   item.appendChild(descriptionSpan);
@@ -85,8 +103,10 @@ function addTransactionDOM(transaction) {
 }
 
 // Remove transaction by ID
-function removeTransaction(id) {
-  transactions = transactions.filter((transaction) => transaction.id !== id);
+function removeTransaction(transactionId) {
+  transactions = transactions.filter(
+    (transaction) => transaction.transactionId !== transactionId
+  );
   updateLocalStorage();
   updateUI();
   checkBudgetLimit();
@@ -94,8 +114,12 @@ function removeTransaction(id) {
 
 /// Update balance
 function updateValues() {
-  const amounts = transactions.map((transaction) => transaction.amount);
-  const total = amounts.reduce((acc, item) => acc + item, 0).toFixed(2);
+  // Calculate the total balance based on transaction type (expenses are negative, credits are positive)
+  const amounts = transactions.map((transaction) => {
+    return transaction.isExpense ? -transaction.amount : transaction.amount;
+  });
+
+  const total = amounts.reduce((acc, item) => acc + item, 0).toFixed(2); // Sum all amounts
 
   // Update the balance text
   balance && (balance.innerText = `$${total}`);
@@ -109,15 +133,15 @@ function updateValues() {
     balance && balance.classList.add('negative'); // Add negative class if balance is negative
   }
 
-  return parseFloat(total);
+  return parseFloat(total); // Return the numeric total balance
 }
 
 // Check budget limit
 function checkBudgetLimit() {
-  const currentTotal = Math.abs(updateValues());
+  const currentTotal = updateValues();
   const budgetWarning = document.getElementById('budget-warning');
 
-  if (currentTotal > budgetLimit) {
+  if (Math.abs(currentTotal) > budgetLimit && currentTotal < 0) {
     budgetWarning && (budgetWarning.innerText = 'Exceeded the limit.'); // Display the warning message
   } else {
     budgetWarning && (budgetWarning.innerText = ''); // Clear the warning if the limit is not exceeded
