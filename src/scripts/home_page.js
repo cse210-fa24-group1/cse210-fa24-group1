@@ -11,15 +11,15 @@ let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let budgetLimit = parseFloat(localStorage.getItem('budgetLimit')) || 10000;
 
 // Update budget limit display
-budgetLimitInput.value = `$${budgetLimit}`;
+budgetLimitInput && ( budgetLimitInput.value = `$${budgetLimit}`);
 
 // Add a new transaction
 function addTransaction(e) {
   e.preventDefault();
 
-  const text = textInput.value.trim();
+  const text = textInput && textInput.value.trim();
   const category = document.getElementById('category').value; // Get selected category
-  let amount = parseFloat(amountInput.value.trim());
+  let amount = amountInput && parseFloat(amountInput.value.trim());
   const type = e.submitter.dataset.type;
 
   // Adjust amount based on transaction type
@@ -41,7 +41,7 @@ function addTransaction(e) {
   transactions.push(transaction);
   updateLocalStorage();
   updateUI();
-  form.reset();
+  form && form.reset();
 
   // Check budget limit
   checkBudgetLimit();
@@ -81,7 +81,7 @@ function addTransactionDOM(transaction) {
   item.appendChild(deleteButton);
 
   // Append the item to the list
-  list.appendChild(item);
+  list && list.appendChild(item);
 }
 
 // Remove transaction by ID
@@ -98,15 +98,15 @@ function updateValues() {
   const total = amounts.reduce((acc, item) => acc + item, 0).toFixed(2);
 
   // Update the balance text
-  balance.innerText = `$${total}`;
+  balance && (balance.innerText = `$${total}`);
 
   // Update the balance status (positive or negative)
-  if (parseFloat(total) >= 0) {
-    balance.classList.remove('negative'); // Remove negative class if balance is positive
-    balance.classList.add('positive'); // Add positive class if balance is positive
+  if (parseFloat(total) >= 0 ) {
+    balance && balance.classList.remove('negative'); // Remove negative class if balance is positive
+    balance && balance.classList.add('positive'); // Add positive class if balance is positive
   } else {
-    balance.classList.remove('positive'); // Remove positive class if balance is negative
-    balance.classList.add('negative'); // Add negative class if balance is negative
+    balance && balance.classList.remove('positive'); // Remove positive class if balance is negative
+    balance && balance.classList.add('negative'); // Add negative class if balance is negative
   }
 
   return parseFloat(total);
@@ -118,14 +118,14 @@ function checkBudgetLimit() {
   const budgetWarning = document.getElementById('budget-warning');
 
   if (currentTotal > budgetLimit) {
-    budgetWarning.innerText = 'Exceeded the limit.'; // Display the warning message
+    budgetWarning && (budgetWarning.innerText = 'Exceeded the limit.'); // Display the warning message
   } else {
-    budgetWarning.innerText = ''; // Clear the warning if the limit is not exceeded
+    budgetWarning && (budgetWarning.innerText = ''); // Clear the warning if the limit is not exceeded
   }
 }
 
 // Edit budget limit
-editBudgetBtn.addEventListener('click', () => {
+editBudgetBtn && editBudgetBtn.addEventListener('click', () => {
   const newLimit = prompt('Enter new budget limit:', budgetLimit);
   if (newLimit !== null) {
     budgetLimit = parseFloat(newLimit);
@@ -142,14 +142,21 @@ function updateLocalStorage() {
 
 // Initialize UI
 function updateUI() {
-  list.innerHTML = '';
+  list && (list.innerHTML = '');
   transactions.forEach(addTransactionDOM);
   updateValues();
 }
 
 // Event listeners
-form.addEventListener('submit', addTransaction);
+form && form.addEventListener('submit', addTransaction);
 
 // Initialize app
 updateUI();
 checkBudgetLimit();
+
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    generateID, addTransaction, removeTransaction, transactions, updateValues, updateLocalStorage, checkBudgetLimit
+  };
+}
