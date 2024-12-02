@@ -1,11 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 
+
 const homeHtml = fs.readFileSync(
   path.resolve(__dirname, '../../src/pages/home-page.html'),
   'utf8'
 );
-
 const homeScript = require('../../src/scripts/home_page.js');
 
 const localStorageMock = (() => {
@@ -51,6 +51,7 @@ Object.defineProperty(window, 'location', {
  * @type {jest.Mock}
  */
 window.alert = jest.fn();
+
 
 describe('Home Functions', () => {
   beforeEach(() => {
