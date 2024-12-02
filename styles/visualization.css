@@ -48,7 +48,13 @@ section {
 }
 
 .section-row-2-col-1,
-.section-row-2-col-2,
+.section-row-2-col-2 {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .section-row-3 {
   width: 49%;
 }
@@ -73,4 +79,10 @@ canvas {
 #line-chart,
 #pie-chart {
   max-height: 300px;
+}
+
+#weekly-calender,
+#monthly-calender {
+  max-width: 150px;
+  margin-top: 10px;
 }
