@@ -32,8 +32,7 @@ function addTransaction(e) {
 
   // Adjust amount based on transaction type
   const isExpense = type === 'expense';
-  amount = amount; // Ensure amount is always positive
-
+  
   // Map category string to category ID using categoriesData
   const categoryObj = categoriesData.find(
     (cat) => cat.name.toLowerCase() === category.toLowerCase()
