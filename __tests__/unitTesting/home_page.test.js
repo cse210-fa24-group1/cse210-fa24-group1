@@ -92,28 +92,21 @@ describe('Home Functions', () => {
     homeScript.transactions = transactions;
     homeScript.updateLocalStorage();
     expect(homeScript.transactions.length).toBe(1);
-
     homeScript.removeTransaction(1);
-
     expect(localStorage.getItem('transactions')).toBe(JSON.stringify([]));
     localStorageMock.clear();
   });
 
   test('addTransaction should add a new transaction', () => {
     const initialTransactionCount = document.querySelectorAll('#list li').length;
-
-    // Mock user input
     document.getElementById('text').value = 'Grocery';
     document.getElementById('amount').value = '50';
     document.getElementById('category').value = 'Food';
-
     const eventMock = {
       preventDefault: jest.fn(),
       submitter: { dataset: { type: 'expense' } },
     };
-
     homeScript.addTransaction(eventMock);
-
     const updatedTransactionCount = document.querySelectorAll('#list').length;
     expect(updatedTransactionCount).toBe(initialTransactionCount + 1);
   });
