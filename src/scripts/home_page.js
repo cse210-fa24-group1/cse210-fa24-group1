@@ -18,17 +18,19 @@ function getUserTransactions() {
 
   // Retrieve all users
   const users = JSON.parse(localStorage.getItem('users')) || [];
-  
+
   // Find the current user
-  const currentUser = users.find(user => user.username === currentSession.username);
+  const currentUser = users.find(
+    (user) => user.username === currentSession.username
+  );
   // If user found, return their transactions (or an empty array if no transactions)
-  return currentUser ? (currentUser.transactions || []) : [];
+  return currentUser ? currentUser.transactions || [] : [];
 }
 
 function updateLocalStorage() {
   // Get current user session
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
-  
+
   if (!currentSession || !currentSession.username) {
     alert('No active user session found.');
     return [];
@@ -36,20 +38,19 @@ function updateLocalStorage() {
 
   // Get all users
   const users = JSON.parse(localStorage.getItem('users')) || [];
-  
+
   // Find the current user
   const currentUserIndex = users.findIndex(
-    user => user.username === currentSession.username
+    (user) => user.username === currentSession.username
   );
 
   if (currentUserIndex !== -1) {
     // Update the user's transactions
     users[currentUserIndex].transactions = transactions;
-    
+
     // Save updated users back to localStorage
     localStorage.setItem('users', JSON.stringify(users));
   }
-
 }
 
 // Update the transactions initialization
@@ -75,8 +76,8 @@ function addTransaction(e) {
   e.preventDefault();
 
   const category = document.getElementById('category').value; // Get selected category
-  const text = document.getElementById('text').value.trim(); 
-  let amount = parseFloat(document.getElementById('amount').value.trim()); 
+  const text = document.getElementById('text').value.trim();
+  let amount = parseFloat(document.getElementById('amount').value.trim());
   // const amount = amountInput && parseFloat(amountInput.value.trim());
   // const text = textInput && textInput.value.trim();
   const type = e.submitter.dataset.type; // Get the transaction type (expense or credit)

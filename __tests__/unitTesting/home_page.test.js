@@ -1,13 +1,13 @@
-const { 
-  generateID, 
-  addTransaction, 
-  removeTransaction, 
-  transactions 
+const {
+  generateID,
+  addTransaction,
+  removeTransaction,
+  transactions,
 } = require('../../src/scripts/home_page'); // Replace with actual path
 const originalError = console.error;
 console.error = (...args) => {
   if (
-    args[0].includes('Not implemented: navigation') || 
+    args[0].includes('Not implemented: navigation') ||
     args[0].includes('Not implemented: method')
   ) {
     return;
@@ -18,17 +18,17 @@ console.error = (...args) => {
 const localStorageMock = (() => {
   let store = {};
   return {
-    getItem: jest.fn(key => {
+    getItem: jest.fn((key) => {
       // Special handling for specific keys
       if (key === 'currentSession') {
         return JSON.stringify({ username: 'testuser' });
       }
       if (key === 'users') {
         return JSON.stringify([
-          { 
-            username: 'testuser', 
-            transactions: [] 
-          }
+          {
+            username: 'testuser',
+            transactions: [],
+          },
         ]);
       }
       return store[key] || null;
@@ -38,7 +38,7 @@ const localStorageMock = (() => {
     }),
     clear: jest.fn(() => {
       store = {};
-    })
+    }),
   };
 })();
 
@@ -48,7 +48,7 @@ describe('Transaction Management', () => {
   beforeEach(() => {
     // Clear transactions before each test
     transactions.length = 0;
-    
+
     // Reset mocks
     localStorageMock.clear();
   });
@@ -57,7 +57,7 @@ describe('Transaction Management', () => {
     // Mock event for expense transaction
     const mockEvent = {
       preventDefault: jest.fn(),
-      submitter: { dataset: { type: 'expense' } }
+      submitter: { dataset: { type: 'expense' } },
     };
 
     // Setup mock DOM
@@ -84,7 +84,7 @@ describe('Transaction Management', () => {
     // Mock event for income transaction
     const mockEvent = {
       preventDefault: jest.fn(),
-      submitter: { dataset: { type: 'credit' } }
+      submitter: { dataset: { type: 'credit' } },
     };
 
     // Setup mock DOM
@@ -111,7 +111,7 @@ describe('Transaction Management', () => {
     // First add a transaction
     const mockEvent = {
       preventDefault: jest.fn(),
-      submitter: { dataset: { type: 'expense' } }
+      submitter: { dataset: { type: 'expense' } },
     };
 
     document.body.innerHTML = `
@@ -124,7 +124,7 @@ describe('Transaction Management', () => {
     `;
 
     addTransaction(mockEvent);
-    
+
     // Get the ID of the added transaction
     const transactionId = transactions[0].transactionId;
 
@@ -132,11 +132,11 @@ describe('Transaction Management', () => {
     removeTransaction(transactionId);
     const currentSession = JSON.parse(localStorage.getItem('currentSession'));
     const users = JSON.parse(localStorage.getItem('users')) || [];
-  
-  // Find the current user
-  const currentUserIndex = users.findIndex(
-    user => user.username === currentSession.username
-  );
+
+    // Find the current user
+    const currentUserIndex = users.findIndex(
+      (user) => user.username === currentSession.username
+    );
     // Assertions
     expect(users[currentUserIndex].transactions.length).toBe(0);
   });

@@ -85,12 +85,14 @@ function getUserTransactions() {
 
   // Retrieve all users
   const users = JSON.parse(localStorage.getItem('users')) || [];
-  
+
   // Find the current user
-  const currentUser = users.find(user => user.username === currentSession.username);
-  
+  const currentUser = users.find(
+    (user) => user.username === currentSession.username
+  );
+
   // If user found, return their transactions (or an empty array if no transactions)
-  return currentUser ? (currentUser.transactions || []) : [];
+  return currentUser ? currentUser.transactions || [] : [];
 }
 
 const categoriesData = [

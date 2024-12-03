@@ -1,8 +1,6 @@
 import { TextEncoder, TextDecoder } from 'util';
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
- 
-
 
 // Add other necessary global polyfills
 if (typeof window === 'undefined') {

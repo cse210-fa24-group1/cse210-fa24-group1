@@ -33,7 +33,7 @@
     if (existingUserIndex !== -1 || existingUserIndexEmail != -1) {
       users[existingUserIndex] = { ...users[existingUserIndex], ...userData };
     } else {
-      userData.transactions = []
+      userData.transactions = [];
       users.push(userData);
     }
     localStorage.setItem('users', JSON.stringify(users));
