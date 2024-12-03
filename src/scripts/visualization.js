@@ -1,79 +1,99 @@
 // //SCRIPT FOR VISUALIZATION PAGE
 
 //set sample data in local storage
-const transactionsData = [
-  {
-    transactionId: 1,
-    isExpense: true,
-    amount: 50,
-    categoryid: 1,
-    timestamp: '1638797400000',
-  },
-  {
-    transactionId: 2,
-    isExpense: false,
-    amount: 100,
-    categoryid: 2,
-    timestamp: '1638883800000',
-  },
-  {
-    transactionId: 3,
-    isExpense: true,
-    amount: 25,
-    categoryid: 1,
-    timestamp: '1638970200000',
-  },
-  {
-    transactionId: 4,
-    isExpense: true,
-    amount: 150,
-    categoryid: 3,
-    timestamp: '1639056600000',
-  },
-  {
-    transactionId: 5,
-    isExpense: true,
-    amount: 80,
-    categoryid: 5,
-    timestamp: '1639143000000',
-  },
-  {
-    transactionId: 6,
-    isExpense: true,
-    amount: 100,
-    categoryid: 1,
-    timestamp: '1635750000000',
-  },
-  {
-    transactionId: 7,
-    isExpense: true,
-    amount: 80,
-    categoryid: 2,
-    timestamp: '1636268400000',
-  },
-  {
-    transactionId: 8,
-    isExpense: true,
-    amount: 20,
-    categoryid: 4,
-    timestamp: '1636268400000',
-  },
-  {
-    transactionId: 9,
-    isExpense: true,
-    amount: 10,
-    categoryid: 5,
-    timestamp: '1636444800000',
-  },
-  {
-    transactionId: 10,
-    isExpense: true,
-    amount: 50,
-    categoryid: 5,
-    timestamp: '1636444800000',
-  },
-];
-localStorage.setItem('transactions', JSON.stringify(transactionsData));
+// const transactionsData = [
+//   {
+//     transactionId: 1,
+//     isExpense: true,
+//     amount: 50,
+//     categoryid: 1,
+//     timestamp: '1638797400000',
+//   },
+//   {
+//     transactionId: 2,
+//     isExpense: false,
+//     amount: 100,
+//     categoryid: 2,
+//     timestamp: '1638883800000',
+//   },
+//   {
+//     transactionId: 3,
+//     isExpense: true,
+//     amount: 25,
+//     categoryid: 1,
+//     timestamp: '1638970200000',
+//   },
+//   {
+//     transactionId: 4,
+//     isExpense: true,
+//     amount: 150,
+//     categoryid: 3,
+//     timestamp: '1639056600000',
+//   },
+//   {
+//     transactionId: 5,
+//     isExpense: true,
+//     amount: 80,
+//     categoryid: 5,
+//     timestamp: '1639143000000',
+//   },
+//   {
+//     transactionId: 6,
+//     isExpense: true,
+//     amount: 100,
+//     categoryid: 1,
+//     timestamp: '1635750000000',
+//   },
+//   {
+//     transactionId: 7,
+//     isExpense: true,
+//     amount: 80,
+//     categoryid: 2,
+//     timestamp: '1636268400000',
+//   },
+//   {
+//     transactionId: 8,
+//     isExpense: true,
+//     amount: 20,
+//     categoryid: 4,
+//     timestamp: '1636268400000',
+//   },
+//   {
+//     transactionId: 9,
+//     isExpense: true,
+//     amount: 10,
+//     categoryid: 5,
+//     timestamp: '1636444800000',
+//   },
+//   {
+//     transactionId: 10,
+//     isExpense: true,
+//     amount: 50,
+//     categoryid: 5,
+//     timestamp: '1636444800000',
+//   },
+// ];
+// localStorage.setItem('transactions', JSON.stringify(transactionsData));
+function getUserTransactions() {
+  // Retrieve the current user session
+  const currentSession = JSON.parse(localStorage.getItem('currentSession'));
+  if (!currentSession || !currentSession.username) {
+    alert('No active user session found. Please log in.');
+    window.location.href = './login-page.html';
+    return [];
+  }
+
+  // Retrieve all users
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+
+  // Find the current user
+  const currentUser = users.find(
+    (user) => user.username === currentSession.username
+  );
+
+  // If user found, return their transactions (or an empty array if no transactions)
+  return currentUser ? currentUser.transactions || [] : [];
+}
 
 const categoriesData = [
   { id: 1, name: 'Food' },
@@ -86,7 +106,7 @@ const categoriesData = [
 localStorage.setItem('category', JSON.stringify(categoriesData));
 
 // Get data from local storage
-const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+const transactions = getUserTransactions();
 const categories = JSON.parse(localStorage.getItem('category')) || [];
 
 // Prepare data for the line chart (amount vs timestamp)

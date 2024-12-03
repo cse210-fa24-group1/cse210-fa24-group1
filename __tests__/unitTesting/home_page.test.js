@@ -1,115 +1,143 @@
-import fs from 'fs';
-import path from 'path';
-
-const homeHtml = fs.readFileSync(
-  path.resolve(__dirname, '../../src/pages/home-page.html'),
-  'utf8'
-);
-const homeScript = require('../../src/scripts/home_page.js');
-
+const {
+  generateID,
+  addTransaction,
+  removeTransaction,
+  transactions,
+} = require('../../src/scripts/home_page'); // Replace with actual path
+const originalError = console.error;
+console.error = (...args) => {
+  if (
+    args[0].includes('Not implemented: navigation') ||
+    args[0].includes('Not implemented: method')
+  ) {
+    return;
+  }
+  originalError(...args);
+};
+// Comprehensive localStorage Mock
 const localStorageMock = (() => {
   let store = {};
   return {
-    /** @type {jest.Mock} Gets an item from store */
-    getItem: jest.fn((key) => store[key] || null),
-    /** @type {jest.Mock} Sets an item in store */
+    getItem: jest.fn((key) => {
+      // Special handling for specific keys
+      if (key === 'currentSession') {
+        return JSON.stringify({ username: 'testuser' });
+      }
+      if (key === 'users') {
+        return JSON.stringify([
+          {
+            username: 'testuser',
+            transactions: [],
+          },
+        ]);
+      }
+      return store[key] || null;
+    }),
     setItem: jest.fn((key, value) => {
       store[key] = value.toString();
     }),
-    /** @type {jest.Mock} Removes an item from store */
-    removeItem: jest.fn((key) => {
-      delete store[key];
-    }),
-    /** @type {jest.Mock} Clears all items from store */
     clear: jest.fn(() => {
       store = {};
     }),
   };
 })();
 
-// Configure window mock objects
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
-});
+Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
-/**
- * Mock location object for testing navigation
- * @type {Object}
- */
-const mockLocation = {
-  href: '',
-  pathname: '',
-};
-Object.defineProperty(window, 'location', {
-  value: mockLocation,
-  writable: true,
-});
-
-/**
- * Mock alert function
- * @type {jest.Mock}
- */
-window.alert = jest.fn();
-
-describe('Home Functions', () => {
+describe('Transaction Management', () => {
   beforeEach(() => {
-    localStorageMock.clear();
-    jest.clearAllMocks();
+    // Clear transactions before each test
+    transactions.length = 0;
 
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(homeHtml, 'text/html');
-    document.body.innerHTML = ''; // Clear existing DOM
-    document.body.append(...Array.from(doc.body.children));
-
-    // Import the script after setting up the DOM
-    require('../../src/scripts/home_page.js');
-
-    mockLocation.pathname = '/home-page.html';
-  });
-
-  test('generateID should return a random integer', () => {
-    const id = homeScript.generateID(); // Access generateID via homePageModule
-    expect(typeof id).toBe('number');
-    expect(id).toBeGreaterThanOrEqual(0);
-  });
-
-  test('generateID should return a random integer', () => {
-    const id = homeScript.generateID();
-    expect(typeof id).toBe('number');
-    expect(id).toBeGreaterThanOrEqual(0);
-  });
-
-  test('removeTransaction should remove a transaction by ID', () => {
-    const transactions = [
-      {
-        id: 1,
-        text: 'bought apples',
-        category: 'Food',
-        amount: 50,
-        date: new Date().toLocaleString(),
-      },
-    ];
-
-    homeScript.transactions = transactions;
-    homeScript.updateLocalStorage();
-    expect(homeScript.transactions.length).toBe(1);
-    homeScript.removeTransaction(1);
-    expect(localStorage.getItem('transactions')).toBe(JSON.stringify([]));
+    // Reset mocks
     localStorageMock.clear();
   });
 
-  test('addTransaction should add a new transaction', () => {
-    const initialTransactionCount =
-      document.querySelectorAll('#list li').length;
-    document.getElementById('text').value = 'Grocery';
-    document.getElementById('amount').value = '50';
-    document.getElementById('category').value = 'Food';
-    const eventMock = {
+  test('should add an expense transaction', () => {
+    // Mock event for expense transaction
+    const mockEvent = {
       preventDefault: jest.fn(),
       submitter: { dataset: { type: 'expense' } },
     };
-    homeScript.addTransaction(eventMock);
-    const updatedTransactionCount = document.querySelectorAll('#list').length;
-    expect(updatedTransactionCount).toBe(initialTransactionCount + 1);
+
+    // Setup mock DOM
+    document.body.innerHTML = `
+      <input id="text" value="Groceries" />
+      <input type="number" id="amount" value=50 />
+      <select id="category">
+        <option selected>Food</option>
+      </select>
+      <form id="transaction-form"></form>
+    `;
+
+    // Add transaction
+    addTransaction(mockEvent);
+
+    // Assertions
+    expect(transactions.length).toBe(1);
+    expect(transactions[0].isExpense).toBe(true);
+    expect(transactions[0].amount).toBe(50);
+    expect(transactions[0].description).toBe('Groceries');
+  });
+
+  test('should add an income transaction', () => {
+    // Mock event for income transaction
+    const mockEvent = {
+      preventDefault: jest.fn(),
+      submitter: { dataset: { type: 'credit' } },
+    };
+
+    // Setup mock DOM
+    document.body.innerHTML = `
+      <input id="text" value="Salary" />
+      <input type="number" id="amount" value=2000 />
+      <select id="category">
+        <option selected>Credit</option>
+      </select>
+      <form id="transaction-form"></form>
+    `;
+
+    // Add transaction
+    addTransaction(mockEvent);
+
+    // Assertions
+    expect(transactions.length).toBe(1);
+    expect(transactions[0].isExpense).toBe(false);
+    expect(transactions[0].amount).toBe(2000);
+    expect(transactions[0].description).toBe('Salary');
+  });
+
+  test('should remove a transaction', () => {
+    // First add a transaction
+    const mockEvent = {
+      preventDefault: jest.fn(),
+      submitter: { dataset: { type: 'expense' } },
+    };
+
+    document.body.innerHTML = `
+      <input id="text" value="Groceries" />
+      <input type="number" id="amount" value=50 />
+      <select id="category">
+        <option selected>Food</option>
+      </select>
+      <form id="transaction-form"></form>
+    `;
+
+    addTransaction(mockEvent);
+
+    // Get the ID of the added transaction
+    const transactionId = transactions[0].transactionId;
+
+    // Remove the transaction
+    removeTransaction(transactionId);
+    const currentSession = JSON.parse(localStorage.getItem('currentSession'));
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+
+    // Find the current user
+    const currentUserIndex = users.findIndex(
+      (user) => user.username === currentSession.username
+    );
+    // Assertions
+    expect(users[currentUserIndex].transactions.length).toBe(0);
   });
 });

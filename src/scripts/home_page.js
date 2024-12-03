@@ -1,13 +1,61 @@
 const balance = document.getElementById('balance');
 const list = document.getElementById('list');
 const form = document.getElementById('transaction-form');
-const textInput = document.getElementById('text');
-const amountInput = document.getElementById('amount');
 const budgetLimitInput = document.getElementById('budget-limit');
 const editBudgetBtn = document.getElementById('edit-budget');
 
+function getUserTransactions() {
+  // Retrieve the current user session
+  const currentSession = JSON.parse(localStorage.getItem('currentSession'));
+  // console.log(currentSession.username);
+  if (!currentSession || !currentSession.username) {
+    // alert('No active user session found. Please log in.');
+    // window.location.href = './login-page.html';
+    return [];
+  }
+
+  // Retrieve all users
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+
+  // Find the current user
+  const currentUser = users.find(
+    (user) => user.username === currentSession.username
+  );
+  // If user found, return their transactions (or an empty array if no transactions)
+  return currentUser ? currentUser.transactions || [] : [];
+}
+
+function updateLocalStorage() {
+  // Get current user session
+  const currentSession = JSON.parse(localStorage.getItem('currentSession'));
+
+  if (!currentSession || !currentSession.username) {
+    alert('No active user session found.');
+    return [];
+  }
+
+  // Get all users
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+
+  // Find the current user
+  const currentUserIndex = users.findIndex(
+    (user) => user.username === currentSession.username
+  );
+
+  if (currentUserIndex !== -1) {
+    // Update the user's transactions
+    users[currentUserIndex].transactions = transactions;
+
+    // Save updated users back to localStorage
+    localStorage.setItem('users', JSON.stringify(users));
+  }
+}
+
+// Update the transactions initialization
+let transactions = getUserTransactions();
+
 // Fetch transactions from localStorage or initialize empty
-let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+// let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let budgetLimit = parseFloat(localStorage.getItem('budgetLimit')) || 10000;
 const categoriesData = [
   { id: 1, name: 'Food' },
@@ -25,9 +73,11 @@ budgetLimitInput && (budgetLimitInput.value = `$${budgetLimit}`);
 function addTransaction(e) {
   e.preventDefault();
 
-  const text = textInput && textInput.value.trim();
   const category = document.getElementById('category').value; // Get selected category
-  let amount = amountInput && parseFloat(amountInput.value.trim());
+  const text = document.getElementById('text').value.trim();
+  let amount = parseFloat(document.getElementById('amount').value.trim());
+  // const amount = amountInput && parseFloat(amountInput.value.trim());
+  // const text = textInput && textInput.value.trim();
   const type = e.submitter.dataset.type; // Get the transaction type (expense or credit)
 
   // Adjust amount based on transaction type
@@ -53,7 +103,6 @@ function addTransaction(e) {
     timestamp: Date.now().toString(), // Epoch timestamp in milliseconds as a string
     description: text, // Add the description
   };
-
   // Push new transaction to the transactions array
   transactions.push(transaction);
   updateLocalStorage();
@@ -160,9 +209,9 @@ editBudgetBtn &&
   });
 
 // Update localStorage
-function updateLocalStorage() {
-  localStorage.setItem('transactions', JSON.stringify(transactions));
-}
+// function updateLocalStorage() {
+//   localStorage.setItem('transactions', JSON.stringify(transactions));
+// }
 
 // Initialize UI
 function updateUI() {
