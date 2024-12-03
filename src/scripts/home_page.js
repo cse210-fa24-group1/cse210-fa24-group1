@@ -1,8 +1,6 @@
 const balance = document.getElementById('balance');
 const list = document.getElementById('list');
 const form = document.getElementById('transaction-form');
-const textInput = document.getElementById('text');
-const amountInput = document.getElementById('amount');
 const budgetLimitInput = document.getElementById('budget-limit');
 const editBudgetBtn = document.getElementById('edit-budget');
 
