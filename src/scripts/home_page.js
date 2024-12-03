@@ -9,10 +9,10 @@ const editBudgetBtn = document.getElementById('edit-budget');
 function getUserTransactions() {
   // Retrieve the current user session
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
-  console.log(currentSession.username);
+  // console.log(currentSession.username);
   if (!currentSession || !currentSession.username) {
-    alert('No active user session found. Please log in.');
-    window.location.href = './login-page.html';
+    // alert('No active user session found. Please log in.');
+    // window.location.href = './login-page.html';
     return [];
   }
 
@@ -21,7 +21,6 @@ function getUserTransactions() {
   
   // Find the current user
   const currentUser = users.find(user => user.username === currentSession.username);
-  
   // If user found, return their transactions (or an empty array if no transactions)
   return currentUser ? (currentUser.transactions || []) : [];
 }
@@ -32,7 +31,7 @@ function updateLocalStorage() {
   
   if (!currentSession || !currentSession.username) {
     alert('No active user session found.');
-    return;
+    return [];
   }
 
   // Get all users
@@ -51,8 +50,6 @@ function updateLocalStorage() {
     localStorage.setItem('users', JSON.stringify(users));
   }
 
-  // Also save transactions in localStorage as a backup
-  localStorage.setItem('transactions', JSON.stringify(transactions));
 }
 
 // Update the transactions initialization
@@ -77,9 +74,11 @@ budgetLimitInput && (budgetLimitInput.value = `$${budgetLimit}`);
 function addTransaction(e) {
   e.preventDefault();
 
-  const text = textInput && textInput.value.trim();
   const category = document.getElementById('category').value; // Get selected category
-  let amount = amountInput && parseFloat(amountInput.value.trim());
+  const text = document.getElementById('text').value.trim(); 
+  let amount = parseFloat(document.getElementById('amount').value.trim()); 
+  // const amount = amountInput && parseFloat(amountInput.value.trim());
+  // const text = textInput && textInput.value.trim();
   const type = e.submitter.dataset.type; // Get the transaction type (expense or credit)
 
   // Adjust amount based on transaction type
@@ -105,7 +104,6 @@ function addTransaction(e) {
     timestamp: Date.now().toString(), // Epoch timestamp in milliseconds as a string
     description: text, // Add the description
   };
-
   // Push new transaction to the transactions array
   transactions.push(transaction);
   updateLocalStorage();

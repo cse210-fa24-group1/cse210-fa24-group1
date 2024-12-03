@@ -77,7 +77,6 @@
 function getUserTransactions() {
   // Retrieve the current user session
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
-  console.log(currentSession.username);
   if (!currentSession || !currentSession.username) {
     alert('No active user session found. Please log in.');
     window.location.href = './login-page.html';
