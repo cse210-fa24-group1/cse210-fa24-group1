@@ -13,17 +13,11 @@ import path from 'path';
  * @type {string}
  */
 const loginHtml = fs.readFileSync(
-  path.resolve(
-    __dirname,
-    '../../dist/pages/index.html'
-  ),
+  path.resolve(__dirname, '../../dist/pages/index.html'),
   'utf8'
 );
 const createUserHtml = fs.readFileSync(
-  path.resolve(
-    __dirname,
-    '../../dist/pages/create-account-page.html'
-  ),
+  path.resolve(__dirname, '../../dist/pages/create-account-page.html'),
   'utf8'
 );
 
