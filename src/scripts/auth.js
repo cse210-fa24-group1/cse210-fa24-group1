@@ -108,7 +108,7 @@
   }
 
   // Determine if it's the login page based on URL or body class
-  const isLoginPage = window.location.pathname.includes('login');
+  const isLoginPage = window.location.pathname.includes('index');
 
   // Select form and inputs
   const form = document.querySelector('form');
@@ -193,7 +193,7 @@
     try {
       saveUser(userData);
       alert('Account created successfully!');
-      window.location.href = './login-page.html';
+      window.location.href = './index.html';
     } catch (error) {
       alert('Error creating account. Please try again.');
     }

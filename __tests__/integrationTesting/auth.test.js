@@ -265,7 +265,7 @@ describe('Authentication System Integration Tests', () => {
         </body>
         </html>
       `,
-        'http://localhost/login-page.html'
+        'http://localhost/index.html'
       );
 
       window = dom.window;
@@ -317,7 +317,7 @@ describe('Authentication System Integration Tests', () => {
       expect(currentSession).toBeTruthy();
       expect(currentSession.username).toBe('testuser');
       expect(currentSession.isActive).toBe(true);
-      expect(window.location.href).toBe('http://localhost/login-page.html');
+      expect(window.location.href).toBe('http://localhost/index.html');
     });
 
     /**
