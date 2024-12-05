@@ -1,6 +1,6 @@
 {
   "source": {
-    "include": ["src", "__tests__"],
+    "include": ["dist", "__tests__"],
     "includePattern": ".+\\.(js)$",
     "excludePattern": "(node_modules/|docs|.+\\.(html)$)"
   },
