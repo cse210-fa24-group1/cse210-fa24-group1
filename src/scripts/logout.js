@@ -19,6 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Redirect to login page
-    window.location.href = '../pages/login-page.html';
+    window.location.href = '../pages/index.html';
   });
 });
