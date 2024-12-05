@@ -3,7 +3,7 @@ const {
   addTransaction,
   removeTransaction,
   transactions,
-} = require('/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/scripts/home_page.js'); // Replace with actual path
+} = require('../../dist/scripts/home_page.js'); // Replace with actual path
 const originalError = console.error;
 console.error = (...args) => {
   if (
