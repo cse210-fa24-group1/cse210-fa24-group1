@@ -29,17 +29,32 @@ const createUserHtml = fs.readFileSync(
 const localStorageMock = (() => {
   let store = {};
   return {
-    /** @type {jest.Mock} Gets an item from store */
+    /**
+     * @type {jest.Mock}
+     */
+    // Gets an item from store
+
     getItem: jest.fn((key) => store[key] || null),
-    /** @type {jest.Mock} Sets an item in store */
+
+    /**
+     * @type {jest.Mock}
+     */
+    // Sets an item in store
     setItem: jest.fn((key, value) => {
       store[key] = value.toString();
     }),
-    /** @type {jest.Mock} Removes an item from store */
+
+    /**
+     * @type {jest.Mock}
+     */
+    // Removes an item from store
     removeItem: jest.fn((key) => {
       delete store[key];
     }),
-    /** @type {jest.Mock} Clears all items from store */
+    /**
+     * @type {jest.Mock}
+     */
+    // Clears all items from store
     clear: jest.fn(() => {
       store = {};
     }),
