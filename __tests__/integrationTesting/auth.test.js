@@ -64,7 +64,7 @@ function createDOMEnvironment(html, url) {
   const authScript = fs.readFileSync(
     path.resolve(
       __dirname,
-      '/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/scripts/auth.js'
+      '../../dist/scripts/auth.js'
     ),
     'utf8'
   );
