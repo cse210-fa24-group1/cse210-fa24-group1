@@ -103,7 +103,7 @@
   function checkExistingSession() {
     const currentSession = JSON.parse(localStorage.getItem('currentSession'));
     if (currentSession && currentSession.isActive) {
-      window.location.href = '../pages/home-page.html';
+      window.location.href = '../../dist/pages/home-page.html';
     }
   }
 

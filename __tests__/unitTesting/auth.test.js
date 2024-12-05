@@ -1,6 +1,6 @@
 /**
  * @file Integration tests for authentication functionality
- * @requires ../../src/scripts/auth.js
+ * @requires ../../dist/scripts/auth.js
  * @requires fs
  * @requires path
  */
@@ -15,14 +15,14 @@ import path from 'path';
 const loginHtml = fs.readFileSync(
   path.resolve(
     __dirname,
-    '/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/pages/index.html'
+    '../../dist/pages/index.html'
   ),
   'utf8'
 );
 const createUserHtml = fs.readFileSync(
   path.resolve(
     __dirname,
-    '/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/pages/create-account-page.html'
+    '../../dist/pages/create-account-page.html'
   ),
   'utf8'
 );
@@ -77,7 +77,7 @@ Object.defineProperty(window, 'location', {
 window.alert = jest.fn();
 
 // Import authentication module
-const authScript = require('/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/scripts/auth.js');
+const authScript = require('../../dist/scripts/auth.js');
 
 /**
  * Test suite for authentication functionality
@@ -107,7 +107,7 @@ describe('Authentication Functions', () => {
         document.body.appendChild(document.importNode(child, true));
       });
 
-      mockLocation.pathname = '/index.html';
+      mockLocation.pathname = '../dist/pages/index.html';
     });
 
     /**
@@ -158,7 +158,7 @@ describe('Authentication Functions', () => {
         document.body.appendChild(document.importNode(child, true));
       });
 
-      mockLocation.pathname = '/create-user-page.html';
+      mockLocation.pathname = '../../dist/pages/create-user-page.html';
     });
 
     /**
@@ -216,7 +216,7 @@ describe('Authentication Functions', () => {
         document.body.appendChild(document.importNode(child, true));
       });
 
-      mockLocation.pathname = '/index.html';
+      mockLocation.pathname = '../../dist/pages/index.html';
     });
 
     /**
@@ -249,7 +249,7 @@ describe('Authentication Functions', () => {
 
       authScript.checkExistingSession();
 
-      expect(window.location.href).toBe('../pages/home-page.html');
+      expect(window.location.href).toBe('../../dist/pages/home-page.html');
     });
   });
 });
