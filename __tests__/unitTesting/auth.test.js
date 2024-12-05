@@ -13,11 +13,17 @@ import path from 'path';
  * @type {string}
  */
 const loginHtml = fs.readFileSync(
-  path.resolve(__dirname, '/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/pages/index.html'),
+  path.resolve(
+    __dirname,
+    '/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/pages/index.html'
+  ),
   'utf8'
 );
 const createUserHtml = fs.readFileSync(
-  path.resolve(__dirname, '/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/pages/create-account-page.html'),
+  path.resolve(
+    __dirname,
+    '/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/pages/create-account-page.html'
+  ),
   'utf8'
 );
 

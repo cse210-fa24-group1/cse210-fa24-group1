@@ -43,7 +43,9 @@ Object.defineProperty(window, 'location', {
 const {
   sendPasswordResetEmail,
 } = require('/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/scripts/forgot_password.js');
-const { handlePasswordReset } = require('/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/scripts/reset_password.js');
+const {
+  handlePasswordReset,
+} = require('/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/scripts/reset_password.js');
 
 /**
  * Integration tests for password recovery functionality
