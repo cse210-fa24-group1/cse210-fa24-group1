@@ -1,11 +1,11 @@
 /**
  * @file Integration tests for password reset functionality
- * @requires ../../src/scripts/forgot_password.js
- * @requires ../../src/scripts/reset_password.js
+ * @requires ../../dist/scripts/forgot_password.js
+ * @requires ../../dist/scripts/reset_password.js
  */
 
-const forgotPasswordModule = require('/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/scripts/forgot_password.js');
-const resetPasswordModule = require('/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/scripts/reset_password.js');
+const forgotPasswordModule = require('../../dist/scripts/forgot_password.js');
+const resetPasswordModule = require('../../dist/scripts/reset_password.js');
 
 const assert = require('assert');
 
