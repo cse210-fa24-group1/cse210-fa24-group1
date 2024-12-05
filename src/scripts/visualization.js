@@ -79,7 +79,7 @@ function getUserTransactions() {
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
   if (!currentSession || !currentSession.username) {
     alert('No active user session found. Please log in.');
-    window.location.href = './login-page.html';
+    window.location.href = './index.html';
     return [];
   }
 
