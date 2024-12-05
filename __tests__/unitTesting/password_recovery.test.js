@@ -43,9 +43,7 @@ Object.defineProperty(window, 'location', {
 const {
   sendPasswordResetEmail,
 } = require('../../dist/scripts/forgot_password.js');
-const {
-  handlePasswordReset,
-} = require('../../dist/scripts/reset_password.js');
+const { handlePasswordReset } = require('../../dist/scripts/reset_password.js');
 
 /**
  * Integration tests for password recovery functionality
