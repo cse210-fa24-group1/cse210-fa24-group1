@@ -1,6 +1,6 @@
 /**
  * @file Integration tests for authentication functionality
- * @requires ../../src/scripts/auth.js
+ * @requires ../../dist/scripts/auth.js
  * @requires fs
  * @requires path
  */
@@ -13,11 +13,11 @@ import path from 'path';
  * @type {string}
  */
 const loginHtml = fs.readFileSync(
-  path.resolve(__dirname, '../../src/pages/index.html'),
+  path.resolve(__dirname, '../../dist/pages/index.html'),
   'utf8'
 );
 const createUserHtml = fs.readFileSync(
-  path.resolve(__dirname, '../../src/pages/create-account-page.html'),
+  path.resolve(__dirname, '../../dist/pages/create-account-page.html'),
   'utf8'
 );
 
@@ -29,17 +29,32 @@ const createUserHtml = fs.readFileSync(
 const localStorageMock = (() => {
   let store = {};
   return {
-    /** @type {jest.Mock} Gets an item from store */
+    /**
+     * Gets an item from store
+     * @type {jest.Mock}
+     */
+
     getItem: jest.fn((key) => store[key] || null),
-    /** @type {jest.Mock} Sets an item in store */
+
+    /**
+     * Sets an item in store
+     * @type {jest.Mock}
+     */
     setItem: jest.fn((key, value) => {
       store[key] = value.toString();
     }),
-    /** @type {jest.Mock} Removes an item from store */
+
+    /**
+     * Removes an item from store
+     * @type {jest.Mock}
+     */
     removeItem: jest.fn((key) => {
       delete store[key];
     }),
-    /** @type {jest.Mock} Clears all items from store */
+    /**
+     * Clears all items from store
+     * @type {jest.Mock}
+     */
     clear: jest.fn(() => {
       store = {};
     }),
@@ -71,7 +86,7 @@ Object.defineProperty(window, 'location', {
 window.alert = jest.fn();
 
 // Import authentication module
-const authScript = require('../../src/scripts/auth.js');
+const authScript = require('../../dist/scripts/auth.js');
 
 /**
  * Test suite for authentication functionality
@@ -101,7 +116,7 @@ describe('Authentication Functions', () => {
         document.body.appendChild(document.importNode(child, true));
       });
 
-      mockLocation.pathname = '/index.html';
+      mockLocation.pathname = '../dist/pages/index.html';
     });
 
     /**
@@ -152,7 +167,7 @@ describe('Authentication Functions', () => {
         document.body.appendChild(document.importNode(child, true));
       });
 
-      mockLocation.pathname = '/create-user-page.html';
+      mockLocation.pathname = '../../dist/pages/create-user-page.html';
     });
 
     /**
@@ -210,7 +225,7 @@ describe('Authentication Functions', () => {
         document.body.appendChild(document.importNode(child, true));
       });
 
-      mockLocation.pathname = '/index.html';
+      mockLocation.pathname = '../../dist/pages/index.html';
     });
 
     /**
@@ -243,7 +258,7 @@ describe('Authentication Functions', () => {
 
       authScript.checkExistingSession();
 
-      expect(window.location.href).toBe('../pages/home-page.html');
+      expect(window.location.href).toBe('../../dist/pages/home-page.html');
     });
   });
 });

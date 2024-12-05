@@ -3,7 +3,7 @@ const {
   addTransaction,
   removeTransaction,
   transactions,
-} = require('../../src/scripts/home_page'); // Replace with actual path
+} = require('../../dist/scripts/home_page.js'); // Replace with actual path
 const originalError = console.error;
 console.error = (...args) => {
   if (
