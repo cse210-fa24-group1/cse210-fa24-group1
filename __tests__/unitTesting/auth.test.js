@@ -13,11 +13,11 @@ import path from 'path';
  * @type {string}
  */
 const loginHtml = fs.readFileSync(
-  path.resolve(__dirname, '../../src/pages/index.html'),
+  path.resolve(__dirname, '/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/pages/index.html'),
   'utf8'
 );
 const createUserHtml = fs.readFileSync(
-  path.resolve(__dirname, '../../src/pages/create-account-page.html'),
+  path.resolve(__dirname, '/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/pages/create-account-page.html'),
   'utf8'
 );
 
@@ -71,7 +71,7 @@ Object.defineProperty(window, 'location', {
 window.alert = jest.fn();
 
 // Import authentication module
-const authScript = require('../../src/scripts/auth.js');
+const authScript = require('/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/scripts/auth.js');
 
 /**
  * Test suite for authentication functionality

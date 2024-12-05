@@ -62,7 +62,7 @@ function createDOMEnvironment(html, url) {
 
   // Read and execute the auth script
   const authScript = fs.readFileSync(
-    path.resolve(__dirname, '../../src/scripts/auth.js'),
+    path.resolve(__dirname, '/Users/ketakitank/Desktop/CSE 210/cse210-fa24-group1/dist/scripts/auth.js'),
     'utf8'
   );
   const scriptElement = dom.window.document.createElement('script');
