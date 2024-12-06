@@ -147,7 +147,7 @@
       try {
         setUserSession(user);
         alert('Login successful!');
-        window.location.href = '../pages/home-page.html';
+        window.location.href = './pages/home-page.html';
       } catch (error) {
         alert('Error during login. Please try again.');
       }
@@ -193,7 +193,7 @@
     try {
       saveUser(userData);
       alert('Account created successfully!');
-      window.location.href = './index.html';
+      window.location.href = '../index.html';
     } catch (error) {
       alert('Error creating account. Please try again.');
     }

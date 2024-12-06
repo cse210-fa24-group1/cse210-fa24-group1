@@ -10,7 +10,7 @@ function getUserTransactions() {
   // console.log(currentSession.username);
   if (!currentSession || !currentSession.username) {
     // alert('No active user session found. Please log in.');
-    // window.location.href = './index.html';
+    // window.location.href = '../index.html';
     return [];
   }
 
