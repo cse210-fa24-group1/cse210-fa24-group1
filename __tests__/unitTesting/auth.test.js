@@ -13,7 +13,7 @@ import path from 'path';
  * @type {string}
  */
 const loginHtml = fs.readFileSync(
-  path.resolve(__dirname, '../../dist/pages/index.html'),
+  path.resolve(__dirname, '../../dist/index.html'),
   'utf8'
 );
 const createUserHtml = fs.readFileSync(
@@ -116,7 +116,7 @@ describe('Authentication Functions', () => {
         document.body.appendChild(document.importNode(child, true));
       });
 
-      mockLocation.pathname = '../dist/pages/index.html';
+      mockLocation.pathname = '../dist/index.html';
     });
 
     /**
@@ -225,7 +225,7 @@ describe('Authentication Functions', () => {
         document.body.appendChild(document.importNode(child, true));
       });
 
-      mockLocation.pathname = '../../dist/pages/index.html';
+      mockLocation.pathname = '../../dist/index.html';
     });
 
     /**
