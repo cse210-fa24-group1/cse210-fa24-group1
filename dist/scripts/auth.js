@@ -80,6 +80,7 @@
   function setUserSession(user) {
     const session = {
       username: user.username,
+      userId: user.userid,
       loginTime: new Date().toISOString(),
       isActive: true,
     };
