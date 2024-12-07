@@ -34,7 +34,7 @@ db.serialize(() => {
             isExpense BOOLEAN NOT NULL,
             amount INTEGER NOT NULL,
             categoryid INTEGER NOT NULL,
-            description TEXT NOT NULL,
+            description TEXT,
             timestamp TEXT NOT NULL
         )
     `, (err) => {
@@ -83,7 +83,6 @@ app.post("/api/users", (req, res) => {
                 res.status(500).json({ error: err.message });
                 return;
             }
-            console.log(this.lastID, username, email, timestamp)
             res.json({ userid: this.lastID, username, email, timestamp });
         }
     );
@@ -92,7 +91,7 @@ app.post("/api/users", (req, res) => {
 // API to create a new transaction for a user
 app.post("/api/transactions", (req, res) => {
     const { userid, isExpense, amount, categoryid, description } = req.body;
-    console.log("transactions", userid, isExpense, amount, categoryid, description)
+
     const timestamp = new Date().toISOString();
 
     // Insert into 'transactions' table
@@ -101,23 +100,32 @@ app.post("/api/transactions", (req, res) => {
         [isExpense, amount, categoryid, description, timestamp],
         function (err) {
             if (err) {
-                console.log(err.message)
+                console.log("Error inserting transaction:", err.message); // Debugging
                 res.status(500).json({ error: err.message });
                 return;
             }
 
             // Get the transaction ID and update the mapping table
             const transactionid = this.lastID;
-            console.log("transactionID", transactionid)
+
             db.run(
                 `INSERT INTO user_transaction_mapping (userid, transactionid) VALUES (?, ?)`,
                 [userid, transactionid],
                 function (err) {
                     if (err) {
+                        console.log("Error updating user-transaction mapping:", err.message); // Debugging
                         res.status(500).json({ error: err.message });
                         return;
                     }
-                    res.json({ transactionid, userid, isExpense, amount, categoryid, description, timestamp });
+                    res.json({
+                        transactionid,
+                        userid,
+                        isExpense,
+                        amount,
+                        categoryid,
+                        description,
+                        timestamp
+                    });
                 }
             );
         }
@@ -129,11 +137,9 @@ app.post("/api/transactions", (req, res) => {
 app.get("/api/transactions/:userId", (req, res) => {
     const { userId } = req.params;
 
-    console.log("userId", userId)
-
     db.all(
         `
-        SELECT t.transactionid, t.isExpense, t.amount, t.categoryid, t.timestamp
+        SELECT t.transactionid, t.isExpense, t.amount, t.categoryid, t.description, t.timestamp
         FROM transactions t
         INNER JOIN user_transaction_mapping utm ON t.transactionid = utm.transactionid
         WHERE utm.userid = ?
@@ -145,8 +151,48 @@ app.get("/api/transactions/:userId", (req, res) => {
                 res.status(500).json({ error: err.message });
                 return;
             }
-            console.log("usereers", userId, rows);
             res.json(rows);
+        }
+    );
+});
+
+// API to delete a transaction
+app.delete("/api/transactions/:transactionid", (req, res) => {
+    const { transactionid } = req.params;
+
+    // Delete the transaction from the transactions table
+    db.run(
+        `DELETE FROM transactions WHERE transactionid = ?`,
+        [transactionid],
+        function (err) {
+            if (err) {
+                console.error("Error deleting transaction:", err.message);
+                res.status(500).json({ error: err.message });
+                return;
+            }
+
+            if (this.changes === 0) {
+                res.status(404).json({ error: "Transaction not found" });
+                return;
+            }
+
+            console.log(`Deleted transaction with ID: ${transactionid}`);
+
+            // Delete the corresponding entry from the user_transaction_mapping table
+            db.run(
+                `DELETE FROM user_transaction_mapping WHERE transactionid = ?`,
+                [transactionid],
+                function (err) {
+                    if (err) {
+                        console.error("Error deleting user-transaction mapping:", err.message);
+                        res.status(500).json({ error: err.message });
+                        return;
+                    }
+
+                    console.log(`Deleted mapping for transaction ID: ${transactionid}`);
+                    res.json({ message: `Transaction with ID ${transactionid} deleted successfully` });
+                }
+            );
         }
     );
 });
