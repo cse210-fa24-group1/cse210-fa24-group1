@@ -1,360 +1,257 @@
-/* styles.css for home-page */
-
-/**
- * Body styling: Sets the font, removes default margin and padding, and adds a background color.
- */
+/* Body Styling */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f5f5f5;
+  background-color: #f0f4f8; /* Calming light blue-gray */
+  color: #333;
 }
 
-/**
- * Header container: Styles the header with flex layout, positioning elements at each side.
- */
+/* Header Section */
 .header {
+  background-color: #043f83; /* Deep soothing blue */
+  color: #fff;
+  padding: 20px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: white;
-  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  font-family: 'Poppins', sans-serif;
 }
 
-/**
- * Header title (h1): Sets the margin and font size for the page title.
- */
 .header h1 {
   margin: 0;
-  font-size: 24px;
+  font-size: 26px;
 }
 
-/**
- * Navigation links inside the header: Styles links with spacing, no underline, black color, and bold font.
- */
 .header nav a {
-  margin-left: 20px;
   text-decoration: none;
-  color: black;
+  color: #f9f9f9;
+  margin-left: 20px;
   font-weight: bold;
+  transition: color 0.3s;
 }
 
-/**
- * Current expense section: Centers the text and adds padding for spacing.
- */
+.header nav a:hover {
+  color: #dfeaff;
+}
+
+/* Current Expense Section */
 .current-expense {
   text-align: center;
-  padding: 20px;
 }
 
-/**
- * Expense heading (h2): Sets the font size and margin.
- */
 .current-expense h2 {
-  margin: 0;
   font-size: 28px;
+  color: #043f83;
+  font-family: 'Poppins', sans-serif;
+  margin:10px;
 }
 
-/**
- * Highlighted class for "Expense": Sets green color for the highlighted part of the text.
- */
-.current-expense .highlight {
-  color: green;
+.current-expense .balance {
+  font-size: 20px;
+  color: #043f83;
+  font-family: 'Poppins', sans-serif;
+  margin: 10px;
 }
 
-/**
- * Amount display: Increases the font size and makes the amount bold.
- */
 .current-expense .amount {
   font-size: 36px;
+  color: #1fa463; /* Green for positivity */
   font-weight: bold;
-  margin: 10px 0;
 }
 
-/* Positive balance */
-.balance.positive {
-  font-size: 36px;
-  font-weight: bold;
-  margin: 10px 0;
-  color: green;
-}
-
-/* Negative balance */
-.balance.negative {
-  font-size: 36px;
-  font-weight: bold;
-  margin: 10px 0;
-  color: red;
-}
-
-/**
- * Budget section: Adds margin-top for spacing.
- */
+/* Budget Input and Button */
 .budget {
-  margin-top: 10px;
-}
-
-/**
- * Budget button: Adds padding, sets font size, and changes the cursor on hover.
- */
-.budget button {
-  padding: 5px 10px;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-/**
- * Budget input field: Adds margin and padding for input field styling.
- */
-.budget input {
-  margin-left: 10px;
-  padding: 5px;
-  font-size: 14px;
-  background-color: white;
-}
-
-/**
- * Warning text: Sets the text color to red and applies margin and font weight for emphasis.
- */
-.warning {
-  color: red;
-  margin-left: 10px;
-  font-weight: bold;
-}
-
-/**
- * Content section: Uses flexbox for layout and centers the content with gaps between items.
- */
-.content {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  padding: 20px;
+  margin: 10px;
 }
 
-/**
- * Input container: Uses flexbox to align label and input vertically and adds margin.
- */
-.input-container {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-}
-
-/**
- * Transaction form input and select elements: Make inputs and selects 100% width with padding and margin.
- */
-#transaction-form input,
-#transaction-form select {
-  width: 100%;
-  padding: 8px;
-  font-size: 14px;
-  margin-top: 5px;
-  box-sizing: border-box;
-}
-
-/**
- * Transaction form styling: Ensures the form is aligned properly with full width.
- */
-#transaction-form {
-  width: 100%;
-}
-
-/**
- * Label styling in the transaction form: Displays each label as a block element.
- */
-#transaction-form label {
-  display: block;
-}
-
-/**
- * History and transaction form containers: Add background, padding, border radius, and width.
- */
-.history,
-.transaction-form {
-  background-color: #fff7b2;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  max-height: 400px; /* Set a height limit for the container */
-  overflow-y: auto; /* Enable vertical scrolling */
-}
-
-/**
- * Sticky headers for history and transaction form: Makes the headings sticky to the top with background color.
- */
-.history h3,
-.transaction-form h3 {
-  margin: 0;
-  margin-bottom: 10px;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background-color: #fff7b2;
-  font-size: 20px;
-  border-bottom: 1px solid black;
-  display: inline-block;
-}
-
-/**
- * Transaction item styling: Adds margin, flexbox layout for description and amount, and border-bottom.
- */
-.transaction {
-  margin: 10px 0;
-}
-
-.transaction p {
-  margin: 0;
-  display: flex;
-  justify-content: space-between;
+.budget input {
+  padding: 10px;
   font-size: 16px;
-}
-
-/**
- * Small text inside transaction: Reduces font size and sets it to gray for subtle details.
- */
-.transaction small {
-  font-size: 12px;
-  color: gray;
-}
-
-/**
- * Transaction history container with scrolling: Limits the height and enables vertical scrolling.
- */
-.history {
-  max-height: 20rem;
-  overflow-y: auto;
-  padding-right: 2rem;
-  border: 1px solid #ddd;
-}
-
-/**
- * Custom Scrollbar styles: Adjusts the appearance of the scrollbar for better visuals.
- */
-.list::-webkit-scrollbar {
-  width: 5px;
-}
-
-.list::-webkit-scrollbar-track {
-  background: #e2dddd;
-  border-radius: 10px;
-}
-
-.list::-webkit-scrollbar-thumb {
-  background: #b2b1b1;
-  border-radius: 10px;
-}
-
-.list::-webkit-scrollbar-thumb:hover {
-  background: #828282;
-}
-
-/* Transaction item layout using flexbox */
-/**
- * Styles for each list item in the transaction history.
- * The item is displayed using flexbox to space the description and amount apart.
- */
-#list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid #ddd;
-  word-wrap: break-word;
-}
-
-/**
- * Styles for the span inside each list item, ensuring the description wraps within its container.
- * The description takes up the remaining space in the flex container.
- */
-#list li span {
-  flex: 1;
-  min-width: 0;
-  white-space: normal;
-}
-
-/**
- * Styles for the amount section in the transaction item.
- * The amount is aligned to the right and space is added between it and the description.
- */
-#list li .amount-space {
+  background-color: white;
+  color: #043f83;
+  border: 3px solid #043f83;
   margin-left: 10px;
+  border-radius: 6px;
   text-align: center;
-  flex-shrink: 0;
-  word-wrap: break-word;
+  font-weight: bold;
+  font-size: 20px;
 }
 
-/* Style for the list item container */
-/**
- * Styles for the transaction item container, ensuring that both description and amount
- * are spaced equally. The container takes up the full width of the parent.
- */
-.transaction-item {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-/**
- * Sets the color of transaction text (e.g., for expense items).
- */
-.transaction {
-  color: green;
-}
-
-/* Transaction form styles */
-/**
- * Labels inside the transaction form are displayed as block elements with spacing below.
- */
-.transaction-form label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-/**
- * Styles for the input fields in the transaction form.
- * Ensures the inputs are 100% width, with padding and appropriate font size.
- */
-.transaction-form input {
-  width: 100%;
-  padding: 5px;
-  font-size: 14px;
-  margin-top: 5px;
-}
-
-/* Button container for the transaction form */
-/**
- * Styles for the button container, ensuring space between the buttons.
- */
-.buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-/**
- * Styles for each button inside the transaction form, including padding, font size, and background color.
- */
-.buttons button {
+.budget button {
   padding: 10px 20px;
   font-size: 16px;
+  background-color: white;
+  color: #043f83;
+  border: 3px solid #043f83;
+  border-radius: 6px;
   cursor: pointer;
-  border: none;
-  border-radius: 4px;
+  margin-right: 10px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+
+/* Content Section Layout */
+.content {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+/* Card Containers */
+.history,
+.transaction-form {
+  background-color: rgb(255, 254, 254);
+  padding: 15px 20px;
+  border-radius: 12px;
+  width: 25rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.history{
+  max-height: 22rem;
+  overflow-y: auto;
+}
+
+.history h3,
+.transaction-form h3 {
+  font-size: 22px;
+  color: #043f83;
+  border-bottom: 2px solid #043f83;
+  padding-bottom: 5px;
+  margin-top: 0px;
+}
+
+/* History Section Styling */
+.history ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 15px 0;
+}
+
+.history ul li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 8px;
+  margin: 15px 0px;
+  border: 2px solid #043f83;
+  border-radius: 5px;
+}
+
+.history ul li span {
+  color: #043f83;
+  font-weight: 400;
+}
+
+.history ul li button {
+  color: #043f83;
+  font-weight: 400;
+  border: 2px solid #043f83;
+  background-color: white;
+  border-radius: 3px;
+  font-size: 15px;
+}
+
+.history ul li .description-space {
+  width: 5rem;
+}
+
+.history ul li button:hover {
   color: white;
+  font-weight: 400;
+  border: 2px solid #043f83;
+  background-color: #043f83;
+  border-radius: 3px;
 }
 
-/**
- * Styles for the expense button (red background).
- */
-.expense {
-  background-color: red;
+
+
+.history ul li .expense {
+  color: #dc3545; /* Red for expenses */
 }
 
-/**
- * Styles for the credit button (green background).
- */
-.credit {
-  background-color: green;
+.history ul li .credit {
+  color: #1fa463; /* Green for credits */
+}
+
+/* Transaction Form */
+.transaction-form label {
+  font-weight: bold;
+  margin-top: 10px;
+  display: block;
+  color: #043f83;
+}
+
+.transaction-form input,
+.transaction-form select {
+  width: -webkit-fill-available;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #043f83;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-right: 10px;
+  
+}
+
+.transaction-form .buttons{
+  text-align: center;
+}
+
+.transaction-form button {
+  width: 42%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.transaction-form .expense {
+  border: 2px solid #dc3545;
+  background-color: white;
+  color: #dc3545;
+  margin-right: 4px;
+}
+
+
+
+.transaction-form .credit {
+  border: 2px solid #1fa463;
+  background-color: white;
+  color: #1fa463;
+  margin-left: 4px;
+}
+
+
+
+/* Scrollbar Customization */
+.history::-webkit-scrollbar,
+.transaction-form::-webkit-scrollbar {
+  width: 4px;
+}
+
+.history::-webkit-scrollbar-thumb,
+.transaction-form::-webkit-scrollbar-thumb {
+  background-color: #043f83;
+  border-radius: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .history,
+  .transaction-form {
+    width: 90%;
+    margin-bottom: 20px;
+  }
 }
