@@ -24,19 +24,22 @@ body {
   padding: 50px;
   width: 350px;
   border-radius: 30px;
-  box-shadow:  4px 4px 5px #c0c0c2, 
-   -4px -4px 5px #ffffff;
+  box-shadow:
+    4px 4px 5px #c0c0c2,
+    -4px -4px 5px #ffffff;
 }
 
-input{
+input {
   border: none;
-  box-shadow:  4px 4px 10px #c0c0c2, 
-  -4px -4px 10px #ffffff;
+  box-shadow:
+    4px 4px 10px #c0c0c2,
+    -4px -4px 10px #ffffff;
 }
 
-.container:hover{
-  box-shadow:  inset 2px 2px 5px #c0c0c2, 
-  inset -2px -2px 5px #ffffff;
+.container:hover {
+  box-shadow:
+    inset 2px 2px 5px #c0c0c2,
+    inset -2px -2px 5px #ffffff;
 }
 
 h1 {
@@ -61,8 +64,9 @@ h4 {
   display: flex;
   justify-content: space-between;
   margin: 20px 0;
-  box-shadow:  inset 2px 2px 5px #c0c0c2, 
-  inset -2px -2px 5px #ffffff;
+  box-shadow:
+    inset 2px 2px 5px #c0c0c2,
+    inset -2px -2px 5px #ffffff;
 }
 
 .inc-exp-container > div {
@@ -114,9 +118,9 @@ input[type='number'] {
   margin: 10px 0 30px;
   padding: 10px;
   width: 100%;
-  box-shadow:  4px 4px 5px #c0c0c2, 
-   -4px -4px 5px #ffffff;
-  
+  box-shadow:
+    4px 4px 5px #c0c0c2,
+    -4px -4px 5px #ffffff;
 }
 
 .btn:focus,
