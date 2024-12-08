@@ -76,7 +76,7 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git checkout -b gh-pages
-          find . -mindepth 1 -not -path './docs*' -exec rm -rf {} +
+          find . -mindepth 1 -not -path './docs*' -not -path './node_modules/*' -exec rm -rf {} +
           echo "Listing docs directory:"
           ls -l docs
           cp -r ./docs/* .
