@@ -154,6 +154,7 @@ The link is valid for 1 hour.`);
    */
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
+      generateResetToken,
       sendPasswordResetEmail,
       initializeForgotPasswordPage,
     };

@@ -41,7 +41,7 @@
     console.log(user);
     if (user.password !== password) {
       alert('The password is incorrect.');
-      passwordInputs[0].value = '';
+      // passwordInputs[0].value = '';
     }
     return user && user.password === password ? user : null;
   }
