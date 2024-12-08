@@ -52,7 +52,6 @@ jobs:
         run: |
           bash <(curl -Ls https://coverage.codacy.com/get.sh)
           codacy-coverage-reporter upload -r coverage/lcov-report/index.html  # Update this path according to your report
-    
 
   jsdocs:
     needs: code-quality
