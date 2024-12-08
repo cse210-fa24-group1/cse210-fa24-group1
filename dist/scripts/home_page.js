@@ -47,11 +47,23 @@ async function getAllTransactions() {
  * @param {number} categoryid - Category ID.
  * @param {string} description - Transaction description.
  */
-async function saveTransactionToDB(userid, isExpense, amount, categoryid, description) {
+async function saveTransactionToDB(
+  userid,
+  isExpense,
+  amount,
+  categoryid,
+  description
+) {
   await fetch('http://localhost:3000/api/transactions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userid, isExpense, amount, categoryid, description }),
+    body: JSON.stringify({
+      userid,
+      isExpense,
+      amount,
+      categoryid,
+      description,
+    }),
   });
   await updateUI();
 }
@@ -81,7 +93,13 @@ async function addTransaction(e) {
   }
 
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
-  saveTransactionToDB(currentSession.userId, isExpense, amount, categoryId, text);
+  saveTransactionToDB(
+    currentSession.userId,
+    isExpense,
+    amount,
+    categoryId,
+    text
+  );
   form && form.reset();
 }
 
@@ -227,9 +245,10 @@ if (typeof module !== 'undefined' && module.exports) {
     addTransaction,
     removeTransaction,
     saveTransactionToDB,
-    addTransactionDOM ,
+    addTransactionDOM,
     updateValues,
     checkBudgetLimit,
-    deleteTransaction, updateUI
+    deleteTransaction,
+    updateUI,
   };
 }

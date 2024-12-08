@@ -33,17 +33,24 @@ jest.mock('../../dist/scripts/home_page.js', () => {
     ...actualModule,
     saveTransactionToDB: jest.fn(),
     deleteTransaction: jest.fn(),
-    updateUI: jest.fn()
+    updateUI: jest.fn(),
   };
 });
 
-const { addTransaction, saveTransactionToDB, removeTransaction, deleteTransaction, updateUI, addTransactionDOM, updateValues   } = require('../../dist/scripts/home_page.js');
+const {
+  addTransaction,
+  saveTransactionToDB,
+  removeTransaction,
+  deleteTransaction,
+  updateUI,
+  addTransactionDOM,
+  updateValues,
+} = require('../../dist/scripts/home_page.js');
 
 describe('addTransaction', () => {
   let form;
 
   beforeEach(() => {
-
     jest.clearAllMocks();
     localStorageMock.clear();
 
@@ -67,18 +74,20 @@ describe('addTransaction', () => {
     });
   });
 
-
   test('mock saveTransactionToDB', () => {
     saveTransactionToDB(1, true, 50, 2, 'Dinner');
     expect(saveTransactionToDB).toHaveBeenCalledWith(1, true, 50, 2, 'Dinner');
   });
 
   it('should add a transaction when valid inputs are provided', async () => {
-    const event = { preventDefault: jest.fn(), submitter: { dataset: { type: 'expense' } } };
+    const event = {
+      preventDefault: jest.fn(),
+      submitter: { dataset: { type: 'expense' } },
+    };
 
     const res = await addTransaction(event);
 
-    if(res){
+    if (res) {
       expect(event.preventDefault).toHaveBeenCalled();
       expect(saveTransactionToDB).toHaveBeenCalledWith(
         1,
@@ -88,18 +97,23 @@ describe('addTransaction', () => {
         'Dinner'
       );
       expect(form.reset).toHaveBeenCalled();
-  }
+    }
   });
 
   it('should show an alert if the description or amount is invalid', async () => {
     global.alert = jest.fn();
 
     document.getElementById('text').value = ''; // Invalid description
-    const event = { preventDefault: jest.fn(), submitter: { dataset: { type: 'expense' } } };
+    const event = {
+      preventDefault: jest.fn(),
+      submitter: { dataset: { type: 'expense' } },
+    };
 
     await addTransaction(event);
 
-    expect(global.alert).toHaveBeenCalledWith('Please enter a valid description and amount.');
+    expect(global.alert).toHaveBeenCalledWith(
+      'Please enter a valid description and amount.'
+    );
   });
 });
 
@@ -116,11 +130,10 @@ describe('removeTransaction', () => {
 
     const res = await removeTransaction(transactionId);
 
-    if(res){
+    if (res) {
       expect(deleteTransaction).toHaveBeenCalledWith(transactionId);
     }
   });
-
 
   it('should show a success alert after successful deletion', async () => {
     const transactionId = 123;
@@ -130,7 +143,7 @@ describe('removeTransaction', () => {
 
     const res = await removeTransaction(transactionId);
 
-    if(res){
+    if (res) {
       expect(alert).toHaveBeenCalledWith(
         `Transaction with ID ${transactionId} deleted successfully!`
       );
@@ -141,11 +154,13 @@ describe('removeTransaction', () => {
     const transactionId = 123;
 
     // Simulate an error during deletion
-    deleteTransaction.mockRejectedValue(new Error('Failed to delete transaction'));
+    deleteTransaction.mockRejectedValue(
+      new Error('Failed to delete transaction')
+    );
 
     const res = await removeTransaction(transactionId);
 
-    if(res){
+    if (res) {
       expect(alert).toHaveBeenCalledWith(
         'Failed to delete transaction: Failed to delete transaction'
       );
@@ -160,13 +175,11 @@ describe('removeTransaction', () => {
 
     const res = await removeTransaction(transactionId);
 
-    if(res){
+    if (res) {
       expect(updateUI).toHaveBeenCalled();
     }
   });
-
 });
-
 
 describe('addTransactionDOM', () => {
   beforeEach(() => {
@@ -185,17 +198,15 @@ describe('addTransactionDOM', () => {
 
     const res = addTransactionDOM(transaction);
 
-    if(res){
+    if (res) {
       const list = document.getElementById('list');
       const listItem = list.querySelector('li');
-  
+
       expect(list.children.length).toBe(1);
       expect(listItem.classList.contains('minus')).toBe(true); // Expense transactions should have the "minus" class
       expect(listItem.textContent).toContain('Dinner'); // Transaction description
       expect(listItem.textContent).toContain('-$50'); // Expense amount
     }
-
-   
   });
   it('should add an income transaction to the DOM', () => {
     const transaction = {
@@ -206,15 +217,14 @@ describe('addTransactionDOM', () => {
     };
 
     const res = addTransactionDOM(transaction);
-    if(res){
-      
-    const list = document.getElementById('list');
-    const listItem = list.querySelector('li');
+    if (res) {
+      const list = document.getElementById('list');
+      const listItem = list.querySelector('li');
 
-    expect(list.children.length).toBe(1);
-    expect(listItem.classList.contains('plus')).toBe(true); // Income transactions should have the "plus" class
-    expect(listItem.textContent).toContain('Salary'); // Transaction description
-    expect(listItem.textContent).toContain('+$100'); // Income amount
+      expect(list.children.length).toBe(1);
+      expect(listItem.classList.contains('plus')).toBe(true); // Income transactions should have the "plus" class
+      expect(listItem.textContent).toContain('Salary'); // Transaction description
+      expect(listItem.textContent).toContain('+$100'); // Income amount
     }
   });
 
@@ -227,10 +237,10 @@ describe('addTransactionDOM', () => {
     };
 
     const res = addTransactionDOM(transaction);
-    if(res){
+    if (res) {
       const list = document.getElementById('list');
       const deleteButton = list.querySelector('li button.delete-btn');
-  
+
       expect(deleteButton).not.toBeNull();
       expect(deleteButton.textContent).toBe('x');
       expect(deleteButton.onclick).toBeDefined(); // Ensures delete button has a click handler
@@ -240,12 +250,17 @@ describe('addTransactionDOM', () => {
   it('should add multiple transactions to the DOM', () => {
     const transactions = [
       { transactionid: 1, isExpense: true, amount: 50, description: 'Dinner' },
-      { transactionid: 2, isExpense: false, amount: 200, description: 'Freelance' },
+      {
+        transactionid: 2,
+        isExpense: false,
+        amount: 200,
+        description: 'Freelance',
+      },
     ];
 
     const res = transactions.forEach(addTransactionDOM);
 
-    if(res){
+    if (res) {
       const list = document.getElementById('list');
       expect(list.children.length).toBe(2);
 
@@ -257,4 +272,4 @@ describe('addTransactionDOM', () => {
       expect(secondTransaction.textContent).toContain('+$200');
     }
   });
-})
+});
