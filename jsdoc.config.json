@@ -2,11 +2,11 @@
   "source": {
     "include": ["dist", "__tests__"],
     "includePattern": ".+\\.(js)$",
-    "excludePattern": "(node_modules/|docs|.+\\.(html)$)"
+    "excludePattern": "(node_modules/|.+\\.(html)$)"
   },
   "plugins": ["plugins/markdown"],
   "opts": {
-    "destination": "./docs/",
+    "destination": "./docs",
     "recurse": true,
     "readme": "./README.md"
   },
