@@ -1,4 +1,3 @@
-
 (function () {
   /**
    * Retrieves all users from localStorage
@@ -6,27 +5,30 @@
    */
   async function getUsers() {
     try {
-      const response = await fetch("http://localhost:3000/api/users");
+      const response = await fetch('http://localhost:3000/api/users');
       const users = await response.json(); // Wait for the JSON data to be parsed
-      return users;  // Return the data after awaiting
-  } catch (error) {
-      console.error("Error fetching users:", error);
+      return users; // Return the data after awaiting
+    } catch (error) {
+      console.error('Error fetching users:', error);
       return [];
-  }
+    }
   }
   async function getresetToken(token) {
     try {
-      console.log("getresetToken");
-      const response = await fetch(`http://localhost:3000/api/resettoken?token=${token}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" }
-      });
+      console.log('getresetToken');
+      const response = await fetch(
+        `http://localhost:3000/api/resettoken?token=${token}`,
+        {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
       const resettokens = await response.json(); // Wait for the JSON data to be parsed
-      return resettokens;  // Return the data after awaiting
-  } catch (error) {
+      return resettokens; // Return the data after awaiting
+    } catch (error) {
       alert(error);
       return [];
-  }
+    }
   }
   /**
    * Validates password requirements and matching confirmation
@@ -47,42 +49,45 @@
 
     return true;
   }
-    /**
+  /**
    * Handles the password reset process using a valid token
    * @param {string} token - Reset token from URL
    * @param {string} newPassword - New password to set
    * @param {string} confirmPassword - Password confirmation
    * @returns {boolean} True if reset successful, false otherwise
    */
-    async function handlePasswordReset(token, newPassword, confirmPassword) {
-      // Validate passwords
-      if (!validatePasswords(newPassword, confirmPassword)) {
-        return false;
-      }
-  
-      // Find user with valid reset token
-      const users = await getUsers();
-      const resetToken = await getresetToken(token);
-      const userIndex = users.findIndex(
+  async function handlePasswordReset(token, newPassword, confirmPassword) {
+    // Validate passwords
+    if (!validatePasswords(newPassword, confirmPassword)) {
+      return false;
+    }
+
+    // Find user with valid reset token
+    const users = await getUsers();
+    const resetToken = await getresetToken(token);
+    const userIndex = users.findIndex(
       (u) =>
-        u.resetTokenId === String(resetToken[0].id) 
-      && new Date(resetToken[0].expiresAt) > new Date()
+        u.resetTokenId === String(resetToken[0].id) &&
+        new Date(resetToken[0].expiresAt) > new Date()
     );
     if (userIndex === -1) {
       alert('Invalid or expired reset token');
       return false;
     }
     const user = users[userIndex];
-    const updateUserResponse = await fetch("http://localhost:3000/api/password", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: user.id, password: newPassword }),
-    });
+    const updateUserResponse = await fetch(
+      'http://localhost:3000/api/password',
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: user.id, password: newPassword }),
+      }
+    );
     alert('Password successfully reset');
     return true;
-    }
+  }
 
-      /**
+  /**
    * Initializes the reset password page by setting up form submission handler
    * and token validation
    * @returns {void}
@@ -138,5 +143,4 @@
       handlePasswordReset,
     };
   }
-
 })();

@@ -1,4 +1,3 @@
-
 (function () {
   /**
    * Retrieves all users from localStorage
@@ -6,13 +5,13 @@
    */
   async function getUsers() {
     try {
-      const response = await fetch("http://localhost:3000/api/users");
+      const response = await fetch('http://localhost:3000/api/users');
       const users = await response.json(); // Wait for the JSON data to be parsed
-      return users;  // Return the data after awaiting
-  } catch (error) {
-      console.error("Error fetching users:", error);
+      return users; // Return the data after awaiting
+    } catch (error) {
+      console.error('Error fetching users:', error);
       return [];
-  }
+    }
   }
   /**
    * Generates a random token for password reset
@@ -32,7 +31,11 @@
    */
   async function sendPasswordResetEmail(username) {
     const users = await getUsers();
-    const user = users && users.find((user) => user.username === username || user.email === username);
+    const user =
+      users &&
+      users.find(
+        (user) => user.username === username || user.email === username
+      );
     if (!user) {
       alert('User not found');
       return null;
@@ -40,20 +43,20 @@
 
     // Generate a reset token and store it with the user
     const resetToken = generateResetToken();
-    const expiresAt = new Date(Date.now() + 3600000)
-    const responseToken = await fetch("http://localhost:3000/api/resettoken", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: resetToken, expiresAt}),
+    const expiresAt = new Date(Date.now() + 3600000);
+    const responseToken = await fetch('http://localhost:3000/api/resettoken', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: resetToken, expiresAt }),
     });
     if (!responseToken.ok) {
       throw new Error('Failed to create reset token');
     }
     const tokenData = await responseToken.json();
     const tokenId = tokenData.id;
-    const updateUserResponse = await fetch("http://localhost:3000/api/users", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
+    const updateUserResponse = await fetch('http://localhost:3000/api/users', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: user.id, tokenid: tokenId }),
     });
 
@@ -62,7 +65,11 @@
       throw new Error(`Failed to update user: ${errorText}`);
     }
     updatedUsers = await getUsers();
-    updatedUser = updatedUsers && updatedUsers.find((user) => user.username === username || user.email === username);
+    updatedUser =
+      updatedUsers &&
+      updatedUsers.find(
+        (user) => user.username === username || user.email === username
+      );
     console.log(updatedUser);
 
     // Construct reset link
