@@ -258,44 +258,49 @@ app.get('/api/transactions/:userId', (req, res) => {
 });
 
 // API to delete a transaction
-app.delete("/api/transactions/:transactionid", (req, res) => {
-    const { transactionid } = req.params;
+app.delete('/api/transactions/:transactionid', (req, res) => {
+  const { transactionid } = req.params;
 
-    // Delete the transaction from the transactions table
-    db.run(
-        `DELETE FROM transactions WHERE transactionid = ?`,
+  // Delete the transaction from the transactions table
+  db.run(
+    `DELETE FROM transactions WHERE transactionid = ?`,
+    [transactionid],
+    function (err) {
+      if (err) {
+        console.error('Error deleting transaction:', err.message);
+        res.status(500).json({ error: err.message });
+        return;
+      }
+
+      if (this.changes === 0) {
+        res.status(404).json({ error: 'Transaction not found' });
+        return;
+      }
+
+      console.log(`Deleted transaction with ID: ${transactionid}`);
+
+      // Delete the corresponding entry from the user_transaction_mapping table
+      db.run(
+        `DELETE FROM user_transaction_mapping WHERE transactionid = ?`,
         [transactionid],
         function (err) {
-            if (err) {
-                console.error("Error deleting transaction:", err.message);
-                res.status(500).json({ error: err.message });
-                return;
-            }
-
-            if (this.changes === 0) {
-                res.status(404).json({ error: "Transaction not found" });
-                return;
-            }
-
-            console.log(`Deleted transaction with ID: ${transactionid}`);
-
-            // Delete the corresponding entry from the user_transaction_mapping table
-            db.run(
-                `DELETE FROM user_transaction_mapping WHERE transactionid = ?`,
-                [transactionid],
-                function (err) {
-                    if (err) {
-                        console.error("Error deleting user-transaction mapping:", err.message);
-                        res.status(500).json({ error: err.message });
-                        return;
-                    }
-
-                    console.log(`Deleted mapping for transaction ID: ${transactionid}`);
-                    res.json({ message: `Transaction with ID ${transactionid} deleted successfully` });
-                }
+          if (err) {
+            console.error(
+              'Error deleting user-transaction mapping:',
+              err.message
             );
+            res.status(500).json({ error: err.message });
+            return;
+          }
+
+          console.log(`Deleted mapping for transaction ID: ${transactionid}`);
+          res.json({
+            message: `Transaction with ID ${transactionid} deleted successfully`,
+          });
         }
-    );
+      );
+    }
+  );
 });
 
 // API to delete a transaction
