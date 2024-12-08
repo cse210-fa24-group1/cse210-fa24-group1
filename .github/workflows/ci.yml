@@ -45,9 +45,11 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:coverage
 
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@ab904c41d6ece82784817410c45d8b8c02684457
-        if: always()
+      - name: Upload coverage to Codacy
+        run: |
+          bash <(curl -Ls https://coverage.codacy.com/get.sh)
+          codacy-coverage-reporter upload -r coverage/lcov-report/index.html  # Update this path according to your report
+    
 
   jsdocs:
     needs: code-quality
@@ -94,17 +96,7 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Set Codacy Coverage Reporter Token
-        run: |
-          echo "CODACY_PROJECT_TOKEN=${{ secrets.CODACY_PROJECT_TOKEN }}" >> $GITHUB_ENV
-
-      - name: Install Codacy coverage reporter
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        run: |
-          bash <(curl -Ls https://coverage.codacy.com/get.sh)
-
+        
       - name: Run Codacy Analysis
         uses: codacy/codacy-analysis-cli-action@204208f730d99d8b719a271b08e2c5770be8ee6e
         with:
