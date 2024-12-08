@@ -1,100 +1,20 @@
-// //SCRIPT FOR VISUALIZATION PAGE
-
-//set sample data in local storage
-// const transactionsData = [
-//   {
-//     transactionId: 1,
-//     isExpense: true,
-//     amount: 50,
-//     categoryid: 1,
-//     timestamp: '1638797400000',
-//   },
-//   {
-//     transactionId: 2,
-//     isExpense: false,
-//     amount: 100,
-//     categoryid: 2,
-//     timestamp: '1638883800000',
-//   },
-//   {
-//     transactionId: 3,
-//     isExpense: true,
-//     amount: 25,
-//     categoryid: 1,
-//     timestamp: '1638970200000',
-//   },
-//   {
-//     transactionId: 4,
-//     isExpense: true,
-//     amount: 150,
-//     categoryid: 3,
-//     timestamp: '1639056600000',
-//   },
-//   {
-//     transactionId: 5,
-//     isExpense: true,
-//     amount: 80,
-//     categoryid: 5,
-//     timestamp: '1639143000000',
-//   },
-//   {
-//     transactionId: 6,
-//     isExpense: true,
-//     amount: 100,
-//     categoryid: 1,
-//     timestamp: '1635750000000',
-//   },
-//   {
-//     transactionId: 7,
-//     isExpense: true,
-//     amount: 80,
-//     categoryid: 2,
-//     timestamp: '1636268400000',
-//   },
-//   {
-//     transactionId: 8,
-//     isExpense: true,
-//     amount: 20,
-//     categoryid: 4,
-//     timestamp: '1636268400000',
-//   },
-//   {
-//     transactionId: 9,
-//     isExpense: true,
-//     amount: 10,
-//     categoryid: 5,
-//     timestamp: '1636444800000',
-//   },
-//   {
-//     transactionId: 10,
-//     isExpense: true,
-//     amount: 50,
-//     categoryid: 5,
-//     timestamp: '1636444800000',
-//   },
-// ];
-// localStorage.setItem('transactions', JSON.stringify(transactionsData));
-function getUserTransactions() {
-  // Retrieve the current user session
+//SCRIPT FOR VISUALIZATION PAGE
+/**
+ * Fetch all transactions for the current session from the API.
+ * @returns {Promise<Array>} List of transactions.
+ */
+async function getUserTransactions() {
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
-  if (!currentSession || !currentSession.username) {
-    alert('No active user session found. Please log in.');
-    window.location.href = '../index.html';
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/transactions/${currentSession.userId}`
+    );
+    return (await response.json()) || [];
+  } catch (error) {
+    console.error('Error fetching transactions:', error);
     return [];
   }
-
-  // Retrieve all users
-  const users = JSON.parse(localStorage.getItem('users')) || [];
-
-  // Find the current user
-  const currentUser = users.find(
-    (user) => user.username === currentSession.username
-  );
-
-  // If user found, return their transactions (or an empty array if no transactions)
-  return currentUser ? currentUser.transactions || [] : [];
 }
-
 const categoriesData = [
   { id: 1, name: 'Food' },
   { id: 2, name: 'Travel' },
@@ -105,106 +25,99 @@ const categoriesData = [
 ];
 localStorage.setItem('category', JSON.stringify(categoriesData));
 
-// Get data from local storage
-const transactions = getUserTransactions();
-const categories = JSON.parse(localStorage.getItem('category')) || [];
+// Get data from database
+(async () => {
+  const transactionsPromise = getUserTransactions(); // returns a Promise
+  const transactions = await transactionsPromise; // Wait for the Promise to resolve
 
-// Prepare data for the line chart (amount vs timestamp)
-const transactionsByCategory = {};
-categories.forEach((category) => {
-  transactionsByCategory[category.id] = [];
-});
+  const categories = JSON.parse(localStorage.getItem('category')) || [];
 
-// Group transactions by categoryId
-transactions.forEach((transaction) => {
-  const categoryId = transaction.categoryid;
-  const amount = transaction.amount;
-  const timestamp = new Date(Number(transaction.timestamp));
-  transactionsByCategory[categoryId].push({ timestamp, amount });
-});
-
-// Sort transactions for each category by timestamp
-Object.keys(transactionsByCategory).forEach((categoryId) => {
-  transactionsByCategory[categoryId].sort((a, b) => a.timestamp - b.timestamp);
-});
-
-// Prepare the line chart data
-const lineChartLabels = [
-  ...new Set(
-    transactions.flatMap((t) =>
-      new Date(Number(t.timestamp)).toLocaleDateString()
-    )
-  ),
-]; // Unique dates
-const lineChartDatasets = categories.map((category) => {
-  const categoryTransactions = transactionsByCategory[category.id];
-  const amounts = lineChartLabels.map((date) => {
-    const transaction = categoryTransactions.find(
-      (t) => t.timestamp.toLocaleDateString() === date
-    );
-    return transaction ? transaction.amount : 0;
+  // Prepare data for the line chart (amount vs timestamp)
+  const transactionsByCategory = {};
+  categories.forEach((category) => {
+    transactionsByCategory[category.id] = [];
   });
 
-  return {
-    label: category.name,
-    data: amounts,
-    fill: false,
-    borderColor: getRandomColor(),
-    tension: 0.1,
-  };
-});
+  // Group transactions by categoryId
+  transactions.forEach((transaction) => {
+    const categoryId = transaction.categoryid;
+    const amount = transaction.amount;
+    const timestamp = new Date(transaction.timestamp);
+    transactionsByCategory[categoryId].push({ timestamp, amount });
+  });
 
-// Set up the line chart
-const lineChartCtx = document.getElementById('line-chart').getContext('2d');
-// eslint-disable-next-line no-undef, no-unused-vars
-const lineChart = new Chart(lineChartCtx, {
-  type: 'line',
-  data: {
-    labels: lineChartLabels,
-    datasets: lineChartDatasets,
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      title: {
-        display: true,
-        text: 'Expense Timeline by Category',
-        font: {
-          size: 20,
-          weight: 'bold',
-          family: 'Arial',
-        },
-        color: '#333',
-        padding: { top: 10, bottom: 20 },
-      },
+  // Sort transactions for each category by timestamp
+  Object.keys(transactionsByCategory).forEach((categoryId) => {
+    transactionsByCategory[categoryId].sort((a, b) => a.timestamp - b.timestamp);
+  });
+
+  // Prepare the line chart data
+  const lineChartLabels = [
+    ...new Set(
+      transactions.map((t) =>
+        new Date(t.timestamp).toLocaleDateString()
+      )
+    ),
+  ]; 
+
+  const lineChartDatasets = categories.map((category) => {
+    const categoryTransactions = transactionsByCategory[category.id];
+    const amounts = lineChartLabels.map((date) => {
+      const transaction = categoryTransactions.find(
+        (t) => t.timestamp.toLocaleDateString() === date
+      );
+      return transaction ? transaction.amount : 0;
+    });
+
+    return {
+      label: category.name,
+      data: amounts,
+      fill: false,
+      borderColor: getRandomColor(),
+      tension: 0.1,
+    };
+  });
+
+  // Set up the line chart
+  const lineChartCtx = document.getElementById('line-chart').getContext('2d');
+  const lineChart = new Chart(lineChartCtx, {
+    type: 'line',
+    data: {
+      labels: lineChartLabels,
+      datasets: lineChartDatasets,
     },
-    scales: {
-      x: {
+    options: {
+      responsive: true,
+      plugins: {
         title: {
           display: true,
-          text: 'Date (MM/DD/YYYY)',
+          text: 'Expense Timeline by Category',
+          font: {
+            size: 20,
+            weight: 'bold',
+            family: 'Arial',
+          },
+          color: '#333',
+          padding: { top: 10, bottom: 20 },
         },
       },
-      y: {
-        title: {
-          display: true,
-          text: 'Amount',
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Date (MM/DD/YYYY)',
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Amount',
+          },
         },
       },
     },
-  },
-});
-
-// Function to generate a random color for line chart
-function getRandomColor() {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-}
-
+  });
+  
 // Prepare data for the pie chart (category-wise spending distribution)
 const categorySpending = {};
 transactions.forEach((transaction) => {
@@ -330,7 +243,7 @@ function getMonthData(monthInput) {
 
   // helper function to filter through transactions for data concerning the selected moneth
   function checkDate(t) {
-    const currentDate = new Date(Number(t.timestamp)).toLocaleDateString();
+    const currentDate = new Date(t.timestamp).toLocaleDateString();
     return (
       currentDate.substring(5) === currentYear &&
       currentDate.substring(0, 2) === currentMonth
@@ -405,6 +318,7 @@ function getWeekData(weekInput) {
   const startOfWeek = getStartOfISOWeek(weekInput);
   const endOfWeek = new Date(startOfWeek);
   endOfWeek.setDate(startOfWeek.getDate() + 6); // End of the week (Sunday)
+  endOfWeek.setHours(23, 59, 59, 999); // Set time to 23:59:59.999
 
   // Filter line chart labels for the selected week
   const newLineChartLabels = lineChartLabels.filter((date) => {
@@ -417,7 +331,7 @@ function getWeekData(weekInput) {
     const categoryTransactions = transactionsByCategory[category.id];
     const amounts = newLineChartLabels.map((date) => {
       const transaction = categoryTransactions.find(
-        (t) => new Date(Number(t.timestamp)).toLocaleDateString() === date
+        (t) => new Date(t.timestamp).toLocaleDateString() === date
       );
       return transaction ? transaction.amount : 0;
     });
@@ -438,7 +352,7 @@ function getWeekData(weekInput) {
 
   // Helper function to filter transactions for the selected week
   function checkDate(t) {
-    const transactionDate = new Date(Number(t.timestamp));
+    const transactionDate = new Date(t.timestamp);
     return transactionDate >= startOfWeek && transactionDate <= endOfWeek;
   }
 
@@ -483,6 +397,16 @@ weekChange.addEventListener('change', function (event) {
   // update both charts to reflect the selected week's data
   getWeekData(event.currentTarget.value);
 });
+})();
+
+function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 
 // Print a pdf from the Export button
 document.getElementById('export-btn').addEventListener('click', () => {
