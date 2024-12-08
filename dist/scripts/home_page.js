@@ -20,7 +20,7 @@ const categoriesData = [
 ];
 
 // Global transactions variable
-let transactions = null;
+let transactions = [];
 
 /**
  * Fetch all transactions for the current session from the API.
@@ -81,7 +81,7 @@ async function addTransaction(e) {
   }
 
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
-  await saveTransactionToDB(currentSession.userId, isExpense, amount, categoryId, text);
+  saveTransactionToDB(currentSession.userId, isExpense, amount, categoryId, text);
   form && form.reset();
 }
 
@@ -185,7 +185,7 @@ async function checkBudgetLimit() {
   const budgetWarning = document.getElementById('budget-warning');
 
   if (Math.abs(currentTotal) > budgetLimit && currentTotal < 0) {
-    budgetWarning && (budgetWarning.innerText = 'Exceeded the limit.');
+    budgetWarning && (budgetWarning.innerText = 'Exceeded the limit :(');
   } else {
     budgetWarning && (budgetWarning.innerText = '');
   }
@@ -224,11 +224,12 @@ updateUI();
 // Export functions for testing or module usage
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
-    generateID,
     addTransaction,
     removeTransaction,
-    transactions,
+    saveTransactionToDB,
+    addTransactionDOM ,
     updateValues,
     checkBudgetLimit,
+    deleteTransaction, updateUI
   };
 }
