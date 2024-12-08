@@ -79,7 +79,7 @@ jobs:
           find . -mindepth 1 -not -path './docs*' -exec rm -rf {} +
           echo "Listing docs directory:"
           ls -l docs
-          cp -r ./docs/* .
+          cp -r ./docs/ .
           git add .
           git commit -m "Deploy JSDocs to GitHub Pages"
           git push --force --quiet "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages
