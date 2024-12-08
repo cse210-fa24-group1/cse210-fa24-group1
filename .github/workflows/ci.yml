@@ -104,7 +104,6 @@ jobs:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
         run: |
           bash <(curl -Ls https://coverage.codacy.com/get.sh)
-          bash <(curl -Ls https://coverage.codacy.com/get.sh)
 
       - name: Run Codacy Analysis
         uses: codacy/codacy-analysis-cli-action@204208f730d99d8b719a271b08e2c5770be8ee6e
