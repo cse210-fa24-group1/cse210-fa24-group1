@@ -1,264 +1,185 @@
-/**
- * @file Integration tests for authentication functionality
- * @requires ../../dist/scripts/auth.js
- * @requires fs
- * @requires path
- */
+const { 
+  getUsers, 
+  validateCredentials, 
+  validatePasswords, 
+  isUsernameAvailable, 
+  setUserSession
+} = require('../../dist/scripts/auth')
 
-import fs from 'fs';
-import path from 'path';
+// Mock console.error to prevent actual error logging during tests
+const originalConsoleError = console.error;
+console.error = jest.fn();
 
-/**
- * Load HTML templates for testing
- * @type {string}
- */
-const loginHtml = fs.readFileSync(
-  path.resolve(__dirname, '../../dist/index.html'),
-  'utf8'
-);
-const createUserHtml = fs.readFileSync(
-  path.resolve(__dirname, '../../dist/pages/create-account-page.html'),
-  'utf8'
-);
-
-/**
- * Mock implementation of localStorage for testing
- * Uses Jest's mock functions for tracking calls
- * @type {Object}
- */
+// Mock localStorage
 const localStorageMock = (() => {
   let store = {};
   return {
-    /**
-     * Gets an item from store
-     * @type {jest.Mock}
-     */
-
-    getItem: jest.fn((key) => store[key] || null),
-
-    /**
-     * Sets an item in store
-     * @type {jest.Mock}
-     */
-    setItem: jest.fn((key, value) => {
-      store[key] = value.toString();
-    }),
-
-    /**
-     * Removes an item from store
-     * @type {jest.Mock}
-     */
-    removeItem: jest.fn((key) => {
-      delete store[key];
-    }),
-    /**
-     * Clears all items from store
-     * @type {jest.Mock}
-     */
-    clear: jest.fn(() => {
-      store = {};
-    }),
+      getItem: jest.fn(key => store[key] || null),
+      setItem: jest.fn((key, value) => {
+          store[key] = value.toString();
+      }),
+      clear: jest.fn(() => {
+          store = {};
+      })
   };
 })();
 
-// Configure window mock objects
 Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
+  value: localStorageMock
 });
 
-/**
- * Mock location object for testing navigation
- * @type {Object}
- */
-const mockLocation = {
-  href: '',
-  pathname: '',
+// Mock global objects and functions
+global.fetch = jest.fn();
+global.alert = jest.fn();
+global.window = {
+  location: {
+      href: '',
+      pathname: '/register'  // Default to registration page
+  }
 };
-Object.defineProperty(window, 'location', {
-  value: mockLocation,
-  writable: true,
+
+// Setup a more robust document mock
+const createMockInput = (value) => ({
+  value: value
 });
 
-/**
- * Mock alert function
- * @type {jest.Mock}
- */
-window.alert = jest.fn();
+describe('Authentication Module', () => {
+  let passwordInputs;
 
-// Import authentication module
-const authScript = require('../../dist/scripts/auth.js');
-
-/**
- * Test suite for authentication functionality
- * @group Authentication
- */
-describe('Authentication Functions', () => {
-  /**
-   * Test suite for login functionality
-   * @group Login
-   */
-  describe('Login Functionality', () => {
-    /**
-     * Setup before each login test
-     * Resets mocks and sets up DOM environment
-     * @beforeEach
-     */
     beforeEach(() => {
-      localStorageMock.clear();
-      jest.clearAllMocks();
+        // Clear mocks and reset localStorage before each test
+        jest.clearAllMocks();
+        localStorageMock.clear();
 
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(loginHtml, 'text/html');
-      while (document.body.firstChild) {
-        document.body.removeChild(document.body.firstChild);
-      }
-      Array.from(doc.body.children).forEach((child) => {
-        document.body.appendChild(document.importNode(child, true));
+        // Reset passwordInputs before each test
+        passwordInputs = [
+            createMockInput(''),  // First password input
+            createMockInput('')   // Confirmation password input
+        ];
+
+        // Mock global variables used in the original script
+        global.passwordInputs = passwordInputs;
+    });
+
+  describe('getUsers', () => {
+      it('should fetch users successfully', async () => {
+          const mockUsers = [
+              { username: 'testuser', password: 'password123', email: 'test@example.com' }
+          ];
+          
+          global.fetch.mockResolvedValue({
+              json: jest.fn().mockResolvedValue(mockUsers)
+          });
+
+          const users = await getUsers();
+          expect(users).toEqual(mockUsers);
       });
 
-      mockLocation.pathname = '../dist/index.html';
-    });
+      it('should return empty array on fetch error', async () => {
+          global.fetch.mockRejectedValue(new Error('Fetch error'));
 
-    /**
-     * Tests credential validation with existing user
-     * @test
-     */
-    test('validateCredentials with existing user', () => {
-      const testUser = {
-        username: 'testuser',
-        password: 'password123',
-      };
-      localStorage.setItem('users', JSON.stringify([testUser]));
-
-      const validUser = authScript.validateCredentials(
-        'testuser',
-        'password123'
-      );
-      expect(validUser).toEqual(testUser);
-
-      const invalidUser = authScript.validateCredentials(
-        'testuser',
-        'wrongpassword'
-      );
-      expect(invalidUser).toBeNull();
-    });
+          const users = await getUsers();
+          expect(users).toEqual([]);
+      });
   });
 
-  /**
-   * Test suite for user registration functionality
-   * @group Registration
-   */
-  describe('User Registration', () => {
-    /**
-     * Setup before each registration test
-     * Resets mocks and sets up DOM environment
-     * @beforeEach
-     */
-    beforeEach(() => {
-      localStorageMock.clear();
-      jest.clearAllMocks();
+  describe('validateCredentials', () => {
+      it('should return user object for valid credentials', async () => {
+          const mockUsers = [
+              { username: 'testuser', password: 'password123' }
+          ];
+          
+          jest.spyOn(global, 'fetch').mockResolvedValue({
+              json: jest.fn().mockResolvedValue(mockUsers)
+          });
 
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(createUserHtml, 'text/html');
-      while (document.body.firstChild) {
-        document.body.removeChild(document.body.firstChild);
-      }
-      Array.from(doc.body.children).forEach((child) => {
-        document.body.appendChild(document.importNode(child, true));
+          const user = await validateCredentials('testuser', 'password123');
+          expect(user).toEqual(mockUsers[0]);
       });
 
-      mockLocation.pathname = '../../dist/pages/create-user-page.html';
-    });
+      it('should return null for invalid credentials', async () => {
+          const mockUsers = [
+              { username: 'testuser', password: 'password123' }
+          ];
+          
+          jest.spyOn(global, 'fetch').mockResolvedValue({
+              json: jest.fn().mockResolvedValue(mockUsers)
+          });
 
-    /**
-     * Tests username availability checking
-     * @test
-     */
-    test('isUsernameAvailable', () => {
-      const existingUsers = [
-        { username: 'existinguser', password: 'password123' },
-      ];
-      localStorage.setItem('users', JSON.stringify(existingUsers));
-
-      expect(authScript.isUsernameAvailable('newuser')).toBe(true);
-      expect(authScript.isUsernameAvailable('existinguser')).toBe(false);
-    });
-
-    /**
-     * Tests user data persistence to localStorage
-     * @test
-     */
-    test('saveUser adds user to localStorage', () => {
-      const userData = {
-        username: 'newuser',
-        password: 'password123',
-        createdAt: new Date().toISOString(),
-      };
-
-      authScript.saveUser(userData);
-
-      const users = JSON.parse(localStorage.getItem('users'));
-      expect(users).toContainEqual(userData);
-    });
+          const user = await validateCredentials('testuser', 'wrongpassword');
+          expect(user).toBeNull();
+      });
   });
 
-  /**
-   * Test suite for session management functionality
-   * @group Session
-   */
-  describe('Session Management', () => {
-    /**
-     * Setup before each session test
-     * Resets mocks and sets up DOM environment
-     * @beforeEach
-     */
-    beforeEach(() => {
-      localStorageMock.clear();
-      jest.clearAllMocks();
+  describe('validatePasswords', () => {
+    it('should return false for password shorter than 6 characters', () => {
+        // Set first password to a short value
+        passwordInputs[0].value = 'short';
+        passwordInputs[1].value = 'short';
 
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(loginHtml, 'text/html');
-      while (document.body.firstChild) {
-        document.body.removeChild(document.body.firstChild);
-      }
-      Array.from(doc.body.children).forEach((child) => {
-        document.body.appendChild(document.importNode(child, true));
+        const result = validatePasswords(passwordInputs[0].value, passwordInputs[1].value);
+        expect(result).toBeFalsy();
+        expect(global.alert).toHaveBeenCalledWith('Password must be at least 6 characters long!');
+    });
+
+    it('should return false if passwords do not match on registration page', () => {
+        // Set different passwords
+        passwordInputs[0].value = 'password123';
+        passwordInputs[1].value = 'differentpassword';
+
+        const result = validatePasswords(passwordInputs[0].value, passwordInputs[1].value);
+        expect(result).toBeFalsy();
+        expect(global.alert).toHaveBeenCalledWith('Passwords do not match!');
+    });
+
+    it('should return true for valid passwords', () => {
+        // Set matching passwords longer than 6 characters
+        passwordInputs[0].value = 'validpassword';
+        passwordInputs[1].value = 'validpassword';
+
+        const result = validatePasswords(passwordInputs[0].value, passwordInputs[1].value);
+        expect(result).toBeTruthy();
+        expect(global.alert).not.toHaveBeenCalled();
+    });
+});
+
+  describe('isUsernameAvailable', () => {
+      it('should return true for a unique username', async () => {
+          const mockUsers = [
+              { username: 'existinguser' }
+          ];
+          
+          jest.spyOn(global, 'fetch').mockResolvedValue({
+              json: jest.fn().mockResolvedValue(mockUsers)
+          });
+
+          const isAvailable = await isUsernameAvailable('newuser');
+          expect(isAvailable).toBeTruthy();
       });
 
-      mockLocation.pathname = '../../dist/index.html';
-    });
+      it('should return false for an existing username', async () => {
+          const mockUsers = [
+              { username: 'existinguser' }
+          ];
+          
+          jest.spyOn(global, 'fetch').mockResolvedValue({
+              json: jest.fn().mockResolvedValue(mockUsers)
+          });
 
-    /**
-     * Tests user session creation
-     * @test
-     */
-    test('setUserSession creates correct session', () => {
-      const testUser = { username: 'testuser' };
+          const isAvailable = await isUsernameAvailable('existinguser');
+          expect(isAvailable).toBeFalsy();
+      });
+  });
 
-      authScript.setUserSession(testUser);
+  describe('setUserSession', () => {
+      it('should set user session in localStorage', () => {
+          const mockUser = { username: 'testuser' };
+          setUserSession(mockUser);
 
-      const session = JSON.parse(localStorage.getItem('currentSession'));
-
-      expect(session.username).toBe('testuser');
-      expect(session.isActive).toBe(true);
-      expect(session.loginTime).toBeTruthy();
-    });
-
-    /**
-     * Tests session checking and redirection
-     * @test
-     */
-    test('checkExistingSession redirects for active session', () => {
-      const activeSession = {
-        username: 'testuser',
-        loginTime: new Date().toISOString(),
-        isActive: true,
-      };
-      localStorage.setItem('currentSession', JSON.stringify(activeSession));
-
-      authScript.checkExistingSession();
-
-      expect(window.location.href).toBe('../../dist/pages/home-page.html');
-    });
+          expect(localStorage.setItem).toHaveBeenCalledWith(
+              'currentSession', 
+              expect.stringContaining('"username":"testuser"')
+          );
+      });
   });
 });

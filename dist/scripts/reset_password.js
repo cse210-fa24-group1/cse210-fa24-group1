@@ -1,17 +1,33 @@
-/**
- * Password Reset module handling the actual password reset process
- * using token validation and localStorage for data persistence.
- * @module PasswordResetModule
- */
+
 (function () {
   /**
    * Retrieves all users from localStorage
    * @returns {Array<Object>} Array of user objects
    */
-  function getUsers() {
-    return JSON.parse(localStorage.getItem('users')) || [];
+  async function getUsers() {
+    try {
+      const response = await fetch("http://localhost:3000/api/users");
+      const users = await response.json(); // Wait for the JSON data to be parsed
+      return users;  // Return the data after awaiting
+  } catch (error) {
+      console.error("Error fetching users:", error);
+      return [];
   }
-
+  }
+  async function getresetToken(token) {
+    try {
+      console.log("getresetToken");
+      const response = await fetch(`http://localhost:3000/api/resettoken?token=${token}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+      });
+      const resettokens = await response.json(); // Wait for the JSON data to be parsed
+      return resettokens;  // Return the data after awaiting
+  } catch (error) {
+      alert(error);
+      return [];
+  }
+  }
   /**
    * Validates password requirements and matching confirmation
    * @param {string} password1 - New password
@@ -31,46 +47,42 @@
 
     return true;
   }
-
-  /**
+    /**
    * Handles the password reset process using a valid token
    * @param {string} token - Reset token from URL
    * @param {string} newPassword - New password to set
    * @param {string} confirmPassword - Password confirmation
    * @returns {boolean} True if reset successful, false otherwise
    */
-  function handlePasswordReset(token, newPassword, confirmPassword) {
-    // Validate passwords
-    if (!validatePasswords(newPassword, confirmPassword)) {
-      return false;
-    }
-
-    // Find user with valid reset token
-    const users = getUsers();
-    const userIndex = users.findIndex(
+    async function handlePasswordReset(token, newPassword, confirmPassword) {
+      // Validate passwords
+      if (!validatePasswords(newPassword, confirmPassword)) {
+        return false;
+      }
+  
+      // Find user with valid reset token
+      const users = await getUsers();
+      const resetToken = await getresetToken(token);
+      const userIndex = users.findIndex(
       (u) =>
-        u.resetToken &&
-        u.resetToken.token === token &&
-        new Date(u.resetToken.expiresAt) > new Date()
+        u.resetTokenId === String(resetToken[0].id) 
+      && new Date(resetToken[0].expiresAt) > new Date()
     );
-
     if (userIndex === -1) {
       alert('Invalid or expired reset token');
       return false;
     }
-
-    // Update password and remove reset token
-    users[userIndex].password = newPassword;
-    delete users[userIndex].resetToken;
-
-    // Save updated users
-    localStorage.setItem('users', JSON.stringify(users));
-
+    const user = users[userIndex];
+    const updateUserResponse = await fetch("http://localhost:3000/api/password", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: user.id, password: newPassword }),
+    });
     alert('Password successfully reset');
     return true;
-  }
+    }
 
-  /**
+      /**
    * Initializes the reset password page by setting up form submission handler
    * and token validation
    * @returns {void}
@@ -79,7 +91,7 @@
     const resetPasswordForm = document.querySelector('form');
 
     if (resetPasswordForm) {
-      resetPasswordForm.addEventListener('submit', function (e) {
+      resetPasswordForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
         // Get token from URL
@@ -99,7 +111,7 @@
         const confirmPassword = passwordInputs[1].value;
 
         // Attempt to reset password
-        const resetSuccess = handlePasswordReset(
+        const resetSuccess = await handlePasswordReset(
           token,
           newPassword,
           confirmPassword
@@ -126,4 +138,5 @@
       handlePasswordReset,
     };
   }
+
 })();
