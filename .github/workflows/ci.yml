@@ -98,7 +98,8 @@ jobs:
       - name: Install Codacy coverage reporter
         run: |
           bash <(curl -Ls https://coverage.codacy.com/get.sh)
-          export CODACY_PROJECT_TOKEN=${{ secrets.CODACY_PROJECT_TOKEN }}
+          env:
+            CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
           bash <(curl -Ls https://coverage.codacy.com/get.sh)
 
       - name: Run Codacy Analysis
