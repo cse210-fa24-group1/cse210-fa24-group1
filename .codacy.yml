@@ -1,0 +1,6 @@
+# .codacy.yml
+
+exclude:
+  - './.github/ISSUE_TEMPLATE/**' # Exclude all files and subdirectories under './.github/ISSUE_TEMPLATE/'
+  - './specs/**' # Exclude all files and subdirectories under 'specs'
+  - './admin/**' # Exclude all files and subdirectories under 'admin'
