@@ -10,13 +10,13 @@
    */
   async function getUsers() {
     try {
-      const response = await fetch("http://localhost:3000/api/users");
+      const response = await fetch('http://localhost:3000/api/users');
       const users = await response.json(); // Wait for the JSON data to be parsed
-      return users;  // Return the data after awaiting
-  } catch (error) {
-      console.error("Error fetching users:", error);
+      return users; // Return the data after awaiting
+    } catch (error) {
+      console.error('Error fetching users:', error);
       return [];
-  }
+    }
   }
 
   /**
@@ -28,7 +28,7 @@
    * @param {string} userData.createdAt - ISO timestamp of account creation
    * @returns {void}
    */
- 
+
   /**
    * Validates user credentials against stored data
    * @param {string} username - Username to validate
@@ -174,16 +174,14 @@
       return;
     }
 
-
     try {
-      await fetch("http://localhost:3000/api/users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      await fetch('http://localhost:3000/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password, email }),
       });
       alert('Account created successfully!');
       window.location.href = '../index.html';
-      
     } catch (error) {
       alert('Error creating account. Please try again.');
     }

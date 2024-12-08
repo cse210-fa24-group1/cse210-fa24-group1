@@ -45,7 +45,7 @@ body {
   font-size: 28px;
   color: #043f83;
   font-family: 'Poppins', sans-serif;
-  margin:10px;
+  margin: 10px;
 }
 
 .current-expense .balance {
@@ -91,7 +91,9 @@ body {
   border-radius: 6px;
   cursor: pointer;
   margin-right: 10px;
-  transition: background-color 0.3s, transform 0.2s;
+  transition:
+    background-color 0.3s,
+    transform 0.2s;
 }
 
 .warning {
@@ -118,7 +120,7 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.history{
+.history {
   max-height: 22rem;
   overflow-y: auto;
 }
@@ -166,10 +168,9 @@ body {
  * The amount is aligned to the right and space is added between it and the description.
  */
 
- #list li .description-space{
+#list li .description-space {
   color: #043f83;
- }
-
+}
 
 #list li .amount-space {
   margin-left: 10px;
@@ -179,12 +180,12 @@ body {
   font-weight: 400;
 }
 
-#list li button{
-    color: #043f83;
-    border: 2px solid #043f83;
-    background-color: white;
-    border-radius: 3px;
-    cursor: pointer;
+#list li button {
+  color: #043f83;
+  border: 2px solid #043f83;
+  background-color: white;
+  border-radius: 3px;
+  cursor: pointer;
 }
 
 #list .minus {
@@ -222,8 +223,6 @@ body {
   margin-bottom: 10px;
 }
 
-
-
 /* Transaction Form */
 .transaction-form label {
   font-weight: bold;
@@ -241,10 +240,9 @@ body {
   border-radius: 5px;
   margin-top: 5px;
   margin-right: 10px;
-  
 }
 
-.transaction-form .buttons{
+.transaction-form .buttons {
   text-align: center;
 }
 
@@ -265,16 +263,12 @@ body {
   margin-right: 4px;
 }
 
-
-
 .transaction-form .credit {
   border: 2px solid #1fa463;
   background-color: white;
   color: #1fa463;
   margin-left: 4px;
 }
-
-
 
 /* Scrollbar Customization */
 .history::-webkit-scrollbar,
