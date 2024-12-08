@@ -65,6 +65,7 @@ body {
 .budget {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 10px;
 }
 
@@ -93,6 +94,11 @@ body {
   transition: background-color 0.3s, transform 0.2s;
 }
 
+.warning {
+  color: red;
+  margin-left: 10px;
+  font-weight: bolder;
+}
 
 /* Content Section Layout */
 .content {
@@ -126,57 +132,97 @@ body {
   margin-top: 0px;
 }
 
-/* History Section Styling */
 .history ul {
   list-style-type: none;
   padding: 0;
   margin: 15px 0;
 }
 
-.history ul li {
+#list li {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 8px 8px;
+  border-bottom: 1px solid #ddd;
+  word-wrap: break-word;
   margin: 15px 0px;
   border: 2px solid #043f83;
   border-radius: 5px;
 }
 
-.history ul li span {
+/**
+ * Styles for the span inside each list item, ensuring the description wraps within its container.
+ * The description takes up the remaining space in the flex container.
+ */
+#list li span {
+  flex: 1;
+  min-width: 0;
+  white-space: normal;
+  font-weight: 400;
+}
+
+/**
+ * Styles for the amount section in the transaction item.
+ * The amount is aligned to the right and space is added between it and the description.
+ */
+
+ #list li .description-space{
   color: #043f83;
+ }
+
+
+#list li .amount-space {
+  margin-left: 10px;
+  text-align: center;
+  flex-shrink: 0;
+  word-wrap: break-word;
   font-weight: 400;
 }
 
-.history ul li button {
-  color: #043f83;
-  font-weight: 400;
-  border: 2px solid #043f83;
-  background-color: white;
-  border-radius: 3px;
-  font-size: 15px;
+#list li button{
+    color: #043f83;
+    border: 2px solid #043f83;
+    background-color: white;
+    border-radius: 3px;
+    cursor: pointer;
 }
 
-.history ul li .description-space {
-  width: 5rem;
-}
-
-.history ul li button:hover {
-  color: white;
-  font-weight: 400;
-  border: 2px solid #043f83;
-  background-color: #043f83;
-  border-radius: 3px;
-}
-
-
-
-.history ul li .expense {
+#list .minus {
   color: #dc3545; /* Red for expenses */
 }
 
-.history ul li .credit {
+#list .plus {
   color: #1fa463; /* Green for credits */
 }
+
+/* Style for the list item container */
+/**
+ * Styles for the transaction item container, ensuring that both description and amount
+ * are spaced equally. The container takes up the full width of the parent.
+ */
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/**
+ * Sets the color of transaction text (e.g., for expense items).
+ */
+.transaction {
+  color: green;
+}
+
+/* Transaction form styles */
+/**
+ * Labels inside the transaction form are displayed as block elements with spacing below.
+ */
+.transaction-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+
 
 /* Transaction Form */
 .transaction-form label {
