@@ -46,6 +46,8 @@ jobs:
         run: npm run test:coverage
 
       - name: Upload coverage to Codacy
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
         run: |
           bash <(curl -Ls https://coverage.codacy.com/get.sh)
           codacy-coverage-reporter upload -r coverage/lcov-report/index.html  # Update this path according to your report
