@@ -72,7 +72,7 @@ jobs:
           git checkout -b gh-pages
 
           # Remove any existing files in the branch (except for the coverage directory)
-          find . -mindepth 1 -not -path './coverage*' -not -path './.git*' -exec rm -rf {} +
+          find . -mindepth 1 -not -path './coverage*' -not -path './docs*' -not -path './node_modules/*' -not -path './.git*' -exec rm -rf {} +
 
           # Copy the coverage report (adjust the path if necessary)
           cp -r ./coverage/lcov-report/* .
@@ -109,7 +109,7 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git checkout -b gh-pages
-          find . -mindepth 1 -not -path './docs*' -not -path './node_modules/*' -not -path './.git*' -exec rm -rf {} +
+          find . -mindepth 1 -not -path './docs*' -not -path './coverage*' -not -path './node_modules/*' -not -path './.git*' -exec rm -rf {} +
           cp -r ./docs/* .
           git add .
           git commit -m "Deploy JSDocs to GitHub Pages"
