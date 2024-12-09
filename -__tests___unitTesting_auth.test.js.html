@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: __tests__/unitTesting/auth.test.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: __tests__/unitTesting/auth.test.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Integration tests for authentication functionality
+ * @requires ../../dist/scripts/auth.js
+ * @requires fs
+ * @requires path
+ */
+
+import fs from 'fs';
+import path from 'path';
+
+/**
+ * Load HTML templates for testing
+ * @type {string}
+ */
+const loginHtml = fs.readFileSync(
+  path.resolve(__dirname, '../../dist/index.html'),
+  'utf8'
+);
+const createUserHtml = fs.readFileSync(
+  path.resolve(__dirname, '../../dist/pages/create-account-page.html'),
+  'utf8'
+);
+
+/**
+ * Mock implementation of localStorage for testing
+ * Uses Jest's mock functions for tracking calls
+ * @type {Object}
+ */
+const localStorageMock = (() => {
+  let store = {};
+  return {
+    /**
+     * Gets an item from store
+     * @type {jest.Mock}
+     */
+
+    getItem: jest.fn((key) => store[key] || null),
+
+    /**
+     * Sets an item in store
+     * @type {jest.Mock}
+     */
+    setItem: jest.fn((key, value) => {
+      store[key] = value.toString();
+    }),
+
+    /**
+     * Removes an item from store
+     * @type {jest.Mock}
+     */
+    removeItem: jest.fn((key) => {
+      delete store[key];
+    }),
+    /**
+     * Clears all items from store
+     * @type {jest.Mock}
+     */
+    clear: jest.fn(() => {
+      store = {};
+    }),
+  };
+})();
+
+// Configure window mock objects
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+});
+
+/**
+ * Mock location object for testing navigation
+ * @type {Object}
+ */
+const mockLocation = {
+  href: '',
+  pathname: '',
+};
+Object.defineProperty(window, 'location', {
+  value: mockLocation,
+  writable: true,
+});
+
+/**
+ * Mock alert function
+ * @type {jest.Mock}
+ */
+window.alert = jest.fn();
+
+// Import authentication module
+const authScript = require('../../dist/scripts/auth.js');
+
+/**
+ * Test suite for authentication functionality
+ * @group Authentication
+ */
+describe('Authentication Functions', () => {
+  /**
+   * Test suite for login functionality
+   * @group Login
+   */
+  describe('Login Functionality', () => {
+    /**
+     * Setup before each login test
+     * Resets mocks and sets up DOM environment
+     * @beforeEach
+     */
+    beforeEach(() => {
+      localStorageMock.clear();
+      jest.clearAllMocks();
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(loginHtml, 'text/html');
+      while (document.body.firstChild) {
+        document.body.removeChild(document.body.firstChild);
+      }
+      Array.from(doc.body.children).forEach((child) => {
+        document.body.appendChild(document.importNode(child, true));
+      });
+
+      mockLocation.pathname = '../dist/index.html';
+    });
+
+    /**
+     * Tests credential validation with existing user
+     * @test
+     */
+    test('validateCredentials with existing user', () => {
+      const testUser = {
+        username: 'testuser',
+        password: 'password123',
+      };
+      localStorage.setItem('users', JSON.stringify([testUser]));
+
+      const validUser = authScript.validateCredentials(
+        'testuser',
+        'password123'
+      );
+      expect(validUser).toEqual(testUser);
+
+      const invalidUser = authScript.validateCredentials(
+        'testuser',
+        'wrongpassword'
+      );
+      expect(invalidUser).toBeNull();
+    });
+  });
+
+  /**
+   * Test suite for user registration functionality
+   * @group Registration
+   */
+  describe('User Registration', () => {
+    /**
+     * Setup before each registration test
+     * Resets mocks and sets up DOM environment
+     * @beforeEach
+     */
+    beforeEach(() => {
+      localStorageMock.clear();
+      jest.clearAllMocks();
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(createUserHtml, 'text/html');
+      while (document.body.firstChild) {
+        document.body.removeChild(document.body.firstChild);
+      }
+      Array.from(doc.body.children).forEach((child) => {
+        document.body.appendChild(document.importNode(child, true));
+      });
+
+      mockLocation.pathname = '../../dist/pages/create-user-page.html';
+    });
+
+    /**
+     * Tests username availability checking
+     * @test
+     */
+    test('isUsernameAvailable', () => {
+      const existingUsers = [
+        { username: 'existinguser', password: 'password123' },
+      ];
+      localStorage.setItem('users', JSON.stringify(existingUsers));
+
+      expect(authScript.isUsernameAvailable('newuser')).toBe(true);
+      expect(authScript.isUsernameAvailable('existinguser')).toBe(false);
+    });
+
+    /**
+     * Tests user data persistence to localStorage
+     * @test
+     */
+    test('saveUser adds user to localStorage', () => {
+      const userData = {
+        username: 'newuser',
+        password: 'password123',
+        createdAt: new Date().toISOString(),
+      };
+
+      authScript.saveUser(userData);
+
+      const users = JSON.parse(localStorage.getItem('users'));
+      expect(users).toContainEqual(userData);
+    });
+  });
+
+  /**
+   * Test suite for session management functionality
+   * @group Session
+   */
+  describe('Session Management', () => {
+    /**
+     * Setup before each session test
+     * Resets mocks and sets up DOM environment
+     * @beforeEach
+     */
+    beforeEach(() => {
+      localStorageMock.clear();
+      jest.clearAllMocks();
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(loginHtml, 'text/html');
+      while (document.body.firstChild) {
+        document.body.removeChild(document.body.firstChild);
+      }
+      Array.from(doc.body.children).forEach((child) => {
+        document.body.appendChild(document.importNode(child, true));
+      });
+
+      mockLocation.pathname = '../../dist/index.html';
+    });
+
+    /**
+     * Tests user session creation
+     * @test
+     */
+    test('setUserSession creates correct session', () => {
+      const testUser = { username: 'testuser' };
+
+      authScript.setUserSession(testUser);
+
+      const session = JSON.parse(localStorage.getItem('currentSession'));
+
+      expect(session.username).toBe('testuser');
+      expect(session.isActive).toBe(true);
+      expect(session.loginTime).toBeTruthy();
+    });
+
+    /**
+     * Tests session checking and redirection
+     * @test
+     */
+    test('checkExistingSession redirects for active session', () => {
+      const activeSession = {
+        username: 'testuser',
+        loginTime: new Date().toISOString(),
+        isActive: true,
+      };
+      localStorage.setItem('currentSession', JSON.stringify(activeSession));
+
+      authScript.checkExistingSession();
+
+      expect(window.location.href).toBe('../../dist/pages/home-page.html');
+    });
+  });
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AuthenticationModule.html">AuthenticationModule</a></li><li><a href="module-AuthenticationTests.html">AuthenticationTests</a></li><li><a href="module-ForgotPasswordModule.html">ForgotPasswordModule</a></li><li><a href="module-PasswordResetModule.html">PasswordResetModule</a></li></ul><h3>Namespaces</h3><ul><li><a href="module-AuthenticationTests-AuthenticationSystemIntegrationTests.html">AuthenticationSystemIntegrationTests</a></li><li><a href="module-AuthenticationTests-LoginPageTests.html">LoginPageTests</a></li><li><a href="module-AuthenticationTests-RegistrationPageTests.html">RegistrationPageTests</a></li></ul><h3>Global</h3><ul><li><a href="global.html#clear">clear</a></li><li><a href="global.html#getItem">getItem</a></li><li><a href="global.html#localStorageMock">localStorageMock</a></li><li><a href="global.html#loginHtml">loginHtml</a></li><li><a href="global.html#mockLocation">mockLocation</a></li><li><a href="global.html#removeItem">removeItem</a></li><li><a href="global.html#setItem">setItem</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Dec 09 2024 22:10:16 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
