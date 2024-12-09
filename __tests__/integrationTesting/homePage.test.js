@@ -1,4 +1,5 @@
 // home_page.test.js
+// Integration Test
 const {
   generateID,
   addTransaction,
