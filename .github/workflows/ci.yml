@@ -54,6 +54,19 @@ jobs:
         run: |
           bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage/lcov.info
 
+      - name: Deploy Coverage to GitHub Pages
+        if: success()
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git checkout -b gh-pages
+          mkdir -p coverage
+          cp -r ./coverage/* ./coverage/
+          git add ./coverage
+          git commit -m "Deploy code coverage report to GitHub Pages"
+          git push --force --quiet "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages
+
+
   jsdocs:
     needs: code-quality
     runs-on: ubuntu-latest
