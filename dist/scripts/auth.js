@@ -37,17 +37,29 @@
    */
   async function validateCredentials(username, password) {
     const users = await getUsers();
+    console.log(users);
     const user = users && users.find((user) => user.username === username);
-    return user && user.password === password ? user : null;
-  }
+    
+    if (!user) {
+        alert('User not found. Please create an account.');
+        return null;
+    }
+    
+    if (user.password !== password) {
+        alert('The password is incorrect.');
+        return null;
+    }
+    
+    return user;
+}
 
   /**
    * Validates password requirements and matching confirmation if on registration page
    * @returns {boolean} True if passwords are valid, false otherwise
    */
-  function validatePasswords() {
-    const password1 = passwordInputs[0].value;
-    const password2 = passwordInputs[1]?.value;
+  function validatePasswords(password1, password2) {
+    // const password1 = passwordInputs[0].value;
+    // const password2 = passwordInputs[1]?.value;
 
     if (password1.length < 6) {
       alert('Password must be at least 6 characters long!');
@@ -73,14 +85,13 @@
   }
 
   /**
-   * Creates a new user session in localStorage
+   * Creates a new user session in localStoragef
    * @param {Object} user - User object for the session
    * @param {string} user.username - Username for the session
    */
   function setUserSession(user) {
     const session = {
       username: user.username,
-      userId: user.userid,
       loginTime: new Date().toISOString(),
       isActive: true,
     };
@@ -93,8 +104,10 @@
    */
   function checkExistingSession() {
     const currentSession = JSON.parse(localStorage.getItem('currentSession'));
+    console.log(currentSession);
     if (currentSession && currentSession.isActive) {
       window.location.href = '../../dist/pages/home-page.html';
+      console.log(window.location.href);
     }
   }
 
@@ -143,8 +156,8 @@
         alert('Error during login. Please try again.');
       }
     } else {
-      alert('Invalid username or password!');
-      passwordInputs[0].value = '';
+      alert('Please create an account with us before you login!');
+      // window.location.href = '../../dist/pages/create-account-page.html';
     }
   }
 
@@ -165,7 +178,7 @@
       return;
     }
 
-    if (!validatePasswords()) {
+    if (!validatePasswords(passwordInputs[0].value, passwordInputs[1]?.value)) {
       return;
     }
 
@@ -209,7 +222,6 @@
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
       getUsers,
-      saveUser,
       validateCredentials,
       validatePasswords,
       isUsernameAvailable,

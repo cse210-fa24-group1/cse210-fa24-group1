@@ -1,18 +1,18 @@
-import * as emailjs from 'emailjs-com';
-/**
- * Forgot Password module handling password reset functionality
- * using localStorage for data persistence and token-based reset.
- * @module ForgotPasswordModule
- */
 (function () {
   /**
    * Retrieves all users from localStorage
    * @returns {Array<Object>} Array of user objects
    */
-  function getUsers() {
-    return JSON.parse(localStorage.getItem('users')) || [];
+  async function getUsers() {
+    try {
+      const response = await fetch('http://localhost:3000/api/users');
+      const users = await response.json(); // Wait for the JSON data to be parsed
+      return users; // Return the data after awaiting
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      return [];
+    }
   }
-
   /**
    * Generates a random token for password reset
    * @returns {string} Random string token
@@ -29,11 +29,13 @@ import * as emailjs from 'emailjs-com';
    * @param {string} username - Username of the account to reset
    * @returns {string|null} Reset token if successful, null if user not found
    */
-  function sendPasswordResetEmail(username) {
-    const users = getUsers();
-    const user = users.find(
-      (user) => user.username === username || user.email === username
-    );
+  async function sendPasswordResetEmail(username) {
+    const users = await getUsers();
+    const user =
+      users &&
+      users.find(
+        (user) => user.username === username || user.email === username
+      );
     if (!user) {
       alert('User not found');
       return null;
@@ -41,23 +43,41 @@ import * as emailjs from 'emailjs-com';
 
     // Generate a reset token and store it with the user
     const resetToken = generateResetToken();
-    user.resetToken = {
-      token: resetToken,
-      expiresAt: new Date(Date.now() + 3600000), // Token expires in 1 hour
-    };
+    const expiresAt = new Date(Date.now() + 3600000);
+    const responseToken = await fetch('http://localhost:3000/api/resettoken', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: resetToken, expiresAt }),
+    });
+    if (!responseToken.ok) {
+      throw new Error('Failed to create reset token');
+    }
+    const tokenData = await responseToken.json();
+    const tokenId = tokenData.id;
+    const updateUserResponse = await fetch('http://localhost:3000/api/users', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userid: user.userid, tokenid: tokenId }),
+    });
 
-    // Update user in localStorage
-    const updatedUsers = users.map((u) =>
-      u.username === username || u.email === username ? user : u
-    );
-    localStorage.setItem('users', JSON.stringify(updatedUsers));
+    if (!updateUserResponse.ok) {
+      const errorText = await updateUserResponse.text();
+      throw new Error(`Failed to update user: ${errorText}`);
+    }
+    updatedUsers = await getUsers();
+    updatedUser =
+      updatedUsers &&
+      updatedUsers.find(
+        (user) => user.username === username || user.email === username
+      );
+    console.log(updatedUser);
 
     // Construct reset link
     const resetLink = `${window.location.origin}/pages/reset-password-page.html?token=${resetToken}&username=${username}`;
 
     // EmailJS configuration (You'll need to sign up at emailjs.com and get these details)
     // eslint-disable-next-line no-undef
-    emailjs.init('FHzkkOp1lrgWuCbYY'); // Replace with actual User ID from EmailJS
+    window.emailjs.init('FHzkkOp1lrgWuCbYY'); // Replace with actual User ID from EmailJS
     // Email parameters
     const templateParams = {
       to_email: user.email, // Sender's email
@@ -92,7 +112,7 @@ The link is valid for 1 hour.`);
     const forgotPasswordForm = document.querySelector('form');
 
     if (forgotPasswordForm) {
-      forgotPasswordForm.addEventListener('submit', function (e) {
+      forgotPasswordForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const usernameInput = document.querySelector('#username');
@@ -134,6 +154,7 @@ The link is valid for 1 hour.`);
    */
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
+      generateResetToken,
       sendPasswordResetEmail,
       initializeForgotPasswordPage,
     };
