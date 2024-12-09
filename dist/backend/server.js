@@ -20,7 +20,8 @@ db.serialize(() => {
             username TEXT NOT NULL,
             password TEXT NOT NULL,
             email TEXT NOT NULL,
-            timestamp TEXT NOT NULL
+            timestamp TEXT NOT NULL,
+            resetTokenId TEXT NULL
         )
     `,
     (err) => {
@@ -28,6 +29,17 @@ db.serialize(() => {
       else console.log("'users' table is ready.");
     }
   );
+
+  // db.run(
+  //   `
+  //       ALTER TABLE users
+  //       ADD COLUMN resetTokenId TEXT NULL;
+  //   `,
+  //   (err) => {
+  //     if (err) console.error("Error creating 'resetTokenId' column:", err.message);
+  //     else console.log("'resetTokenId' column added.");
+  //   }
+  // );
 
   // Create 'transactions' table
   db.run(
@@ -67,9 +79,25 @@ db.serialize(() => {
       else console.log("'user_transaction_mapping' table is ready.");
     }
   );
+
+  db.run(
+    `
+        CREATE TABLE IF NOT EXISTS resetTokens (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            token TEXT NOT NULL,
+            expiresAt TEXT NOT NULL
+        )
+    `,
+    (err) => {
+      if (err) {
+        console.error('Error creating table:', err.message);
+      } else {
+        console.log('resetTokens table is ready.');
+      }
+    }
+  );
 });
 
-// API to get all users
 app.get('/api/users', (req, res) => {
   db.all('SELECT * FROM users', [], (err, rows) => {
     if (err) {
@@ -93,10 +121,71 @@ app.post('/api/users', (req, res) => {
         res.status(500).json({ error: err.message });
         return;
       }
-      res.json({ userid: this.lastID, username, email, timestamp });
+      res.json({userid: this.lastID, username, email, timestamp});
     }
   );
 });
+
+app.get('/api/resettoken', (req, res) => {
+  const { token } = req.query;
+
+  db.all('SELECT * FROM resetTokens where token = ?', [token], (err, rows) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+      return;
+    }
+    res.json(rows);
+  });
+});
+
+app.post('/api/resettoken', (req, res) => {
+  const { token, expiresAt } = req.body;
+  db.run(
+    'INSERT INTO resetTokens (token, expiresAt) VALUES (?, ?)',
+    [token, expiresAt],
+    function (err) {
+      if (err) {
+        console.log(err.message);
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json({ id: this.lastID, token, expiresAt });
+    }
+  );
+});
+
+app.put('/api/users', (req, res) => {
+  const { userid, tokenid } = req.body;
+  db.run(
+    'UPDATE users SET resetTokenId = ? WHERE userid = ?;',
+    [tokenid, userid],
+    function (err) {
+      if (err) {
+        console.error('Update error:', err.message);
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json({ userid: this.lastID, tokenid });
+    }
+  );
+});
+
+app.put('/api/password', (req, res) => {
+  const { userid, password } = req.body;
+  db.run(
+    'UPDATE users SET password = ? WHERE userid = ?;',
+    [password, userid],
+    function (err) {
+      if (err) {
+        console.error('Update error:', err.message);
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json({ userid: this.lastID, password });
+    }
+  );
+});
+
 
 // API to create a new transaction for a user
 app.post('/api/transactions', (req, res) => {
