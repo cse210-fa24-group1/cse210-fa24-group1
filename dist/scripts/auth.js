@@ -39,19 +39,19 @@
     const users = await getUsers();
     console.log(users);
     const user = users && users.find((user) => user.username === username);
-    
+
     if (!user) {
-        alert('User not found. Please create an account.');
-        return null;
+      alert('User not found. Please create an account.');
+      return null;
     }
-    
+
     if (user.password !== password) {
-        alert('The password is incorrect.');
-        return null;
+      alert('The password is incorrect.');
+      return null;
     }
-    
+
     return user;
-}
+  }
 
   /**
    * Validates password requirements and matching confirmation if on registration page

@@ -121,7 +121,7 @@ app.post('/api/users', (req, res) => {
         res.status(500).json({ error: err.message });
         return;
       }
-      res.json({userid: this.lastID, username, email, timestamp});
+      res.json({ userid: this.lastID, username, email, timestamp });
     }
   );
 });
@@ -185,7 +185,6 @@ app.put('/api/password', (req, res) => {
     }
   );
 });
-
 
 // API to create a new transaction for a user
 app.post('/api/transactions', (req, res) => {
