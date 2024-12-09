@@ -91,6 +91,7 @@
    */
   function setUserSession(user) {
     const session = {
+      userId: user.userid,
       username: user.username,
       loginTime: new Date().toISOString(),
       isActive: true,
