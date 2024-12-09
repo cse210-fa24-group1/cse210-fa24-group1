@@ -503,16 +503,16 @@ function downloadDataCSV() {
     const amount = transaction.amount;
     const timestamp = new Date(Number(transaction.timestamp));
 
-    const foundEntry = categories.find(item => item.id === categoryId);
+    const foundEntry = categories.find((item) => item.id === categoryId);
     const categoryName = foundEntry.name;
 
-    const newLine = categoryName + ", " + amount + ", " + timestamp;
+    const newLine = categoryName + ', ' + amount + ', ' + timestamp;
     csv += newLine;
-    csv += "\n";
+    csv += '\n';
   });
 
-  let hiddenElement = document.createElement("a");
-  hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(csv);
+  let hiddenElement = document.createElement('a');
+  hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
   hiddenElement.download = filename;
   document.body.appendChild(hiddenElement);
   hiddenElement.click();
