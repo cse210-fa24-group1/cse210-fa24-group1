@@ -78,7 +78,7 @@ jobs:
           mkdir coverage
 
           # Copy the coverage report to the /docs/coverage folder
-          cp -r coverage/lcov-report** docs/coverage/
+          cp -r coverage/lcov-report/* docs/coverage/
 
           git add .
           git commit -m "Deploy coverage report to GitHub Pages"
