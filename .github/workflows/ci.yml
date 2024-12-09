@@ -48,24 +48,34 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:coverage
 
-      - name: Upload coverage to Codacy
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        run: |
-          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage/lcov.info
+  deploy-coverage:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-      - name: Deploy Coverage to GitHub Pages
-        if: success()
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy coverage to GitHub Pages
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+          mkdir gh-pages-temp
+          cp -r ./coverage/lcov-report/* gh-pages-temp/
+          cd gh-pages-temp
+          git init
+          git remote add origin "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
           git checkout -b gh-pages
-          mkdir -p coverage
-          cp -r ./coverage/* ./coverage/
-          git add ./coverage
-          git commit -m "Deploy code coverage report to GitHub Pages"
-          git push --force --quiet "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages
-
+          git add .
+          git commit -m "Deploy coverage report to GitHub Pages"
+          git push --force --quiet origin gh-pages
 
   jsdocs:
     needs: code-quality
