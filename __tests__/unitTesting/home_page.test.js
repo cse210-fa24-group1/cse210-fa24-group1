@@ -1,3 +1,4 @@
+console.error = jest.fn();
 const localStorageMock = (() => {
   let store = {};
   return {
