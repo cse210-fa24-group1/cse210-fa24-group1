@@ -10,6 +10,6 @@ module.exports = {
   testMatch: ['**/__tests__/**/*.test.js'],
   setupFiles: ['./jest.setup.js'],
   collectCoverage: true,
-  coverageReporters: ['lcov', 'text'],
   coverageDirectory: 'coverage',
+  coverageReporters: ['lcov', 'html'],
 };

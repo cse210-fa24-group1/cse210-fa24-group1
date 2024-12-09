@@ -99,7 +99,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
       - name: Run Codacy Analysis
         uses: codacy/codacy-analysis-cli-action@204208f730d99d8b719a271b08e2c5770be8ee6e
         with:
