@@ -109,6 +109,9 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
 const transactions = getUserTransactions();
 const categories = JSON.parse(localStorage.getItem('category')) || [];
 
+// Get full data as initial data for download
+var downloadData = transactions;
+
 // Prepare data for the line chart (amount vs timestamp)
 const transactionsByCategory = {};
 categories.forEach((category) => {
@@ -338,6 +341,8 @@ function getMonthData(monthInput) {
   }
   // get selected month transactions
   const newTransactions = transactions.filter((t) => checkDate(t));
+  // update the download data to only have transactions in the selected month
+  downloadData = newTransactions;
 
   // get the selected month's category spending for the pie chart
   const newCategorySpending = {};
@@ -378,6 +383,7 @@ monthChange.addEventListener('change', function (event) {
   getMonthData(event.currentTarget.value);
 });
 
+// Helper function to get the start of the selected week for the weekly calender
 function getStartOfISOWeek(weekInput) {
   const [year, week] = weekInput.split('-W').map(Number);
   const jan4 = new Date(year, 0, 4); // January 4th is always in the first ISO week
@@ -389,6 +395,7 @@ function getStartOfISOWeek(weekInput) {
   ); // Add weeks
 }
 
+// get the selected week's data and update the charts accordingly
 function getWeekData(weekInput) {
   if (!weekInput) {
     lineChart.data.labels = lineChartLabels;
@@ -444,6 +451,8 @@ function getWeekData(weekInput) {
 
   // Get selected week's transactions
   const newTransactions = transactions.filter((t) => checkDate(t));
+  // update the download data to only have transactions in the selected month
+  downloadData = newTransactions;
 
   // Get the selected week's category spending for the pie chart
   const newCategorySpending = {};
@@ -484,10 +493,36 @@ weekChange.addEventListener('change', function (event) {
   getWeekData(event.currentTarget.value);
 });
 
-// Print a pdf from the Export button
+// Download data from the currently displayed data timeframe
+function downloadDataCSV() {
+  const filename = 'data.csv';
+  let csv = 'Category, Amount, Timestamp\n';
+
+  downloadData.forEach((transaction) => {
+    const categoryId = transaction.categoryid;
+    const amount = transaction.amount;
+    const timestamp = new Date(Number(transaction.timestamp));
+
+    const foundEntry = categories.find(item => item.id === categoryId);
+    const categoryName = foundEntry.name;
+
+    const newLine = categoryName + ", " + amount + ", " + timestamp;
+    csv += newLine;
+    csv += "\n";
+  });
+
+  let hiddenElement = document.createElement("a");
+  hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(csv);
+  hiddenElement.download = filename;
+  document.body.appendChild(hiddenElement);
+  hiddenElement.click();
+  document.body.removeChild(hiddenElement);
+}
+
+// Download a csv file containing data from clicking on the Export button
 document.getElementById('export-btn').addEventListener('click', () => {
   try {
-    window.print();
+    downloadDataCSV();
   } catch (err) {
     alert('Error: ' + err.message);
   }
