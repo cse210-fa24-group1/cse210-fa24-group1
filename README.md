@@ -2,6 +2,8 @@
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/1e3059c9b8064e55be72df56ff93c157)](https://app.codacy.com?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/1e3059c9b8064e55be72df56ff93c157)](https://app.codacy.com/gh/cse210-fa24-group1/cse210-fa24-group1/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
+
 # Expense Tracker
 
 Welcome to the Group 1 - Agile Avengers project! For our project, we decided to build an intuitive and user-friendly expense tracker application that allows users to moniter, analyze, and control their expenses and budget. This app aims to promote better financial habits by offering personalized insights into their expenses, monthly and weekly reports, and ultimately helping users make informed financial decisions.
