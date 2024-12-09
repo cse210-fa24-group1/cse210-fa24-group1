@@ -74,8 +74,8 @@ jobs:
           # Remove any existing files in the branch (except for the coverage directory)
           find . -mindepth 1 -not -path './coverage*' -not -path './docs*' -not -path './node_modules/*' -not -path './.git*' -exec rm -rf {} +
 
-          # Copy the coverage report (adjust the path if necessary)
-          cp -r ./coverage/lcov-report/* .
+          # Copy the coverage report into the `coverage` folder
+          cp -r ./coverage/lcov-report/* ./coverage/
 
           # Add and commit the changes
           git add .
