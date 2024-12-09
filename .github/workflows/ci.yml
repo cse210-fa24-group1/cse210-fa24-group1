@@ -69,19 +69,18 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git checkout -b gh-pages
 
-          # Remove any existing files in the branch (except for the coverage directory)
-          find . -mindepth 1 -not -path './coverage*' -not -path './docs*' -not -path './node_modules/*' -not -path './.git*' -exec rm -rf {} +
+          # Checkout the gh-pages branch to deploy coverage report
+          git checkout gh-pages
 
-          # Copy the coverage report into the `coverage` folder
-          cp -r ./coverage/lcov-report/* ./coverage/
+          # Clean up previous files in the /docs/coverage folder
+          find ./docs/coverage -mindepth 1 -exec rm -rf {} +
 
-          # Add and commit the changes
+          # Copy the coverage report to the /docs/coverage folder
+          cp -r ./coverage/lcov-report/* ./docs/coverage/
+
           git add .
           git commit -m "Deploy coverage report to GitHub Pages"
-
-          # Push to the gh-pages branch
           git push --force --quiet "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages
 
   jsdocs:
@@ -108,7 +107,7 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git checkout -b gh-pages
+          git checkout gh-pages
           find . -mindepth 1 -not -path './docs*' -not -path './coverage*' -not -path './node_modules/*' -not -path './.git*' -exec rm -rf {} +
           cp -r ./docs/* .
           git add .
