@@ -2,7 +2,7 @@
 
 ## Status
 
-**Status**: Modified 
+**Status**: Modified
 **Date**: 2024-11-09 (edited: 2024-12-07)
 **Decision-makers**: [Chirag Jain, Ketaki Tank, Annie Xu, Chih-Lin (Linda) Wang, Krishi Chawda, Sania Edlabadkar, Devanshi Chadha, June Akpata]  
 **Consulted**: [Chirag Jain, Ketaki Tank, Annie Xu, Chih-Lin (Linda) Wang, Krishi Chawda, Sania Edlabadkar, Devanshi Chadha, June Akpata]  
@@ -43,7 +43,7 @@ The application requires:
 2. **HTML, CSS, and Vanilla JavaScript**
 
    **Pros**: Lightweight, minimal dependencies, quick to load, and maintainable for a small, straightforward application. Using vanilla JavaScript reduces reliance on third-party packages and speeds up the development cycle, aligning with Agile principles.
-   
+
    **Cons**: Implementing certain interactive or data-driven features (e.g., state management, component reusability) may require custom code, which can be time-consuming. For instance, creating a UI for managing dynamic expense entries and real-time data display would take more development time without a framework.
 
 **Data Storage Options**
@@ -51,19 +51,19 @@ The application requires:
 1. **Firebase (NoSQL Cloud Storage)**
 
    **Pros**: Easy to configure and manage, built-in synchronization, and cross-device compatibility.
-   
+
    **Cons**: Cloud storage risks exposing sensitive financial data to unauthorized access, which would compromise user privacy.
 
 2. **MongoDB (NoSQL Database with Local or Cloud Storage)**
 
    **Pros**: Flexible data structure, and familiarity among developers.
-   
+
    **Cons**: Not ideal for local-only secure storage, and hosting on an external server could expose sensitive data to security risks.
 
 3. **Local Device Storage (File-based Storage)**
 
    **Pros**: Keeps data on the user’s device, offering the highest level of privacy by eliminating network exposure.
-  
+
    **Cons**: Limits data to a single device and makes multi-device access difficult without a manual migration process.
 
 4. **SQLite**
@@ -90,7 +90,7 @@ SQLite was chosen for data privacy, as it allows sensitive financial data to rem
 
 **Front-End**: The stack’s simplicity speeds up development, reduces dependencies, and makes the application lightweight.
 
-**Data Storage**: High data privacy as personal data remains solely on the user’s device, enhancing user trust and security. Users will have offline access to the product. 
+**Data Storage**: High data privacy as personal data remains solely on the user’s device, enhancing user trust and security. Users will have offline access to the product.
 
 **Negative**:
 

@@ -3,6 +3,7 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/1e3059c9b8064e55be72df56ff93c157)](https://app.codacy.com?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 # Expense Tracker
+
 Welcome to the Group 1 - Agile Avengers project! For our project, we decided to build an intuitive and user-friendly expense tracker application that allows users to moniter, analyze, and control their expenses and budget. This app aims to promote better financial habits by offering personalized insights into their expenses, monthly and weekly reports, and ultimately helping users make informed financial decisions.
 
 This project was built on top of the following existing codebase: [Expense_Tracker_VanillaJS](https://github.com/MidhaTahir/Expense_Tracker_VanillaJS/tree/master)
@@ -10,11 +11,13 @@ This project was built on top of the following existing codebase: [Expense_Track
 To see our JSDocs, click on the link here: [JS Docs](https://cse210-fa24-group1.github.io/cse210-fa24-group1/)
 
 # Overview
+
 Our project mainly contains 3 groups of pages: user authentication pages (login/create user/forget password), the home page where the user can see and edit their current expenses, and the summary visualizations page where the user can see a more detailed expense history in graphical form.
 
 This project mainly uses JS, HTML, and CSS for styling. Intergration and unit tests are done with Jest. Our backend database that holds user information and their transactional history is implemented with SQLite.
 
 ## User Authentication
+
 When the user first opens our application, they are greeted with the login page as shown below:
 ![login page](./images/login_page.png)
 
@@ -28,6 +31,7 @@ The user can input either their email or username so that an email is sent to th
 ![reset password page](./images/reset_password_page.png)
 
 ## Home Page
+
 Once the user has logged in, they see our main home page:
 ![home page](./images/home_page.png)
 
@@ -36,6 +40,7 @@ In the home page, the user can see and/or edit their current monthly expense at 
 In the header, clicking "Summary" will take the user to the visualization page, where they can see a more detailed summary of their expense history in the form of graphs. Clicking on "Logout" will log the user out and they are taken back to the login page.
 
 ## Visualizations
+
 Clicking on the "Summary" link in the header from the home page will take the user to the visualization page:
 ![visualizations page](./images/visualizations_page.png)
 ![visualizations page 2](./images/visualizations_page2.png)
