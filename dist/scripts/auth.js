@@ -93,7 +93,6 @@
     const session = {
       userId: user.userid,
       username: user.username,
-      userId: user.userid,
       loginTime: new Date().toISOString(),
       isActive: true,
     };
