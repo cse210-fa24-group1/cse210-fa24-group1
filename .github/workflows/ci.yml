@@ -73,7 +73,9 @@ jobs:
           # Checkout the gh-pages branch to deploy coverage report
           git checkout -b gh-pages
 
-          mkdir ./docs/coverage/
+          mkdir docs
+          cd docs
+          mkdir coverage
 
           # Copy the coverage report to the /docs/coverage folder
           cp -r ./coverage/lcov-report/* ./docs/coverage/
