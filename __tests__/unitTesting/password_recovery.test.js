@@ -119,7 +119,7 @@ describe('Password Reset Module', () => {
         'validtoken',
         'newpassword123',
         'newpassword123'
-      );
+      ); // Attempt to reset with expired token
 
       expect(result).toBeTruthy();
       expect(alert).toHaveBeenCalledWith('Password successfully reset');

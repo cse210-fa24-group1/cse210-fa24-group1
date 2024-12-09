@@ -1,3 +1,4 @@
+<!-- Main home page for our website -->
 <!doctype html>
 <html lang="en">
   <head>
@@ -11,6 +12,8 @@
     />
   </head>
   <body>
+    <!-- Header containing nav links to the home page, visualizations page, 
+      and logging out (login page) -->
     <header>
       <div class="header">
         <h1>EXPENSE TRACKER</h1>
@@ -21,6 +24,7 @@
       </div>
     </header>
     <main>
+      <!-- See current expense amount and edit it if needed -->
       <section class="current-expense">
         <h2>Current Monthly <span class="highlight">Expense</span></h2>
         <p id="balance" class="balance">$0.00</p>
@@ -30,11 +34,13 @@
           <span id="budget-warning" class="warning"></span>
         </div>
       </section>
+      <!-- See transaction history -->
       <section class="content">
         <div class="history" id="history-list">
           <h3>History</h3>
           <ul id="list"></ul>
         </div>
+        <!-- Enter latest transaction information -->
         <div class="transaction-form">
           <h3>Enter Transaction</h3>
           <form id="transaction-form">
