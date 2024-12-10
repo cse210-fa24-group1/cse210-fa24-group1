@@ -456,6 +456,6 @@ function getRandomColor() {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     getUserTransactions,
-    getRandomColor
+    getRandomColor,
   };
 }

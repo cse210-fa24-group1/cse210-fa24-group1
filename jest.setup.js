@@ -1,4 +1,5 @@
 import { TextEncoder, TextDecoder } from 'util';
+require('isomorphic-fetch');
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
