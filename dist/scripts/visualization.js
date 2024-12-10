@@ -5,16 +5,26 @@
  */
 async function getUserTransactions() {
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
+  const errorMessageElement = document.getElementById('error-message');
   try {
     const response = await fetch(
       `http://localhost:3000/api/transactions/${currentSession.userId}`
     );
-    return (await response.json()) || [];
+    const data = await response.json();
+    errorMessageElement.style.display = 'none';
+    if (data.length === 0) {
+      errorMessageElement.textContent = 'No transactions to visualize!';
+      errorMessageElement.style.display = 'block';
+    }
+    return data;
   } catch (error) {
     console.error('Error fetching transactions:', error);
+    errorMessageElement.textContent = 'Failed to get transactions!';
+    errorMessageElement.style.display = 'block';
     return [];
   }
 }
+
 const categoriesData = [
   { id: 1, name: 'Food' },
   { id: 2, name: 'Travel' },
@@ -52,7 +62,7 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
   // Sort transactions for each category by timestamp
   Object.keys(transactionsByCategory).forEach((categoryId) => {
     transactionsByCategory[categoryId].sort(
-      (a, b) => a.timestamp - b.timestamp
+      (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
     );
   });
 
@@ -213,14 +223,11 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
     // get the selected year and month
     const currentYear = monthInput.substring(0, 4);
     const currentMonth = monthInput.substring(5);
-
     // get the selected month's labels for the line chart
-    const newLineChartLabels = lineChartLabels.filter(
-      (date) =>
-        date.substring(5) === currentYear &&
-        date.substring(0, 2) === currentMonth
-    );
-
+    const newLineChartLabels = lineChartLabels.filter((date) => {
+      const [month, , year] = date.split('/'); // Split the date into parts (MM, DD, YYYY)
+      return year === currentYear && month === currentMonth;
+    });
     // get the selected month's datasets for the line chart
     const newLineChartDatasets = categories.map((category) => {
       const categoryTransactions = transactionsByCategory[category.id];
@@ -247,11 +254,9 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
 
     // helper function to filter through transactions for data concerning the selected moneth
     function checkDate(t) {
-      const currentDate = new Date(t.timestamp).toLocaleDateString();
-      return (
-        currentDate.substring(5) === currentYear &&
-        currentDate.substring(0, 2) === currentMonth
-      );
+      const currentDate = new Date(t.timestamp).toLocaleDateString(); // Format: MM/DD/YYYY
+      const [month, , year] = currentDate.split('/'); // Split into parts (MM, DD, YYYY)
+      return year === currentYear && month === currentMonth;
     }
     // get selected month transactions
     const newTransactions = transactions.filter((t) => checkDate(t));

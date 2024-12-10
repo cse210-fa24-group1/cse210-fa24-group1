@@ -30,6 +30,15 @@ document.getElementById = jest.fn((id) => {
       addEventListener: jest.fn(),
     };
   }
+<<<<<<< HEAD
+=======
+  if (id === 'error-message') {
+    return {
+      textContent: '',
+      style: { display: 'none' },
+    };
+  }
+>>>>>>> d9ea9cbf285913c065d79c1965a51622ceff7a8f
   return {
     getContext: jest.fn(() => ({
       createLinearGradient: jest.fn(() => ({
