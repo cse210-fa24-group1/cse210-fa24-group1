@@ -21,7 +21,7 @@ body {
 
 .header h1 {
   margin: 0;
-  font-size: 26px;
+  font-size: 20px;
 }
 
 .header nav a {
@@ -45,7 +45,8 @@ body {
   font-size: 28px;
   color: #043f83;
   font-family: 'Poppins', sans-serif;
-  margin: 10px;
+  margin: 20px;
+  padding-top: 20px;
 }
 
 .current-expense .balance {
@@ -282,17 +283,30 @@ body {
   color: #1fa463;
   margin-left: 4px;
 }
-
 /* Scrollbar Customization */
 .history::-webkit-scrollbar,
 .transaction-form::-webkit-scrollbar {
   width: 4px;
+  opacity: 0; /* Hide by default */
+  /* transition: opacity 0.2s ease; Smooth transition for visibility */
 }
 
+/* Show scrollbar only on hover */
+.history:hover::-webkit-scrollbar,
+.transaction-form:hover::-webkit-scrollbar {
+  opacity: 1;
+}
+
+/* Scrollbar thumb appearance */
 .history::-webkit-scrollbar-thumb,
 .transaction-form::-webkit-scrollbar-thumb {
   background-color: #043f83;
   border-radius: 10px;
+}
+
+/* Limit scrollbar to 50% of the container's height */
+.history::-webkit-scrollbar-track {
+  height: 0.1rem; /* Set the visual range to 50% */
 }
 
 /* Responsive Design */

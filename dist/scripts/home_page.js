@@ -5,9 +5,38 @@ const form = document.getElementById('transaction-form');
 const budgetLimitInput = document.getElementById('budget-limit');
 const editBudgetBtn = document.getElementById('edit-budget');
 
-// Budget limit initialization
-let budgetLimit = parseFloat(localStorage.getItem('budgetLimit')) || 10000;
-budgetLimitInput && (budgetLimitInput.value = `$${budgetLimit}`);
+async function fetchInitialBudgetLimit() {
+  const currentSession = JSON.parse(localStorage.getItem('currentSession'));
+
+  if (!currentSession?.userId) {
+    console.error('No user session found');
+    return;
+  }
+  
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/users/${currentSession.userId}`
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data');
+    }
+
+    const userData = await response.json();
+    if (userData?.budgetLimit) {
+      budgetLimit = userData.budgetLimit; // Set the server's budget limit
+      budgetLimitInput.value = `$${budgetLimit}`;
+    } else {
+      // Fallback if no data is returned
+      budgetLimitInput.value = `$${budgetLimit}`;
+    }
+  } catch (error) {
+    console.error('Error fetching budget limit from server:', error.message);
+    budgetLimitInput.value = `$${budgetLimit}`;
+  }
+
+  budgetLimitInput.disabled = true;
+}
 
 // Transaction categories
 const categoriesData = [
@@ -201,56 +230,134 @@ async function updateValues() {
 async function checkBudgetLimit() {
   const currentTotal = await updateValues();
   const budgetWarning = document.getElementById('budget-warning');
+  const currentSession = JSON.parse(localStorage.getItem('currentSession'));
 
-  if (Math.abs(currentTotal) > budgetLimit && currentTotal < 0) {
-    budgetWarning && (budgetWarning.innerText = 'Exceeded the limit :(');
+  const response = await fetch(
+    `http://localhost:3000/api/users/${currentSession.userId}`
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch user data');
+  }
+
+  const userData = await response.json();
+  if (userData?.budgetLimit) {
+    budgetLimit = userData.budgetLimit;
+  }  
+
+  if (Math.abs(currentTotal) > budgetLimit && currentTotal < 0) {    
+    budgetWarning && (budgetWarning.innerText = 'Exceeded the limit :(');    
   } else {
     budgetWarning && (budgetWarning.innerText = '');
   }
 }
 
+// /**
+//  * Edit the budget limit via user input.
+//  */
+// editBudgetBtn &&
+// editBudgetBtn.addEventListener('click', async () => {
+//   const newLimit = prompt('Enter new budget limit:', budgetLimit);
+//   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
+//   if (newLimit !== null) {
+//     const parsedLimit = parseFloat(newLimit);
+
+//     if (isNaN(parsedLimit)) {
+//       alert('Please enter a valid number');
+//       return;
+//     }
+
+//     try {
+//       // Update budget limit via server API
+//       const response = await fetch('http://localhost:3000/api/users/budget', {
+//         method: 'PUT',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//           userid: currentSession.userId, // Replace with the actual user ID
+//           budgetLimit: parsedLimit,
+//         }),
+//       });
+
+//       if (!response.ok) {
+//         throw new Error('Failed to update budget limit');
+//       }
+
+//       const result = await response.json();
+//       console.log('Budget limit updated:', result);
+      
+//       budgetLimit = parsedLimit;
+//       budgetLimitInput.value = `$${budgetLimit}`;
+//       localStorage.setItem('budgetLimit', budgetLimit);
+//       checkBudgetLimit();
+//     } catch (error) {
+//       console.error('Error:', error.message);
+//       alert('Failed to save budget limit.');
+//     }
+//   }
+// });
+
+async function handleBudgetLimitChange() {
+  const currentSession = JSON.parse(localStorage.getItem('currentSession'));
+  const newLimit = parseFloat(budgetLimitInput.value.replace(/[$,]/g, ''));
+
+  if (isNaN(newLimit)) {
+    alert('Invalid budget limit value');
+    budgetLimitInput.value = `$${budgetLimit}`; 
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:3000/api/users/budget', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userid: currentSession.userId,
+        budgetLimit: newLimit,
+      }),
+    });
+
+    if (!response.ok) throw new Error('Server issue');
+    const result = await response.json();
+    console.log('Budget limit updated:', result);
+
+    budgetLimit = newLimit;
+    localStorage.setItem('budgetLimit', budgetLimit);
+  } catch (error) {
+    console.error('Error saving new budget limit:', error.message);
+    alert('Failed to save changes!');
+  }
+}
+
+
 /**
- * Edit the budget limit via user input.
+ * Enter edit mode on click
  */
 editBudgetBtn &&
-editBudgetBtn.addEventListener('click', async () => {
-  const newLimit = prompt('Enter new budget limit:', budgetLimit);
-  if (newLimit !== null) {
-    const parsedLimit = parseFloat(newLimit);
+editBudgetBtn.addEventListener('click', () => {
+  const isEditingBudgetLimit = !budgetLimitInput.disabled;
 
-    if (isNaN(parsedLimit)) {
-      alert('Please enter a valid number');
-      return;
-    }
+  if (isEditingBudgetLimit) {
+    budgetLimitInput.disabled = true;
+    editBudgetBtn.textContent = 'Edit Budget Limit';
+  } else {
+    budgetLimitInput.disabled = false;
+    budgetLimitInput.focus();
+    editBudgetBtn.textContent = 'Save Changes';
+  }
+});
 
-    try {
-      // Update budget limit via server API
-      const response = await fetch('http://localhost:3000/api/users/budget', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userid: currentUserId, // Replace with the actual user ID
-          budgetLimit: parsedLimit,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update budget limit');
-      }
-
-      const result = await response.json();
-      console.log('Budget limit updated:', result);
-      
-      budgetLimit = parsedLimit;
-      budgetLimitInput.value = `$${budgetLimit}`;
-      localStorage.setItem('budgetLimit', budgetLimit);
-      checkBudgetLimit();
-    } catch (error) {
-      console.error('Error:', error.message);
-      alert('Failed to save budget limit.');
-    }
+// Handle when user leaves the input field after editing
+budgetLimitInput &&
+budgetLimitInput.addEventListener('blur', async () => {
+  if (budgetLimitInput.disabled) return; // Exit if already disabled
+  else{
+    await handleBudgetLimitChange();
+    budgetLimitInput.disabled = true;
+    editBudgetBtn.textContent = 'Edit Budget Limit';
   }
 });
 
@@ -270,10 +377,12 @@ form && form.addEventListener('submit', addTransaction);
 
 // Initialize the application
 updateUI();
+fetchInitialBudgetLimit();
 
 // Export functions for testing or module usage
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
+    fetchInitialBudgetLimit,
     addTransaction,
     removeTransaction,
     saveTransactionToDB,

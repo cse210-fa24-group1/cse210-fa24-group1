@@ -195,7 +195,11 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
         callbacks: {
           label: function (context) {
             const total = context.chart.data.datasets[0].data.reduce((sum, val) => sum + val, 0);
-            const percentage = (((parseInt(context.formattedValue) / total) * 100)).toFixed(2) + '%';
+            const amount = parseInt(context.formattedValue.replace(/,/g, ''), 10);            
+            
+            const percentage = ((amount/ total) * 100).toFixed(1) + '%';
+            // console.log(parseInt(context.formattedValue, 10));
+            
             return `${context.label}: ${percentage}`;
           },
         },

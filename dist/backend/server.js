@@ -320,6 +320,32 @@ app.put('/api/users/budget', (req, res) => {
   );
 });
 
+// Fetch user details by ID
+app.get('/api/users/:userId', (req, res) => {
+  const { userId } = req.params;
+  
+  db.get('SELECT * FROM users WHERE userid = ?', [userId], (err, row) => {
+    if (err) {
+      console.error('Database error:', err.message);
+      res.status(500).json({ error: 'Failed to fetch user details.' });
+      return;
+    }
+
+    if (!row) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }    
+
+    res.json({
+      userid: row.userid,
+      username: row.username,
+      email: row.email,
+      budgetLimit: row.budgetLimit || 10000, // Default if no limit is set
+    });
+  });
+});
+
+
 
 app.listen(3000, () => {
   console.log('Server is running on http://localhost:3000');
