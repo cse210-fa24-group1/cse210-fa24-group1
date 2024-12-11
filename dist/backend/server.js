@@ -303,6 +303,24 @@ app.delete('/api/transactions/:transactionid', (req, res) => {
   );
 });
 
+app.put('/api/users/budget', (req, res) => {
+  const { userid, budgetLimit } = req.body;
+
+  db.run(
+    'UPDATE users SET budgetLimit = ? WHERE userid = ?;',
+    [budgetLimit, userid],
+    function (err) {
+      if (err) {
+        console.error('Update error:', err.message);
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json({ userid, budgetLimit });
+    }
+  );
+});
+
+
 app.listen(3000, () => {
   console.log('Server is running on http://localhost:3000');
 });

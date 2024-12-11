@@ -213,15 +213,47 @@ async function checkBudgetLimit() {
  * Edit the budget limit via user input.
  */
 editBudgetBtn &&
-  editBudgetBtn.addEventListener('click', () => {
-    const newLimit = prompt('Enter new budget limit:', budgetLimit);
-    if (newLimit !== null) {
-      budgetLimit = parseFloat(newLimit);
+editBudgetBtn.addEventListener('click', async () => {
+  const newLimit = prompt('Enter new budget limit:', budgetLimit);
+  if (newLimit !== null) {
+    const parsedLimit = parseFloat(newLimit);
+
+    if (isNaN(parsedLimit)) {
+      alert('Please enter a valid number');
+      return;
+    }
+
+    try {
+      // Update budget limit via server API
+      const response = await fetch('http://localhost:3000/api/users/budget', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userid: currentUserId, // Replace with the actual user ID
+          budgetLimit: parsedLimit,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update budget limit');
+      }
+
+      const result = await response.json();
+      console.log('Budget limit updated:', result);
+      
+      budgetLimit = parsedLimit;
       budgetLimitInput.value = `$${budgetLimit}`;
       localStorage.setItem('budgetLimit', budgetLimit);
       checkBudgetLimit();
+    } catch (error) {
+      console.error('Error:', error.message);
+      alert('Failed to save budget limit.');
     }
-  });
+  }
+});
+
 
 /**
  * Initialize the UI by loading transactions and updating values.
