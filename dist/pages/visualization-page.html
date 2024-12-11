@@ -5,13 +5,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Visualization Page</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="../styles/visualization.css" />
   </head>
   <body>
     <!-- Header containing nav links to the home page, visualizations page, 
       and logging out (login page) -->
     <header>
-      <h1>Expense Tracker</h1>
+      <h1>EXPENSE TRACKER</h1>
       <nav>
         <a href="./home-page.html">Home</a>
         <a href="#" id="logout-link">Logout</a>
@@ -20,20 +24,26 @@
     <main>
       <!-- Line chart holding the specified transaction history -->
       <section class="section-row-1-col-1">
+        <div id="no-data-message">
+          No transactions to display
+        </div>
         <canvas id="line-chart"></canvas>
       </section>
       <!-- Pie chart holding the specified transaction history -->
       <section class="section-row-1-col-2">
+        <div id="no-data-message">
+          No transactions to display
+        </div>
         <canvas id="pie-chart"></canvas>
       </section>
       <!-- Weekly calender to specify what week to visualize -->
       <section class="section-row-2-col-1">
-        <b1>weekly calendar</b1>
+        <b1>Filter by weeks</b1>
         <input type="week" id="weekly-calender" value="" />
       </section>
       <!-- Monthly calender to specify what week to visualize -->
       <section class="section-row-2-col-2">
-        <b1>monthly calendar</b1>
+        <b1>Filter by months</b1>
         <input type="month" id="monthly-calender" value="" />
       </section>
       <!-- Export current data -->

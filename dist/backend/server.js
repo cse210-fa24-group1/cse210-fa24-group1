@@ -21,7 +21,8 @@ db.serialize(() => {
             password TEXT NOT NULL,
             email TEXT NOT NULL,
             timestamp TEXT NOT NULL,
-            resetTokenId TEXT NULL
+            resetTokenId TEXT NULL,
+            budgetLimit INTEGER DEFAULT 0
         )
     `,
     (err) => {

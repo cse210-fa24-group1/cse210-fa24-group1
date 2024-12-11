@@ -32,6 +32,22 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
 
   // Get full data as initial data for download
   var downloadData = transactions;
+  const noDataMessage = document.getElementById('no-data-message');
+
+  if (transactions.length === 0) {
+    // If no transactions are available
+    noDataMessage.style.display = 'block'; // Show the message
+    document.getElementById('line-chart').style.display = 'none';
+    document.getElementById('pie-chart').style.display = 'none';
+    return; // Stop further execution
+  } else {
+    // If there is data, ensure charts are visible
+    noDataMessage.style.display = 'none';
+    document.getElementById('line-chart').style.display = 'block';
+    document.getElementById('pie-chart').style.display = 'block';
+  }
+
+
 
   const categories = JSON.parse(localStorage.getItem('category')) || [];
 
@@ -98,9 +114,9 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
           font: {
             size: 20,
             weight: 'bold',
-            family: 'Arial',
+            family: 'Poppins',
           },
-          color: '#333',
+          color: '#043f83',
           padding: { top: 10, bottom: 20 },
         },
       },
@@ -169,25 +185,38 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
           font: {
             size: 20,
             weight: 'bold',
-            family: 'Arial',
+            family: 'Poppins',
           },
-          color: '#333',
+          color: '#043f83',
           padding: { top: 10, bottom: 20 },
         },
+        tooltip: {
+        enabled: true,
+        callbacks: {
+          label: function (context) {
+            const total = context.chart.data.datasets[0].data.reduce((sum, val) => sum + val, 0);
+            const percentage = (((parseInt(context.formattedValue) / total) * 100)).toFixed(2) + '%';
+            return `${context.label}: ${percentage}`;
+          },
+        },
+      },
+      datalabels: {
+        display: false, // Disable static datalabels in favor of tooltips
+      },
         datalabels: {
           formatter: function (value, context) {
             const data = context.chart.data.datasets[0].data;
             const total = data.reduce((sum, val) => sum + val, 0);
             const percentage = ((value / total) * 100).toFixed(2) + '%';
-            return percentage;
+            return null;
           },
-          color: '#ffffff',
+          color: '#000000',
           font: {
             size: 14,
             weight: 'bold',
           },
-          anchor: 'center',
-          align: 'center',
+          anchor: 'end',
+          align: 'end',
         },
       },
     },
