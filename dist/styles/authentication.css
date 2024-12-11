@@ -5,18 +5,48 @@
   box-sizing: border-box;
 }
 
-body {
+body{
   font-family: 'Poppins', sans-serif;
   background-color: #f4f4f9;
+}
+main {
   display: flex;
   justify-content: center;
+  margin-top: 3rem;
+}
+
+/* Header Section */
+.header {
+  background-color: #043f83; /* Deep soothing blue */
+  color: #fff;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  height: 100vh;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  font-family: 'Poppins', sans-serif;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.header nav a {
+  text-decoration: none;
+  color: #f9f9f9;
+  margin-left: 20px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.header nav a:hover {
+  color: #dfeaff;
 }
 
 .authentication-container {
   background-color: white;
-  padding: 40px;
+  padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -73,7 +103,7 @@ button:hover {
   background-color: #032144;
 }
 
-nav {
+.links {
   margin-top: 15px;
   font-size: 14px;
   display: flex;
@@ -81,7 +111,7 @@ nav {
 }
 
 a {
-  color: green;
+  color: #043f83;
   text-decoration: none;
   padding: 5px;
   font-size: medium;
