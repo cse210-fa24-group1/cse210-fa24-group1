@@ -226,7 +226,7 @@ app.post('/api/transactions', (req, res) => {
             amount,
             categoryid,
             description,
-            timestamp,
+            timestamp
           });
         }
       );

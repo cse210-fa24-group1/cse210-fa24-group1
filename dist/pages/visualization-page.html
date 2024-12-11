@@ -22,6 +22,18 @@
       </nav>
     </header>
     <main>
+      <div class="date-container">
+        <section class="date-section">
+          <section class="date-input">
+            <b1>Select start date</b1>
+            <input type="date" id="start-date" value="" />
+          </section>
+          <section class="date-input">
+            <b1>Select end date</b1>
+            <input type="date" id="end-date" value="" />
+          </section>
+        </section>
+      </div>
       <!-- Line chart holding the specified transaction history -->
       <section class="section-row-1-col-1">
         <div id="no-data-message">
@@ -36,16 +48,7 @@
         </div>
         <canvas id="pie-chart"></canvas>
       </section>
-      <!-- Weekly calender to specify what week to visualize -->
-      <section class="section-row-2-col-1">
-        <b1>Filter by weeks</b1>
-        <input type="week" id="weekly-calender" value="" />
-      </section>
-      <!-- Monthly calender to specify what week to visualize -->
-      <section class="section-row-2-col-2">
-        <b1>Filter by months</b1>
-        <input type="month" id="monthly-calender" value="" />
-      </section>
+      
       <!-- Export current data -->
       <section class="section-row-3">
         <button id="export-btn">Export Data</button>
