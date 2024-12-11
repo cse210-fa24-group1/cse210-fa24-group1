@@ -24,7 +24,6 @@ async function getUserTransactions() {
     return [];
   }
 }
-
 const categoriesData = [
   { id: 1, name: 'Food' },
   { id: 2, name: 'Travel' },
