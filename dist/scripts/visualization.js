@@ -126,7 +126,7 @@ const lineChartDatasets = categories.map((category) => {
             weight: 'bold',
             family: 'Poppins',
           },
-          color: '#043f83',
+          color: '#16423C',
           padding: { top: 10, bottom: 20 },
         },
       },
@@ -308,7 +308,7 @@ getDateRangeData(startDateInput.value, endDateInput.value);
             weight: 'bold',
             family: 'Poppins',
           },
-          color: '#043f83',
+          color: '#16423C',
           padding: { top: 10, bottom: 20 },
         },
         tooltip: {

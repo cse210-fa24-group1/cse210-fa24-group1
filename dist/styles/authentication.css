@@ -17,7 +17,7 @@ main {
 
 /* Header Section */
 .header {
-  background-color: #043f83; /* Deep soothing blue */
+  background-color: #16423C; /* Deep soothing blue */
   color: #fff;
   padding: 20px 30px;
   display: flex;
@@ -63,12 +63,12 @@ main {
 
 h2 {
   margin-bottom: 20px;
-  color: #043f83;
+  color: #16423C;
 }
 
 label {
   font-size: 14px;
-  color: 043f83;
+  color: #16423C;
   display: block;
   margin-bottom: 5px;
 }
@@ -91,7 +91,7 @@ button {
   width: 80%;
   padding: 16px;
   margin-top: 20px;
-  background-color: #043f83;
+  background-color: #16423C;
   color: white;
   font-size: 16px;
   border: none;
@@ -111,7 +111,7 @@ button:hover {
 }
 
 a {
-  color: #043f83;
+  color: #16423C;
   text-decoration: none;
   padding: 5px;
   font-size: medium;
