@@ -115,8 +115,9 @@
   }
 
   // Determine if it's the login page based on URL or body class
-  const isLoginPage = window.location.pathname.includes('index');
 
+  const isLoginPage = window.location.pathname.includes('index');
+  // console.log(isLoginPage);
   // Select form and inputs
   const form = document.querySelector('form');
   const usernameInput = document.querySelector('#username');

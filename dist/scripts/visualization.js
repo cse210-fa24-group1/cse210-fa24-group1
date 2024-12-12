@@ -415,3 +415,9 @@ function getRandomColor() {
 }
 
 // Export the functions for testing
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    getUserTransactions,
+    getRandomColor,
+  };
+}
