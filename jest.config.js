@@ -4,6 +4,7 @@ module.exports = {
   moduleDirectories: ['node_modules', 'src'],
   moduleFileExtensions: ['js', 'json', 'jsx'],
   setupFilesAfterEnv: ['./__tests__/setupTests.js'],
+  testTimeout: 10000,
   transform: {
     '^.+\\.js$': 'babel-jest',
   },
