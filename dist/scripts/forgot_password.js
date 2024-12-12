@@ -5,7 +5,9 @@
    */
   async function getUsers() {
     try {
-      const response = await fetch('http://localhost:3000/api/users');
+      const response = await fetch(
+        'https://budgettrackerbackend-g9gc.onrender.com/api/users'
+      );
       const users = await response.json(); // Wait for the JSON data to be parsed
       return users; // Return the data after awaiting
     } catch (error) {
@@ -37,28 +39,34 @@
         (user) => user.username === username || user.email === username
       );
     if (!user) {
-      alert('User not found');
+      showError('User not found');
       return null;
     }
 
     // Generate a reset token and store it with the user
     const resetToken = generateResetToken();
     const expiresAt = new Date(Date.now() + 3600000);
-    const responseToken = await fetch('http://localhost:3000/api/resettoken', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: resetToken, expiresAt }),
-    });
+    const responseToken = await fetch(
+      'https://budgettrackerbackend-g9gc.onrender.com/api/resettoken',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: resetToken, expiresAt }),
+      }
+    );
     if (!responseToken.ok) {
       throw new Error('Failed to create reset token');
     }
     const tokenData = await responseToken.json();
     const tokenId = tokenData.id;
-    const updateUserResponse = await fetch('http://localhost:3000/api/users', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userid: user.userid, tokenid: tokenId }),
-    });
+    const updateUserResponse = await fetch(
+      'https://budgettrackerbackend-g9gc.onrender.com/api/users',
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userid: user.userid, tokenid: tokenId }),
+      }
+    );
 
     if (!updateUserResponse.ok) {
       const errorText = await updateUserResponse.text();
@@ -91,12 +99,12 @@
       .send('service_0n5821h', 'template_02gap7y', templateParams)
       .then(() => {
         // console.log('Email sent successfully', response);
-        alert(`A password reset link has been sent to the email associated with ${username}. 
+        showError(`A password reset link has been sent to the email associated with ${username}. 
 The link is valid for 1 hour.`);
       })
       .catch(() => {
         // console.error('Failed to send email', error);
-        alert('Failed to send password reset email. Please try again.');
+        showError('Failed to send password reset email. Please try again.');
       });
 
     // need a way to return null/resetToken depending on if emailJS works
@@ -119,7 +127,7 @@ The link is valid for 1 hour.`);
         const username = usernameInput.value.trim();
 
         if (!username) {
-          alert('Please enter your username');
+          showError('Please enter your username');
           return;
         }
 

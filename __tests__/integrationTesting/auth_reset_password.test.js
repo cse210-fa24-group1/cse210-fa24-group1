@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 describe('Password Reset Integration Tests', () => {
-  const API_URL = 'http://localhost:3000';
+  const API_URL = 'https://budgettrackerbackend-g9gc.onrender.com';
   let testUserId;
 
   // Test 1: Create reset token and verify it's stored

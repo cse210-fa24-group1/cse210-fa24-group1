@@ -5,7 +5,9 @@
    */
   async function getUsers() {
     try {
-      const response = await fetch('http://localhost:3000/api/users');
+      const response = await fetch(
+        'https://budgettrackerbackend-g9gc.onrender.com/api/users'
+      );
       const users = await response.json(); // Wait for the JSON data to be parsed
       return users; // Return the data after awaiting
     } catch (error) {
@@ -16,7 +18,7 @@
   async function getresetToken(token) {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/resettoken?token=${token}`,
+        `https://budgettrackerbackend-g9gc.onrender.com/api/resettoken?token=${token}`,
         {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
@@ -25,7 +27,7 @@
       const resettokens = await response.json(); // Wait for the JSON data to be parsed
       return resettokens; // Return the data after awaiting
     } catch (error) {
-      alert(error);
+      showError(error);
       return [];
     }
   }
@@ -37,12 +39,12 @@
    */
   function validatePasswords(password1, password2) {
     if (password1.length < 6) {
-      alert('Password must be at least 6 characters long!');
+      showError('Password must be at least 6 characters long!');
       return false;
     }
 
     if (password1 !== password2) {
-      alert('Passwords do not match!');
+      showError('Passwords do not match!');
       return false;
     }
 
@@ -70,19 +72,19 @@
         new Date(resetToken[0].expiresAt) > new Date()
     );
     if (userIndex === -1) {
-      alert('Invalid or expired reset token');
+      showError('Invalid or expired reset token');
       return false;
     }
     const user = users[userIndex];
     const updateUserResponse = await fetch(
-      'http://localhost:3000/api/password',
+      'https://budgettrackerbackend-g9gc.onrender.com/api/password',
       {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userid: user.userid, password: newPassword }),
       }
     );
-    alert('Password successfully reset');
+    showError('Password successfully reset');
     return true;
   }
 
@@ -103,7 +105,7 @@
         const token = urlParams.get('token');
 
         if (!token) {
-          alert('No reset token found');
+          showError('No reset token found');
           return;
         }
 

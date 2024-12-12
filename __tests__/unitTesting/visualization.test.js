@@ -110,7 +110,7 @@ describe('Visualization Functions', () => {
     const transactions = await getUserTransactions();
     expect(transactions).toHaveLength(2);
     expect(fetch).toHaveBeenCalledWith(
-      'http://localhost:3000/api/transactions/123'
+      'https://budgettrackerbackend-g9gc.onrender.com/api/transactions/123'
     );
   });
 

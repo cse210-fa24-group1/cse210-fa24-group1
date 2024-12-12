@@ -15,7 +15,7 @@ async function fetchInitialBudgetLimit() {
 
   try {
     const response = await fetch(
-      `http://localhost:3000/api/users/${currentSession.userId}`
+      `https://budgettrackerbackend-g9gc.onrender.com/api/users/${currentSession.userId}`
     );
 
     if (!response.ok) {
@@ -59,7 +59,7 @@ async function getAllTransactions() {
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
   try {
     const response = await fetch(
-      `http://localhost:3000/api/transactions/${currentSession.userId}`
+      `https://budgettrackerbackend-g9gc.onrender.com/api/transactions/${currentSession.userId}`
     );
     return (await response.json()) || [];
   } catch (error) {
@@ -83,17 +83,20 @@ async function saveTransactionToDB(
   categoryid,
   description
 ) {
-  await fetch('http://localhost:3000/api/transactions', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      userid,
-      isExpense,
-      amount,
-      categoryid,
-      description,
-    }),
-  });
+  await fetch(
+    'https://budgettrackerbackend-g9gc.onrender.com/api/transactions',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userid,
+        isExpense,
+        amount,
+        categoryid,
+        description,
+      }),
+    }
+  );
   await updateUI();
 }
 
@@ -117,7 +120,7 @@ async function addTransaction(e) {
 
   // Validate inputs
   if (text === '' || isNaN(amount)) {
-    alert('Please enter a valid description and amount.');
+    showError('Please enter a valid description and amount.');
     return;
   }
 
@@ -147,7 +150,7 @@ function removeTransaction(transactionId) {
 async function deleteTransaction(transactionId) {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/transactions/${transactionId}`,
+      `https://budgettrackerbackend-g9gc.onrender.com/api/transactions/${transactionId}`,
       { method: 'DELETE', headers: { 'Content-Type': 'application/json' } }
     );
 
@@ -157,12 +160,10 @@ async function deleteTransaction(transactionId) {
     }
 
     await updateUI();
-    setTimeout(() => {
-      alert(`Transaction with ID ${transactionId} deleted successfully!`);
-    }, 200);
+  
   } catch (error) {
     console.error('Error deleting transaction:', error.message);
-    alert(`Failed to delete transaction: ${error.message}`);
+    showError(`Failed to delete transaction: ${error.message}`);
   }
 }
 
@@ -232,97 +233,54 @@ async function checkBudgetLimit() {
   const budgetWarning = document.getElementById('budget-warning');
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
 
-  try{
-  const response = await fetch(
-    `http://localhost:3000/api/users/${currentSession.userId}`
-  );
+  try {
+    const response = await fetch(
+      `https://budgettrackerbackend-g9gc.onrender.com/api/users/${currentSession.userId}`
+    );
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch user data');
-  }
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data');
+    }
 
-  const userData = await response.json();
-  if (userData?.budgetLimit) {
-    budgetLimit = userData.budgetLimit;
-  }
+    const userData = await response.json();
+    if (userData?.budgetLimit) {
+      budgetLimit = userData.budgetLimit;
+    }
 
-  if (Math.abs(currentTotal) > budgetLimit && currentTotal < 0) {
-    budgetWarning && (budgetWarning.innerText = 'Exceeded the limit :(');
-  } else {
-    budgetWarning && (budgetWarning.innerText = '');
+    if (Math.abs(currentTotal) > budgetLimit && currentTotal < 0) {
+      budgetWarning && (budgetWarning.innerText = 'Exceeded the limit :(');
+    } else {
+      budgetWarning && (budgetWarning.innerText = '');
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
   }
-}catch (error) {
-  console.error('Error fetching data:', error.message);
 }
-}
-
-// /**
-//  * Edit the budget limit via user input.
-//  */
-// editBudgetBtn &&
-// editBudgetBtn.addEventListener('click', async () => {
-//   const newLimit = prompt('Enter new budget limit:', budgetLimit);
-//   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
-//   if (newLimit !== null) {
-//     const parsedLimit = parseFloat(newLimit);
-
-//     if (isNaN(parsedLimit)) {
-//       alert('Please enter a valid number');
-//       return;
-//     }
-
-//     try {
-//       // Update budget limit via server API
-//       const response = await fetch('http://localhost:3000/api/users/budget', {
-//         method: 'PUT',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({
-//           userid: currentSession.userId, // Replace with the actual user ID
-//           budgetLimit: parsedLimit,
-//         }),
-//       });
-
-//       if (!response.ok) {
-//         throw new Error('Failed to update budget limit');
-//       }
-
-//       const result = await response.json();
-//       console.log('Budget limit updated:', result);
-
-//       budgetLimit = parsedLimit;
-//       budgetLimitInput.value = `$${budgetLimit}`;
-//       localStorage.setItem('budgetLimit', budgetLimit);
-//       checkBudgetLimit();
-//     } catch (error) {
-//       console.error('Error:', error.message);
-//       alert('Failed to save budget limit.');
-//     }
-//   }
-// });
 
 async function handleBudgetLimitChange() {
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
   const newLimit = parseFloat(budgetLimitInput.value.replace(/[$,]/g, ''));
 
   if (isNaN(newLimit)) {
-    alert('Invalid budget limit value');
+    showError('Invalid budget limit value');
     budgetLimitInput.value = `$${budgetLimit}`;
     return;
   }
 
   try {
-    const response = await fetch('http://localhost:3000/api/users/budget', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userid: currentSession.userId,
-        budgetLimit: newLimit,
-      }),
-    });
+    const response = await fetch(
+      'https://budgettrackerbackend-g9gc.onrender.com/api/users/budget',
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userid: currentSession.userId,
+          budgetLimit: newLimit,
+        }),
+      }
+    );
 
     if (!response.ok) throw new Error('Server issue');
     const result = await response.json();
@@ -332,7 +290,7 @@ async function handleBudgetLimitChange() {
     localStorage.setItem('budgetLimit', budgetLimit);
   } catch (error) {
     console.error('Error saving new budget limit:', error.message);
-    alert('Failed to save changes!');
+    showError('Failed to save changes!');
   }
 }
 
