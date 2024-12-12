@@ -32,7 +32,7 @@ async function fetchInitialBudgetLimit() {
     }
   } catch (error) {
     console.error('Error fetching budget limit from server:', error.message);
-    budgetLimitInput.value = `$${budgetLimit}`;
+    budgetLimitInput.value = `$200`;
   }
 
   budgetLimitInput.disabled = true;
@@ -232,6 +232,7 @@ async function checkBudgetLimit() {
   const budgetWarning = document.getElementById('budget-warning');
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
 
+  try{
   const response = await fetch(
     `http://localhost:3000/api/users/${currentSession.userId}`
   );
@@ -250,6 +251,9 @@ async function checkBudgetLimit() {
   } else {
     budgetWarning && (budgetWarning.innerText = '');
   }
+}catch (error) {
+  console.error('Error fetching data:', error.message);
+}
 }
 
 // /**
