@@ -5,13 +5,22 @@
  */
 async function getUserTransactions() {
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
+  const errorMessageElement = document.getElementById('error-message');
   try {
     const response = await fetch(
       `http://localhost:3000/api/transactions/${currentSession.userId}`
     );
-    return (await response.json()) || [];
+    const data = await response.json();
+    errorMessageElement.style.display = 'none';
+    if (data.length === 0) {
+      errorMessageElement.textContent = 'No transactions to visualize!';
+      errorMessageElement.style.display = 'block';
+    }
+    return data;
   } catch (error) {
     console.error('Error fetching transactions:', error);
+    errorMessageElement.textContent = 'Failed to get transactions!';
+    errorMessageElement.style.display = 'block';
     return [];
   }
 }
@@ -66,7 +75,7 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
   // Sort transactions for each category by timestamp
   Object.keys(transactionsByCategory).forEach((categoryId) => {
     transactionsByCategory[categoryId].sort(
-      (a, b) => a.timestamp - b.timestamp
+      (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
     );
   });
 
@@ -406,4 +415,11 @@ function getRandomColor() {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    getUserTransactions,
+    getRandomColor,
+  };
 }

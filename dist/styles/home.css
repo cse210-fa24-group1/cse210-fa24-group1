@@ -208,31 +208,28 @@ body {
   color: #1fa463; /* Green for credits */
 }
 
-/* Style for the list item container */
-/**
- * Styles for the transaction item container, ensuring that both description and amount
- * are spaced equally. The container takes up the full width of the parent.
- */
-.transaction-item {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
+.history ul li button:hover {
+  color: white;
+  font-weight: 400;
+  border: 2px solid #043f83;
+  background-color: #043f83;
+  border-radius: 3px;
 }
 
-/**
- * Sets the color of transaction text (e.g., for expense items).
- */
-.transaction {
-  color: green;
+.history ul li .expense {
+  color: #dc3545; /* Red for expenses */
 }
 
-/* Transaction form styles */
-/**
- * Labels inside the transaction form are displayed as block elements with spacing below.
- */
+.history ul li .credit {
+  color: #1fa463; /* Green for credits */
+}
+
+/* Transaction Form */
 .transaction-form label {
+  font-weight: bold;
+  margin-top: 10px;
   display: block;
-  margin-bottom: 10px;
+  color: #043f83;
 }
 
 /* Transaction Form */
