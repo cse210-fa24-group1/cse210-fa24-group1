@@ -5,7 +5,7 @@
    */
   async function getUsers() {
     try {
-      const response = await fetch('http://localhost:3000/api/users');
+      const response = await fetch('https://budgettrackerbackend-g9gc.onrender.com/api/users');
       const users = await response.json(); // Wait for the JSON data to be parsed
       return users; // Return the data after awaiting
     } catch (error) {
@@ -16,7 +16,7 @@
   async function getresetToken(token) {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/resettoken?token=${token}`,
+        `https://budgettrackerbackend-g9gc.onrender.com/api/resettoken?token=${token}`,
         {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
@@ -75,7 +75,7 @@
     }
     const user = users[userIndex];
     const updateUserResponse = await fetch(
-      'http://localhost:3000/api/password',
+      'https://budgettrackerbackend-g9gc.onrender.com/api/password',
       {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },

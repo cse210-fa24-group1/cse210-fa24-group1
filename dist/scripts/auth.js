@@ -10,7 +10,7 @@
    */
   async function getUsers() {
     try {
-      const response = await fetch('http://localhost:3000/api/users');
+      const response = await fetch('https://budgettrackerbackend-g9gc.onrender.com/api/users');
       const users = await response.json(); // Wait for the JSON data to be parsed
       return users; // Return the data after awaiting
     } catch (error) {
@@ -187,7 +187,7 @@
     }
 
     try {
-      await fetch('http://localhost:3000/api/users', {
+      await fetch('https://budgettrackerbackend-g9gc.onrender.com/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password, email }),

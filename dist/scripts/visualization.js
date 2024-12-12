@@ -7,7 +7,7 @@ async function getUserTransactions() {
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
   try {
     const response = await fetch(
-      `http://localhost:3000/api/transactions/${currentSession.userId}`
+      `https://budgettrackerbackend-g9gc.onrender.com/api/transactions/${currentSession.userId}`
     );
     return (await response.json()) || [];
   } catch (error) {

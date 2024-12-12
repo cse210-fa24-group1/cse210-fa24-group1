@@ -17,7 +17,7 @@ const homePage = require('../../dist/scripts/home_page');
 
 describe('Expense Tracker API Integration Tests', () => {
   let testUserId;
-  const API_BASE_URL = 'http://localhost:3000/api';
+  const API_BASE_URL = 'https://budgettrackerbackend-g9gc.onrender.com/api';
 
   beforeAll(async () => {
     try {

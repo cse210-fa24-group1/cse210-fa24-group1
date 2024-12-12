@@ -15,7 +15,7 @@ async function fetchInitialBudgetLimit() {
 
   try {
     const response = await fetch(
-      `http://localhost:3000/api/users/${currentSession.userId}`
+      `https://budgettrackerbackend-g9gc.onrender.com/api/users/${currentSession.userId}`
     );
 
     if (!response.ok) {
@@ -59,7 +59,7 @@ async function getAllTransactions() {
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
   try {
     const response = await fetch(
-      `http://localhost:3000/api/transactions/${currentSession.userId}`
+      `https://budgettrackerbackend-g9gc.onrender.com/api/transactions/${currentSession.userId}`
     );
     return (await response.json()) || [];
   } catch (error) {
@@ -83,7 +83,7 @@ async function saveTransactionToDB(
   categoryid,
   description
 ) {
-  await fetch('http://localhost:3000/api/transactions', {
+  await fetch('https://budgettrackerbackend-g9gc.onrender.com/api/transactions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -147,7 +147,7 @@ function removeTransaction(transactionId) {
 async function deleteTransaction(transactionId) {
   try {
     const response = await fetch(
-      `http://localhost:3000/api/transactions/${transactionId}`,
+      `https://budgettrackerbackend-g9gc.onrender.com/api/transactions/${transactionId}`,
       { method: 'DELETE', headers: { 'Content-Type': 'application/json' } }
     );
 
@@ -234,7 +234,7 @@ async function checkBudgetLimit() {
 
   try {
     const response = await fetch(
-      `http://localhost:3000/api/users/${currentSession.userId}`
+      `https://budgettrackerbackend-g9gc.onrender.com/api/users/${currentSession.userId}`
     );
 
     if (!response.ok) {
@@ -256,52 +256,6 @@ async function checkBudgetLimit() {
   }
 }
 
-// /**
-//  * Edit the budget limit via user input.
-//  */
-// editBudgetBtn &&
-// editBudgetBtn.addEventListener('click', async () => {
-//   const newLimit = prompt('Enter new budget limit:', budgetLimit);
-//   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
-//   if (newLimit !== null) {
-//     const parsedLimit = parseFloat(newLimit);
-
-//     if (isNaN(parsedLimit)) {
-//       alert('Please enter a valid number');
-//       return;
-//     }
-
-//     try {
-//       // Update budget limit via server API
-//       const response = await fetch('http://localhost:3000/api/users/budget', {
-//         method: 'PUT',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({
-//           userid: currentSession.userId, // Replace with the actual user ID
-//           budgetLimit: parsedLimit,
-//         }),
-//       });
-
-//       if (!response.ok) {
-//         throw new Error('Failed to update budget limit');
-//       }
-
-//       const result = await response.json();
-//       console.log('Budget limit updated:', result);
-
-//       budgetLimit = parsedLimit;
-//       budgetLimitInput.value = `$${budgetLimit}`;
-//       localStorage.setItem('budgetLimit', budgetLimit);
-//       checkBudgetLimit();
-//     } catch (error) {
-//       console.error('Error:', error.message);
-//       alert('Failed to save budget limit.');
-//     }
-//   }
-// });
-
 async function handleBudgetLimitChange() {
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
   const newLimit = parseFloat(budgetLimitInput.value.replace(/[$,]/g, ''));
@@ -313,7 +267,7 @@ async function handleBudgetLimitChange() {
   }
 
   try {
-    const response = await fetch('http://localhost:3000/api/users/budget', {
+    const response = await fetch('https://budgettrackerbackend-g9gc.onrender.com/api/users/budget', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
