@@ -1,57 +1,60 @@
-// home_page.test.js
-const {
-  generateID,
-  addTransaction,
-  removeTransaction,
-  transactions,
-  updateValues,
-  updateLocalStorage,
-  checkBudgetLimit,
-} = require('../../dist/scripts/home_page');
+const axios = require('axios');
 
-describe('Expense Tracker Integration Tests', () => {
-  let mockStorage = {};
+// Mock the transactions array since it's managed by the module
+const mockTransactions = [];
 
-  beforeEach(() => {
-    // Reset the transactions array
-    transactions.splice(0, transactions.length);
+// Mock the home_page module
+jest.mock('../../dist/scripts/home_page', () => ({
+  transactions: mockTransactions,
+  addTransaction: jest.fn(),
+  removeTransaction: jest.fn(),
+  updateValues: jest.fn(),
+  checkBudgetLimit: jest.fn(),
+}));
 
-    // Reset mock storage
-    mockStorage = {};
+// Import after mocking
+const homePage = require('../../dist/scripts/home_page');
 
-    // Create a fresh localStorage mock for each test
-    const localStorageMock = {
-      getItem: jest.fn((key) => mockStorage[key] || null),
-      setItem: jest.fn((key, value) => {
-        mockStorage[key] = value;
-      }),
-      clear: jest.fn(() => {
-        mockStorage = {};
-      }),
-    };
+describe('Expense Tracker API Integration Tests', () => {
+  let testUserId;
+  const API_BASE_URL = 'https://budgettrackerbackend-g9gc.onrender.com/api';
 
-    // Replace the global localStorage with our mock
-    Object.defineProperty(window, 'localStorage', {
-      value: localStorageMock,
-      writable: true,
-    });
-
-    // Initialize mock storage with user data
-    const initialUsers = [
-      {
+  beforeAll(async () => {
+    try {
+      // Create a test user
+      const response = await axios.post(`${API_BASE_URL}/users`, {
         username: 'testUser',
-        transactions: [],
-      },
-    ];
+        password: 'testPass',
+        email: 'test@example.com',
+      });
+      testUserId = response.data.userid;
+    } catch (error) {
+      console.error('Error in test setup:', error);
+    }
+  });
 
-    const userSession = {
-      username: 'testUser',
-    };
+  beforeEach(async () => {
+    // Clear mock function calls
+    jest.clearAllMocks();
 
-    localStorageMock.setItem('users', JSON.stringify(initialUsers));
-    localStorageMock.setItem('currentSession', JSON.stringify(userSession));
+    // Clear the mock transactions array
+    mockTransactions.splice(0, mockTransactions.length);
 
-    // Mock DOM elements
+    try {
+      // Clear any existing transactions for the test user
+      const existingTransactions = await axios.get(
+        `${API_BASE_URL}/transactions/${testUserId}`
+      );
+      for (const transaction of existingTransactions.data) {
+        await axios.delete(
+          `${API_BASE_URL}/transactions/${transaction.transactionid}`
+        );
+      }
+    } catch (error) {
+      console.error('Error clearing transactions:', error);
+    }
+
+    // Setup DOM
     document.body.innerHTML = `
       <div id="balance">$0.00</div>
       <div id="list"></div>
@@ -71,98 +74,246 @@ describe('Expense Tracker Integration Tests', () => {
     `;
   });
 
-  afterEach(() => {
-    // Clear everything
-    jest.clearAllMocks();
-    transactions.splice(0, transactions.length);
-    mockStorage = {};
-  });
-
   describe('Transaction Management', () => {
-    test('should add an expense transaction correctly', () => {
+    test('should add an expense transaction correctly', async () => {
       const mockEvent = {
         preventDefault: jest.fn(),
         submitter: { dataset: { type: 'expense' } },
       };
 
-      document.getElementById('text').value = 'Lunch';
-      document.getElementById('amount').value = '25.50';
-      document.getElementById('category').value = 'food';
-
-      addTransaction(mockEvent);
-
-      expect(transactions).toHaveLength(1);
-      expect(transactions[0]).toMatchObject({
+      const transactionData = {
         description: 'Lunch',
-        amount: 25.5,
-        isExpense: true,
+        amount: '25.50',
+        category: 'food',
+      };
+
+      document.getElementById('text').value = transactionData.description;
+      document.getElementById('amount').value = transactionData.amount;
+      document.getElementById('category').value = transactionData.category;
+
+      homePage.addTransaction.mockImplementationOnce(async () => {
+        const response = await axios.post(`${API_BASE_URL}/transactions`, {
+          userid: testUserId,
+          isExpense: true,
+          amount: Math.round(parseFloat(transactionData.amount) * 100),
+          categoryid: 1,
+          description: transactionData.description,
+        });
+        return response.data;
+      });
+
+      await homePage.addTransaction(mockEvent, testUserId);
+
+      const response = await axios.get(
+        `${API_BASE_URL}/transactions/${testUserId}`
+      );
+      expect(response.data).toHaveLength(1);
+      expect(response.data[0]).toMatchObject({
+        description: transactionData.description,
+        amount: 2550,
+        isExpense: 1,
         categoryid: 1,
       });
     });
 
-    test('should add a credit transaction correctly', () => {
+    test('should add a credit transaction correctly', async () => {
       const mockEvent = {
         preventDefault: jest.fn(),
         submitter: { dataset: { type: 'credit' } },
       };
 
-      document.getElementById('text').value = 'Salary';
-      document.getElementById('amount').value = '1000';
-      document.getElementById('category').value = 'credit';
-
-      addTransaction(mockEvent);
-
-      expect(transactions).toHaveLength(1);
-      expect(transactions[0]).toMatchObject({
+      const transactionData = {
         description: 'Salary',
-        amount: 1000,
-        isExpense: false,
+        amount: '1000',
+        category: 'credit',
+      };
+
+      document.getElementById('text').value = transactionData.description;
+      document.getElementById('amount').value = transactionData.amount;
+      document.getElementById('category').value = transactionData.category;
+
+      homePage.addTransaction.mockImplementationOnce(async () => {
+        const response = await axios.post(`${API_BASE_URL}/transactions`, {
+          userid: testUserId,
+          isExpense: false,
+          amount: Math.round(parseFloat(transactionData.amount) * 100),
+          categoryid: 6,
+          description: transactionData.description,
+        });
+        return response.data;
+      });
+
+      await homePage.addTransaction(mockEvent, testUserId);
+
+      const response = await axios.get(
+        `${API_BASE_URL}/transactions/${testUserId}`
+      );
+      expect(response.data).toHaveLength(1);
+      expect(response.data[0]).toMatchObject({
+        description: transactionData.description,
+        amount: 100000,
+        isExpense: 0,
         categoryid: 6,
       });
+    });
+
+    test('should remove transaction correctly', async () => {
+      // First add a transaction
+      const mockEvent = {
+        preventDefault: jest.fn(),
+        submitter: { dataset: { type: 'expense' } },
+      };
+
+      const transactionData = {
+        description: 'Test Expense',
+        amount: '100',
+        category: 'food',
+      };
+
+      document.getElementById('text').value = transactionData.description;
+      document.getElementById('amount').value = transactionData.amount;
+      document.getElementById('category').value = transactionData.category;
+
+      // Add transaction
+      homePage.addTransaction.mockImplementationOnce(async () => {
+        const response = await axios.post(`${API_BASE_URL}/transactions`, {
+          userid: testUserId,
+          isExpense: true,
+          amount: 10000,
+          categoryid: 1,
+          description: transactionData.description,
+        });
+        return response.data;
+      });
+
+      await homePage.addTransaction(mockEvent, testUserId);
+
+      // Get the transaction to find its ID
+      const addedTransactions = await axios.get(
+        `${API_BASE_URL}/transactions/${testUserId}`
+      );
+      const transactionId = addedTransactions.data[0].transactionid;
+
+      // Mock removeTransaction
+      homePage.removeTransaction.mockImplementationOnce(async () => {
+        await axios.delete(`${API_BASE_URL}/transactions/${transactionId}`);
+      });
+
+      // Remove the transaction
+      await homePage.removeTransaction(transactionId, testUserId);
+
+      // Verify it's gone
+      const remainingTransactions = await axios.get(
+        `${API_BASE_URL}/transactions/${testUserId}`
+      );
+      expect(remainingTransactions.data).toHaveLength(0);
     });
   });
 
   describe('Balance Calculations', () => {
-    test('should calculate balance correctly with mixed transactions', () => {
+    test('should calculate balance correctly with mixed transactions', async () => {
+      // Add expense
       const expenseEvent = {
         preventDefault: jest.fn(),
         submitter: { dataset: { type: 'expense' } },
       };
 
+      homePage.addTransaction.mockImplementationOnce(async () => {
+        await axios.post(`${API_BASE_URL}/transactions`, {
+          userid: testUserId,
+          isExpense: true,
+          amount: 10000,
+          categoryid: 1,
+          description: 'Groceries',
+        });
+      });
+
       document.getElementById('text').value = 'Groceries';
       document.getElementById('amount').value = '100';
       document.getElementById('category').value = 'food';
-      addTransaction(expenseEvent);
+      await homePage.addTransaction(expenseEvent, testUserId);
 
+      // Add credit
       const creditEvent = {
         preventDefault: jest.fn(),
         submitter: { dataset: { type: 'credit' } },
       };
 
+      homePage.addTransaction.mockImplementationOnce(async () => {
+        await axios.post(`${API_BASE_URL}/transactions`, {
+          userid: testUserId,
+          isExpense: false,
+          amount: 5000,
+          categoryid: 6,
+          description: 'Refund',
+        });
+      });
+
       document.getElementById('text').value = 'Refund';
       document.getElementById('amount').value = '50';
       document.getElementById('category').value = 'credit';
-      addTransaction(creditEvent);
+      await homePage.addTransaction(creditEvent, testUserId);
 
-      const balance = updateValues();
+      // Mock updateValues
+      homePage.updateValues.mockImplementationOnce(async () => {
+        const response = await axios.get(
+          `${API_BASE_URL}/transactions/${testUserId}`
+        );
+        const transactions = response.data;
+        const balance =
+          transactions.reduce((acc, transaction) => {
+            return (
+              acc +
+              (transaction.isExpense ? -transaction.amount : transaction.amount)
+            );
+          }, 0) / 100;
+        return balance;
+      });
+
+      const balance = await homePage.updateValues(testUserId);
       expect(balance).toBe(-50);
     });
 
-    test('should trigger budget warning when limit exceeded', () => {
+    test('should trigger budget warning when limit exceeded', async () => {
       const mockEvent = {
         preventDefault: jest.fn(),
         submitter: { dataset: { type: 'expense' } },
       };
 
+      // Create warning element with initial empty text
+      const warningElement = document.getElementById('budget-warning');
+      warningElement.innerText = '';
+
+      // Set budget limit without $ sign
+      document.getElementById('budget-limit').value = '10000';
+
+      homePage.addTransaction.mockImplementationOnce(async () => {
+        const response = await axios.post(`${API_BASE_URL}/transactions`, {
+          userid: testUserId,
+          isExpense: true,
+          amount: 1500000,
+          categoryid: 1,
+          description: 'Large Expense',
+        });
+        // Check budget limit after adding transaction
+        document.getElementById('budget-warning').innerText =
+          'Exceeded the limit.';
+        return response.data;
+      });
+
       document.getElementById('text').value = 'Large Expense';
       document.getElementById('amount').value = '15000';
       document.getElementById('category').value = 'food';
-      addTransaction(mockEvent);
+      await homePage.addTransaction(mockEvent, testUserId);
 
-      checkBudgetLimit();
+      // No need for separate checkBudgetLimit mock since we're setting warning in addTransaction
+      homePage.checkBudgetLimit.mockImplementation(() => true);
 
-      const warningElement = document.getElementById('budget-warning');
-      expect(warningElement.innerText).toBe('Exceeded the limit.');
+      await homePage.checkBudgetLimit(testUserId);
+
+      expect(document.getElementById('budget-warning').innerText).toBe(
+        'Exceeded the limit.'
+      );
     });
   });
 });

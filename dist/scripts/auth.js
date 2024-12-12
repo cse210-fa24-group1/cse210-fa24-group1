@@ -8,8 +8,17 @@
    * Retrieves all users from localStorage
    * @returns {Array<Object>} Array of user objects
    */
-  function getUsers() {
-    return JSON.parse(localStorage.getItem('users')) || [];
+  async function getUsers() {
+    try {
+      const response = await fetch(
+        'https://budgettrackerbackend-g9gc.onrender.com/api/users'
+      );
+      const users = await response.json(); // Wait for the JSON data to be parsed
+      return users; // Return the data after awaiting
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      return [];
+    }
   }
 
   /**
@@ -21,23 +30,6 @@
    * @param {string} userData.createdAt - ISO timestamp of account creation
    * @returns {void}
    */
-  function saveUser(userData) {
-    const users = getUsers();
-    const existingUserIndex = users.findIndex(
-      (user) => user.username === userData.username
-    );
-    const existingUserIndexEmail = users.findIndex(
-      (user) => user.email === userData.email
-    );
-
-    if (existingUserIndex !== -1 || existingUserIndexEmail != -1) {
-      users[existingUserIndex] = { ...users[existingUserIndex], ...userData };
-    } else {
-      userData.transactions = [];
-      users.push(userData);
-    }
-    localStorage.setItem('users', JSON.stringify(users));
-  }
 
   /**
    * Validates user credentials against stored data
@@ -45,19 +37,31 @@
    * @param {string} password - Password to validate
    * @returns {Object|null} User object if credentials are valid, null otherwise
    */
-  function validateCredentials(username, password) {
-    const users = getUsers();
-    const user = users.find((user) => user.username === username);
-    return user && user.password === password ? user : null;
+  async function validateCredentials(username, password) {
+    const users = await getUsers();
+    // console.log(users);
+    const user = users && users.find((user) => user.username === username);
+
+    if (!user) {
+      alert('User not found. Please create an account.');
+      return null;
+    }
+
+    if (user.password !== password) {
+      alert('The password is incorrect.');
+      return null;
+    }
+
+    return user;
   }
 
   /**
    * Validates password requirements and matching confirmation if on registration page
    * @returns {boolean} True if passwords are valid, false otherwise
    */
-  function validatePasswords() {
-    const password1 = passwordInputs[0].value;
-    const password2 = passwordInputs[1]?.value;
+  function validatePasswords(password1, password2) {
+    // const password1 = passwordInputs[0].value;
+    // const password2 = passwordInputs[1]?.value;
 
     if (password1.length < 6) {
       alert('Password must be at least 6 characters long!');
@@ -77,18 +81,19 @@
    * @param {string} username - Username to check
    * @returns {boolean} True if username is available, false if taken
    */
-  function isUsernameAvailable(username) {
-    const users = getUsers();
-    return !users.some((user) => user.username === username);
+  async function isUsernameAvailable(username) {
+    const users = await getUsers();
+    return users && !users.some((user) => user.username === username);
   }
 
   /**
-   * Creates a new user session in localStorage
+   * Creates a new user session in localStoragef
    * @param {Object} user - User object for the session
    * @param {string} user.username - Username for the session
    */
   function setUserSession(user) {
     const session = {
+      userId: user.userid,
       username: user.username,
       loginTime: new Date().toISOString(),
       isActive: true,
@@ -130,7 +135,7 @@
    * @param {Event} e - Submit event object
    * @returns {void}
    */
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault();
 
     const username = usernameInput.value.trim();
@@ -141,19 +146,19 @@
       return;
     }
 
-    const user = validateCredentials(username, password);
+    const user = await validateCredentials(username, password);
 
     if (user) {
       try {
         setUserSession(user);
-        alert('Login successful!');
+        // alert('Login successful!');
         window.location.href = './pages/home-page.html';
       } catch (error) {
         alert('Error during login. Please try again.');
       }
     } else {
-      alert('Invalid username or password!');
-      passwordInputs[0].value = '';
+      alert('Please create an account with us before you login!');
+      // window.location.href = '../../dist/pages/create-account-page.html';
     }
   }
 
@@ -162,7 +167,7 @@
    * @param {Event} e - Submit event object
    * @returns {void}
    */
-  function handleRegistration(e) {
+  async function handleRegistration(e) {
     e.preventDefault();
 
     const username = usernameInput.value.trim();
@@ -174,7 +179,7 @@
       return;
     }
 
-    if (!validatePasswords()) {
+    if (!validatePasswords(passwordInputs[0].value, passwordInputs[1]?.value)) {
       return;
     }
 
@@ -183,16 +188,13 @@
       return;
     }
 
-    const userData = {
-      username: username,
-      password: password,
-      email: email,
-      createdAt: new Date().toISOString(),
-    };
-
     try {
-      saveUser(userData);
-      alert('Account created successfully!');
+      await fetch('https://budgettrackerbackend-g9gc.onrender.com/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password, email }),
+      });
+      // alert('Account created successfully!');
       window.location.href = '../index.html';
     } catch (error) {
       alert('Error creating account. Please try again.');
@@ -221,7 +223,6 @@
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
       getUsers,
-      saveUser,
       validateCredentials,
       validatePasswords,
       isUsernameAvailable,

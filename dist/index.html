@@ -5,44 +5,56 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./styles/authentication.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <title>Login Page</title>
   </head>
-  <body>
-    <div class="authentication-container">
-      <h2>Login</h2>
-      <form>
-        <!-- Input username or email -->
-        <div class="authentication-input-group">
-          <label for="username">Username/Email:</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Enter your username or email"
-            required
-          />
-        </div>
-        <!-- Input password -->
-        <div class="authentication-input-group">
-          <label for="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter your password"
-            required
-          />
-        </div>
-        <!-- Submit form -->
-        <button type="submit">Login</button>
-      </form>
 
-      <!-- Links to either create an account or password recovery -->
-      <nav>
-        <a href="./pages/create-account-page.html">Create Account</a>
-        <a href="./pages/forgot-password-page.html">Forgot Password</a>
-      </nav>
-    </div>
+  <body>
+    <header>
+      <div class="header">
+        <h1>EXPENSE TRACKER</h1>
+      </div>
+    </header>
+    <main>
+      <div class="authentication-container">
+        <h2>Login</h2>
+        <form>
+          <!-- Input username or email -->
+          <div class="authentication-input-group">
+            <label for="username">Username:</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter your username or email"
+              required
+            />
+          </div>
+          <!-- Input password -->
+          <div class="authentication-input-group">
+            <label for="password">Password: </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+          <!-- Submit form -->
+          <button type="submit">Login</button>
+        </form>
+
+        <!-- Links to either create an account or password recovery -->
+        <div class="links">
+          <a href="./pages/create-account-page.html">Create Account</a>
+          <a href="./pages/forgot-password-page.html">Forgot Password</a>
+        </div>
+      </div>
+    </main>
     <script src="./scripts/auth.js"></script>
   </body>
 </html>
