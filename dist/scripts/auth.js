@@ -37,7 +37,7 @@
    */
   async function validateCredentials(username, password) {
     const users = await getUsers();
-    console.log(users);
+    // console.log(users);
     const user = users && users.find((user) => user.username === username);
 
     if (!user) {
@@ -105,10 +105,8 @@
    */
   function checkExistingSession() {
     const currentSession = JSON.parse(localStorage.getItem('currentSession'));
-    console.log(currentSession);
     if (currentSession && currentSession.isActive) {
       window.location.href = '../../dist/pages/home-page.html';
-      console.log(window.location.href);
     }
   }
 
@@ -151,7 +149,7 @@
     if (user) {
       try {
         setUserSession(user);
-        alert('Login successful!');
+        // alert('Login successful!');
         window.location.href = './pages/home-page.html';
       } catch (error) {
         alert('Error during login. Please try again.');
@@ -194,7 +192,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password, email }),
       });
-      alert('Account created successfully!');
+      // alert('Account created successfully!');
       window.location.href = '../index.html';
     } catch (error) {
       alert('Error creating account. Please try again.');

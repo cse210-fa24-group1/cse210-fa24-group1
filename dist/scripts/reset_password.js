@@ -15,7 +15,6 @@
   }
   async function getresetToken(token) {
     try {
-      console.log('getresetToken');
       const response = await fetch(
         `http://localhost:3000/api/resettoken?token=${token}`,
         {

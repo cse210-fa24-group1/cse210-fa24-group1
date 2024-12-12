@@ -6,17 +6,47 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-color: #f4f4f9;
+}
+main {
   display: flex;
   justify-content: center;
+  margin-top: 3rem;
+}
+
+/* Header Section */
+.header {
+  background-color: #16423c; /* Deep soothing blue */
+  color: #fff;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  height: 100vh;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  font-family: 'Poppins', sans-serif;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.header nav a {
+  text-decoration: none;
+  color: #f9f9f9;
+  margin-left: 20px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.header nav a:hover {
+  color: #dfeaff;
 }
 
 .authentication-container {
   background-color: white;
-  padding: 40px;
+  padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -33,12 +63,12 @@ body {
 
 h2 {
   margin-bottom: 20px;
-  color: black;
+  color: #16423c;
 }
 
 label {
   font-size: 14px;
-  color: black;
+  color: #16423c;
   display: block;
   margin-bottom: 5px;
 }
@@ -61,7 +91,7 @@ button {
   width: 80%;
   padding: 16px;
   margin-top: 20px;
-  background-color: blue;
+  background-color: #16423c;
   color: white;
   font-size: 16px;
   border: none;
@@ -70,10 +100,10 @@ button {
 }
 
 button:hover {
-  background-color: darkblue;
+  background-color: #032144;
 }
 
-nav {
+.links {
   margin-top: 15px;
   font-size: 14px;
   display: flex;
@@ -81,7 +111,7 @@ nav {
 }
 
 a {
-  color: green;
+  color: #16423c;
   text-decoration: none;
   padding: 5px;
   font-size: medium;

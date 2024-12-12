@@ -5,66 +5,77 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../styles/authentication.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <title>Create Account Page</title>
   </head>
   <body>
-    <div class="authentication-container">
-      <h2>Create Account</h2>
-      <form>
-        <!-- Input username or email -->
-        <div class="authentication-input-group">
-          <label for="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Enter your username"
-            required
-          />
-        </div>
-        <!-- Input username or email -->
-        <div class="authentication-input-group">
-          <label for="email">Email:</label>
-          <input
-            type="text"
-            id="email"
-            name="email"
-            placeholder="Enter your email"
-            required
-          />
-        </div>
-        <!-- Input password -->
-        <div class="authentication-input-group">
-          <label for="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter your password"
-            required
-          />
-        </div>
-        <!-- Input password again for password verification -->
-        <div class="authentication-input-group">
-          <label for="password-confirm">Enter Password Again:</label>
-          <input
-            type="password"
-            id="password-confirm"
-            name="password"
-            placeholder="Enter your password again"
-            required
-          />
-        </div>
+    <header>
+      <div class="header">
+        <h1>EXPENSE TRACKER</h1>
+      </div>
+    </header>
+    <main>
+      <div class="authentication-container">
+        <h2>Create Account</h2>
+        <form>
+          <!-- Input username or email -->
+          <div class="authentication-input-group">
+            <label for="username">Username:</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter your username"
+              required
+            />
+          </div>
+          <!-- Input username or email -->
+          <div class="authentication-input-group">
+            <label for="email">Email:</label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <!-- Input password -->
+          <div class="authentication-input-group">
+            <label for="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+          <!-- Input password again for password verification -->
+          <div class="authentication-input-group">
+            <label for="password-confirm">Enter Password Again:</label>
+            <input
+              type="password"
+              id="password-confirm"
+              name="password"
+              placeholder="Enter your password again"
+              required
+            />
+          </div>
 
-        <!-- Submit form -->
-        <button type="submit">Create Account</button>
-      </form>
+          <!-- Submit form -->
+          <button type="submit">Create Account</button>
+        </form>
 
-      <!-- Link to go back to main login page -->
-      <nav>
-        <a href="../index.html">Back to login</a>
-      </nav>
-    </div>
+        <!-- Link to go back to main login page -->
+        <div class="links">
+          <a href="../index.html">Back to login</a>
+        </div>
+      </div>
+    </main>
     <script src="../scripts/auth.js"></script>
   </body>
 </html>

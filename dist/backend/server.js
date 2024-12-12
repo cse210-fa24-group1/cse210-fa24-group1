@@ -21,7 +21,8 @@ db.serialize(() => {
             password TEXT NOT NULL,
             email TEXT NOT NULL,
             timestamp TEXT NOT NULL,
-            resetTokenId TEXT NULL
+            resetTokenId TEXT NULL,
+            budgetLimit INTEGER DEFAULT 0
         )
     `,
     (err) => {
@@ -406,6 +407,48 @@ app.delete('/api/transactions/:transactionid', (req, res) => {
       );
     }
   );
+});
+
+app.put('/api/users/budget', (req, res) => {
+  const { userid, budgetLimit } = req.body;
+
+  db.run(
+    'UPDATE users SET budgetLimit = ? WHERE userid = ?;',
+    [budgetLimit, userid],
+    function (err) {
+      if (err) {
+        console.error('Update error:', err.message);
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json({ userid, budgetLimit });
+    }
+  );
+});
+
+// Fetch user details by ID
+app.get('/api/users/:userId', (req, res) => {
+  const { userId } = req.params;
+
+  db.get('SELECT * FROM users WHERE userid = ?', [userId], (err, row) => {
+    if (err) {
+      console.error('Database error:', err.message);
+      res.status(500).json({ error: 'Failed to fetch user details.' });
+      return;
+    }
+
+    if (!row) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    res.json({
+      userid: row.userid,
+      username: row.username,
+      email: row.email,
+      budgetLimit: row.budgetLimit || 10000, // Default if no limit is set
+    });
+  });
 });
 
 app.listen(3000, () => {

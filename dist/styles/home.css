@@ -4,12 +4,12 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f0f4f8; /* Calming light blue-gray */
-  color: #333;
+  color: #16423c;
 }
 
 /* Header Section */
 .header {
-  background-color: #043f83; /* Deep soothing blue */
+  background-color: #16423c; /* Deep soothing blue */
   color: #fff;
   padding: 20px 30px;
   display: flex;
@@ -21,7 +21,7 @@ body {
 
 .header h1 {
   margin: 0;
-  font-size: 26px;
+  font-size: 20px;
 }
 
 .header nav a {
@@ -43,14 +43,13 @@ body {
 
 .current-expense h2 {
   font-size: 28px;
-  color: #043f83;
   font-family: 'Poppins', sans-serif;
-  margin: 10px;
+  margin: 20px;
+  padding-top: 20px;
 }
 
 .current-expense .balance {
   font-size: 20px;
-  color: #043f83;
   font-family: 'Poppins', sans-serif;
   margin: 10px;
 }
@@ -69,12 +68,25 @@ body {
   margin: 10px;
 }
 
+#edit-budget {
+  text-decoration: underline;
+  border: none;
+  background-color: #f0f4f8;
+  color: #16423c;
+}
+
+#edit-budget:hover {
+  text-decoration: underline;
+  border: none;
+  color: #0c0e40;
+}
+
 .budget input {
   padding: 10px;
   font-size: 16px;
   background-color: white;
-  color: #043f83;
-  border: 3px solid #043f83;
+  color: #16423c;
+  border: 3px solid #16423c;
   margin-left: 10px;
   border-radius: 6px;
   text-align: center;
@@ -86,11 +98,11 @@ body {
   padding: 10px 20px;
   font-size: 16px;
   background-color: white;
-  color: #043f83;
-  border: 3px solid #043f83;
+  color: #16423c;
+  /* border: 3px solid #16423C; */
   border-radius: 6px;
   cursor: pointer;
-  margin-right: 10px;
+  margin: 20px;
   transition:
     background-color 0.3s,
     transform 0.2s;
@@ -128,8 +140,8 @@ body {
 .history h3,
 .transaction-form h3 {
   font-size: 22px;
-  color: #043f83;
-  border-bottom: 2px solid #043f83;
+  color: #16423c;
+  border-bottom: 2px solid #16423c;
   padding-bottom: 5px;
   margin-top: 0px;
 }
@@ -148,7 +160,7 @@ body {
   border-bottom: 1px solid #ddd;
   word-wrap: break-word;
   margin: 15px 0px;
-  border: 2px solid #043f83;
+  border: 2px solid #16423c;
   border-radius: 5px;
 }
 
@@ -169,7 +181,7 @@ body {
  */
 
 #list li .description-space {
-  color: #043f83;
+  color: #16423c;
 }
 
 #list li .amount-space {
@@ -181,8 +193,8 @@ body {
 }
 
 #list li button {
-  color: #043f83;
-  border: 2px solid #043f83;
+  color: #16423c;
+  border: 2px solid #16423c;
   background-color: white;
   border-radius: 3px;
   cursor: pointer;
@@ -225,7 +237,7 @@ body {
   font-weight: bold;
   margin-top: 10px;
   display: block;
-  color: #043f83;
+  color: #16423c;
 }
 
 .transaction-form input,
@@ -233,7 +245,7 @@ body {
   width: -webkit-fill-available;
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #043f83;
+  border: 1px solid #16423c;
   border-radius: 5px;
   margin-top: 5px;
   margin-right: 10px;
@@ -266,17 +278,30 @@ body {
   color: #1fa463;
   margin-left: 4px;
 }
-
 /* Scrollbar Customization */
 .history::-webkit-scrollbar,
 .transaction-form::-webkit-scrollbar {
   width: 4px;
+  opacity: 0; /* Hide by default */
+  /* transition: opacity 0.2s ease; Smooth transition for visibility */
 }
 
+/* Show scrollbar only on hover */
+.history:hover::-webkit-scrollbar,
+.transaction-form:hover::-webkit-scrollbar {
+  opacity: 1;
+}
+
+/* Scrollbar thumb appearance */
 .history::-webkit-scrollbar-thumb,
 .transaction-form::-webkit-scrollbar-thumb {
-  background-color: #043f83;
+  background-color: #16423c;
   border-radius: 10px;
+}
+
+/* Limit scrollbar to 50% of the container's height */
+.history::-webkit-scrollbar-track {
+  height: 0.1rem; /* Set the visual range to 50% */
 }
 
 /* Responsive Design */
