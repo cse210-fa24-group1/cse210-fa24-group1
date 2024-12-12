@@ -8,7 +8,7 @@ module.exports = {
     '^.+\\.js$': 'babel-jest',
   },
   testMatch: ['**/__tests__/**/*.test.js'],
-  setupFiles: ['./jest.setup.js'],
+  setupFiles: ['./jest.setup.js', 'jest-canvas-mock'],
   collectCoverage: true,
   coverageDirectory: 'coverage',
   coverageReporters: ['lcov', 'html'],
