@@ -10,7 +10,9 @@
    */
   async function getUsers() {
     try {
-      const response = await fetch('https://budgettrackerbackend-g9gc.onrender.com/api/users');
+      const response = await fetch(
+        'https://budgettrackerbackend-g9gc.onrender.com/api/users'
+      );
       const users = await response.json(); // Wait for the JSON data to be parsed
       return users; // Return the data after awaiting
     } catch (error) {

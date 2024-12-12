@@ -5,7 +5,9 @@
    */
   async function getUsers() {
     try {
-      const response = await fetch('https://budgettrackerbackend-g9gc.onrender.com/api/users');
+      const response = await fetch(
+        'https://budgettrackerbackend-g9gc.onrender.com/api/users'
+      );
       const users = await response.json(); // Wait for the JSON data to be parsed
       return users; // Return the data after awaiting
     } catch (error) {
@@ -44,21 +46,27 @@
     // Generate a reset token and store it with the user
     const resetToken = generateResetToken();
     const expiresAt = new Date(Date.now() + 3600000);
-    const responseToken = await fetch('https://budgettrackerbackend-g9gc.onrender.com/api/resettoken', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: resetToken, expiresAt }),
-    });
+    const responseToken = await fetch(
+      'https://budgettrackerbackend-g9gc.onrender.com/api/resettoken',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: resetToken, expiresAt }),
+      }
+    );
     if (!responseToken.ok) {
       throw new Error('Failed to create reset token');
     }
     const tokenData = await responseToken.json();
     const tokenId = tokenData.id;
-    const updateUserResponse = await fetch('https://budgettrackerbackend-g9gc.onrender.com/api/users', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userid: user.userid, tokenid: tokenId }),
-    });
+    const updateUserResponse = await fetch(
+      'https://budgettrackerbackend-g9gc.onrender.com/api/users',
+      {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userid: user.userid, tokenid: tokenId }),
+      }
+    );
 
     if (!updateUserResponse.ok) {
       const errorText = await updateUserResponse.text();

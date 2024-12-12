@@ -83,17 +83,20 @@ async function saveTransactionToDB(
   categoryid,
   description
 ) {
-  await fetch('https://budgettrackerbackend-g9gc.onrender.com/api/transactions', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      userid,
-      isExpense,
-      amount,
-      categoryid,
-      description,
-    }),
-  });
+  await fetch(
+    'https://budgettrackerbackend-g9gc.onrender.com/api/transactions',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userid,
+        isExpense,
+        amount,
+        categoryid,
+        description,
+      }),
+    }
+  );
   await updateUI();
 }
 
@@ -267,16 +270,19 @@ async function handleBudgetLimitChange() {
   }
 
   try {
-    const response = await fetch('https://budgettrackerbackend-g9gc.onrender.com/api/users/budget', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userid: currentSession.userId,
-        budgetLimit: newLimit,
-      }),
-    });
+    const response = await fetch(
+      'https://budgettrackerbackend-g9gc.onrender.com/api/users/budget',
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userid: currentSession.userId,
+          budgetLimit: newLimit,
+        }),
+      }
+    );
 
     if (!response.ok) throw new Error('Server issue');
     const result = await response.json();

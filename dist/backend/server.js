@@ -452,5 +452,7 @@ app.get('/api/users/:userId', (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log('Server is running on https://budgettrackerbackend-g9gc.onrender.com');
+  console.log(
+    'Server is running on https://budgettrackerbackend-g9gc.onrender.com'
+  );
 });
