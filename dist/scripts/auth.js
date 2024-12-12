@@ -44,7 +44,7 @@
     console.log(user);
 
     if (!user) {
-      console.log("Hi Over Here!!");
+      console.log('Hi Over Here!!');
       showError('User not found. Please create an account.');
       return null;
     }

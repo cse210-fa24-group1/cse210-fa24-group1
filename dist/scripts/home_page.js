@@ -160,7 +160,6 @@ async function deleteTransaction(transactionId) {
     }
 
     await updateUI();
-  
   } catch (error) {
     console.error('Error deleting transaction:', error.message);
     showError(`Failed to delete transaction: ${error.message}`);
