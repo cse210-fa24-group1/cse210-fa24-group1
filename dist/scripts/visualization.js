@@ -400,7 +400,7 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
     try {
       downloadDataCSV();
     } catch (err) {
-      alert('Error: ' + err.message);
+      showError('Error: ' + err.message);
     }
   });
 })();

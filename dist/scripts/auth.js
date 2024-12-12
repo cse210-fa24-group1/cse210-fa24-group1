@@ -41,14 +41,16 @@
     const users = await getUsers();
     // console.log(users);
     const user = users && users.find((user) => user.username === username);
+    console.log(user);
 
     if (!user) {
-      alert('User not found. Please create an account.');
+      console.log("Hi Over Here!!");
+      showError('User not found. Please create an account.');
       return null;
     }
 
     if (user.password !== password) {
-      alert('The password is incorrect.');
+      showError('The password is incorrect.');
       return null;
     }
 
@@ -64,12 +66,12 @@
     // const password2 = passwordInputs[1]?.value;
 
     if (password1.length < 6) {
-      alert('Password must be at least 6 characters long!');
+      showError('Password must be at least 6 characters long!');
       return false;
     }
 
     if (!isLoginPage && password1 !== password2) {
-      alert('Passwords do not match!');
+      showError('Passwords do not match!');
       return false;
     }
 
@@ -142,7 +144,7 @@
     const password = passwordInputs[0].value;
 
     if (!username || !password) {
-      alert('Please fill in all fields!');
+      showError('Please fill in all fields!');
       return;
     }
 
@@ -151,14 +153,11 @@
     if (user) {
       try {
         setUserSession(user);
-        // alert('Login successful!');
+        // showError('Login successful!');
         window.location.href = './pages/home-page.html';
       } catch (error) {
-        alert('Error during login. Please try again.');
+        showError('Error during login. Please try again.');
       }
-    } else {
-      alert('Please create an account with us before you login!');
-      // window.location.href = '../../dist/pages/create-account-page.html';
     }
   }
 
@@ -175,7 +174,7 @@
     const password = passwordInputs[0].value;
 
     if (!username || !password || !email) {
-      alert('Please fill in all fields!');
+      showError('Please fill in all fields!');
       return;
     }
 
@@ -184,7 +183,7 @@
     }
 
     if (!isUsernameAvailable(username)) {
-      alert('Username already exists! Please choose another one.');
+      showError('Username already exists! Please choose another one.');
       return;
     }
 
@@ -194,10 +193,10 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password, email }),
       });
-      // alert('Account created successfully!');
+      // showError('Account created successfully!');
       window.location.href = '../index.html';
     } catch (error) {
-      alert('Error creating account. Please try again.');
+      showError('Error creating account. Please try again.');
     }
   }
 

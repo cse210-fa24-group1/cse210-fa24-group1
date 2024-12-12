@@ -120,7 +120,7 @@ async function addTransaction(e) {
 
   // Validate inputs
   if (text === '' || isNaN(amount)) {
-    alert('Please enter a valid description and amount.');
+    showError('Please enter a valid description and amount.');
     return;
   }
 
@@ -160,12 +160,10 @@ async function deleteTransaction(transactionId) {
     }
 
     await updateUI();
-    setTimeout(() => {
-      alert(`Transaction with ID ${transactionId} deleted successfully!`);
-    }, 200);
+  
   } catch (error) {
     console.error('Error deleting transaction:', error.message);
-    alert(`Failed to delete transaction: ${error.message}`);
+    showError(`Failed to delete transaction: ${error.message}`);
   }
 }
 
@@ -264,7 +262,7 @@ async function handleBudgetLimitChange() {
   const newLimit = parseFloat(budgetLimitInput.value.replace(/[$,]/g, ''));
 
   if (isNaN(newLimit)) {
-    alert('Invalid budget limit value');
+    showError('Invalid budget limit value');
     budgetLimitInput.value = `$${budgetLimit}`;
     return;
   }
@@ -292,7 +290,7 @@ async function handleBudgetLimitChange() {
     localStorage.setItem('budgetLimit', budgetLimit);
   } catch (error) {
     console.error('Error saving new budget limit:', error.message);
-    alert('Failed to save changes!');
+    showError('Failed to save changes!');
   }
 }
 
