@@ -47,8 +47,6 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
     document.getElementById('pie-chart').style.display = 'block';
   }
 
-
-
   const categories = JSON.parse(localStorage.getItem('category')) || [];
 
   // Prepare data for the line chart (amount vs timestamp)
@@ -72,40 +70,39 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
     );
   });
 
-  
-
   // Replace the existing date label generation with this improved version
-const sortedTransactions = transactions.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  const sortedTransactions = transactions.sort(
+    (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+  );
 
-const lineChartLabels = [
-  ...new Set(
-    sortedTransactions.map((t) => {
-      const date = new Date(t.timestamp);
-      // Use a consistent date formatting method
-      return date.toISOString().split('T')[0]; // YYYY-MM-DD format
-    })
-  )
-];
+  const lineChartLabels = [
+    ...new Set(
+      sortedTransactions.map((t) => {
+        const date = new Date(t.timestamp);
+        // Use a consistent date formatting method
+        return date.toISOString().split('T')[0]; // YYYY-MM-DD format
+      })
+    ),
+  ];
 
-// Modify the line chart datasets generation to match this sorting
-const lineChartDatasets = categories.map((category) => {
-  const categoryTransactions = transactionsByCategory[category.id];
-  const amounts = lineChartLabels.map((date) => {
-    const transaction = categoryTransactions.find(
-      (t) => t.timestamp.toISOString().split('T')[0] === date
-    );
-    return transaction ? transaction.amount : 0;
+  // Modify the line chart datasets generation to match this sorting
+  const lineChartDatasets = categories.map((category) => {
+    const categoryTransactions = transactionsByCategory[category.id];
+    const amounts = lineChartLabels.map((date) => {
+      const transaction = categoryTransactions.find(
+        (t) => t.timestamp.toISOString().split('T')[0] === date
+      );
+      return transaction ? transaction.amount : 0;
+    });
+
+    return {
+      label: category.name,
+      data: amounts,
+      fill: false,
+      borderColor: getRandomColor(),
+      tension: 0.1,
+    };
   });
-
-  return {
-    label: category.name,
-    data: amounts,
-    fill: false,
-    borderColor: getRandomColor(),
-    tension: 0.1,
-  };
-});
-
 
   // Set up the line chart
   const lineChartCtx = document.getElementById('line-chart').getContext('2d');
@@ -168,95 +165,97 @@ const lineChartDatasets = categories.map((category) => {
     end.setHours(23, 59, 59, 999); // Set end date to end of day
 
     // Filter transactions within the date range
-    const filteredTransactions = transactions.filter(t => {
+    const filteredTransactions = transactions.filter((t) => {
       const transactionDate = new Date(t.timestamp);
       return transactionDate >= start && transactionDate <= end;
     });
 
     // Update download data
     downloadData = filteredTransactions;
-// Prepare filtered line chart labels
-const newLineChartLabels = [
-  ...new Set(
-    filteredTransactions.map((t) => new Date(t.timestamp).toLocaleDateString())
-  ),
-];
+    // Prepare filtered line chart labels
+    const newLineChartLabels = [
+      ...new Set(
+        filteredTransactions.map((t) =>
+          new Date(t.timestamp).toLocaleDateString()
+        )
+      ),
+    ];
 
-// Prepare filtered line chart datasets
-const newLineChartDatasets = categories.map((category) => {
-  const categoryTransactions = filteredTransactions
-    .filter(t => t.categoryid === category.id)
-    .map(t => ({
-      timestamp: new Date(t.timestamp),
-      amount: t.amount
-    }))
-    .sort((a, b) => a.timestamp - b.timestamp);
+    // Prepare filtered line chart datasets
+    const newLineChartDatasets = categories.map((category) => {
+      const categoryTransactions = filteredTransactions
+        .filter((t) => t.categoryid === category.id)
+        .map((t) => ({
+          timestamp: new Date(t.timestamp),
+          amount: t.amount,
+        }))
+        .sort((a, b) => a.timestamp - b.timestamp);
 
-  const amounts = newLineChartLabels.map((date) => {
-    const transaction = categoryTransactions.find(
-      (t) => t.timestamp.toLocaleDateString() === date
-    );
-    return transaction ? transaction.amount : 0;
+      const amounts = newLineChartLabels.map((date) => {
+        const transaction = categoryTransactions.find(
+          (t) => t.timestamp.toLocaleDateString() === date
+        );
+        return transaction ? transaction.amount : 0;
+      });
+
+      return {
+        label: category.name,
+        data: amounts,
+        fill: false,
+        borderColor: getRandomColor(),
+        tension: 0.1,
+      };
+    });
+
+    // Update line chart
+    lineChart.data.labels = newLineChartLabels;
+    lineChart.data.datasets = newLineChartDatasets;
+    lineChart.update();
+
+    // Prepare filtered pie chart data
+    const newCategorySpending = {};
+    filteredTransactions.forEach((transaction) => {
+      const categoryId = transaction.categoryid;
+      const amount = transaction.amount;
+      if (newCategorySpending[categoryId]) {
+        newCategorySpending[categoryId] += amount;
+      } else {
+        newCategorySpending[categoryId] = amount;
+      }
+    });
+
+    // Prepare pie chart labels and data
+    const newPieChartLabels = [];
+    const newPieChartData = [];
+    const newPieChartBackgroundColors = [];
+    categories.forEach((category) => {
+      const categoryId = category.id;
+      if (newCategorySpending[categoryId]) {
+        newPieChartLabels.push(category.name);
+        newPieChartData.push(newCategorySpending[categoryId]);
+        newPieChartBackgroundColors.push(getRandomColor());
+      }
+    });
+
+    // Update pie chart
+    pieChart.data.labels = newPieChartLabels;
+    pieChart.data.datasets[0].data = newPieChartData;
+    pieChart.data.datasets[0].backgroundColor = newPieChartBackgroundColors;
+    pieChart.update();
+  }
+
+  // Get start and end date inputs
+  const startDateInput = document.getElementById('start-date');
+  const endDateInput = document.getElementById('end-date');
+
+  // Add event listeners to date range inputs
+  startDateInput.addEventListener('change', () => {
+    getDateRangeData(startDateInput.value, endDateInput.value);
   });
 
-  return {
-    label: category.name,
-    data: amounts,
-    fill: false,
-    borderColor: getRandomColor(),
-    tension: 0.1,
-  };
-});
-
-// Update line chart
-lineChart.data.labels = newLineChartLabels;
-lineChart.data.datasets = newLineChartDatasets;
-lineChart.update();
-
-// Prepare filtered pie chart data
-const newCategorySpending = {};
-filteredTransactions.forEach((transaction) => {
-  const categoryId = transaction.categoryid;
-  const amount = transaction.amount;
-  if (newCategorySpending[categoryId]) {
-    newCategorySpending[categoryId] += amount;
-  } else {
-    newCategorySpending[categoryId] = amount;
-  }
-});
-
-// Prepare pie chart labels and data
-const newPieChartLabels = [];
-const newPieChartData = [];
-const newPieChartBackgroundColors = [];
-categories.forEach((category) => {
-  const categoryId = category.id;
-  if (newCategorySpending[categoryId]) {
-    newPieChartLabels.push(category.name);
-    newPieChartData.push(newCategorySpending[categoryId]);
-    newPieChartBackgroundColors.push(getRandomColor());
-  }
-});
-
-// Update pie chart
-pieChart.data.labels = newPieChartLabels;
-pieChart.data.datasets[0].data = newPieChartData;
-pieChart.data.datasets[0].backgroundColor = newPieChartBackgroundColors;
-pieChart.update();
-}
-
-// Get start and end date inputs
-const startDateInput = document.getElementById('start-date');
-const endDateInput = document.getElementById('end-date');
-
-// Add event listeners to date range inputs
-startDateInput.addEventListener('change', () => {
-getDateRangeData(startDateInput.value, endDateInput.value);
-});
-
-endDateInput.addEventListener('change', () => {
-getDateRangeData(startDateInput.value, endDateInput.value);
-});
+  endDateInput.addEventListener('change', () => {
+    getDateRangeData(startDateInput.value, endDateInput.value);
+  });
 
   // Prepare data for the pie chart (category-wise spending distribution)
   const categorySpending = {};
@@ -312,22 +311,28 @@ getDateRangeData(startDateInput.value, endDateInput.value);
           padding: { top: 10, bottom: 20 },
         },
         tooltip: {
-        enabled: true,
-        callbacks: {
-          label: function (context) {
-            const total = context.chart.data.datasets[0].data.reduce((sum, val) => sum + val, 0);
-            const amount = parseInt(context.formattedValue.replace(/,/g, ''), 10);            
-            
-            const percentage = ((amount/ total) * 100).toFixed(2) + '%';
-            // console.log(parseInt(context.formattedValue, 10));
-            
-            return `${context.label}: ${percentage}`;
+          enabled: true,
+          callbacks: {
+            label: function (context) {
+              const total = context.chart.data.datasets[0].data.reduce(
+                (sum, val) => sum + val,
+                0
+              );
+              const amount = parseInt(
+                context.formattedValue.replace(/,/g, ''),
+                10
+              );
+
+              const percentage = ((amount / total) * 100).toFixed(2) + '%';
+              // console.log(parseInt(context.formattedValue, 10));
+
+              return `${context.label}: ${percentage}`;
+            },
           },
         },
-      },
-      datalabels: {
-        display: false, // Disable static datalabels in favor of tooltips
-      },
+        datalabels: {
+          display: false, // Disable static datalabels in favor of tooltips
+        },
         datalabels: {
           formatter: function (value, context) {
             const data = context.chart.data.datasets[0].data;
@@ -351,8 +356,8 @@ getDateRangeData(startDateInput.value, endDateInput.value);
 
   // Download data from the currently displayed data timeframe
   function downloadDataCSV() {
-    console.log("Hi");
-    
+    console.log('Hi');
+
     const filename = 'data.csv';
     let csv = 'Category, Amount, Timestamp\n';
 
@@ -360,9 +365,13 @@ getDateRangeData(startDateInput.value, endDateInput.value);
       const categoryId = transaction.categoryid;
       const amount = transaction.amount;
       const timestamp = new Date(transaction.timestamp);
-      const date = timestamp.getFullYear().toString() + '/' + timestamp.getMonth().toString() + '/' + timestamp.getDate().toString();
+      const date =
+        timestamp.getFullYear().toString() +
+        '/' +
+        timestamp.getMonth().toString() +
+        '/' +
+        timestamp.getDate().toString();
       console.log(date);
-      
 
       const foundEntry = categories.find((item) => item.id === categoryId);
       const categoryName = foundEntry.name;

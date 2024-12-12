@@ -8,7 +8,7 @@ body {
 }
 
 header {
-  background-color: #16423C; /* Deep soothing blue */
+  background-color: #16423c; /* Deep soothing blue */
   color: #fff;
   padding: 20px 30px;
   display: flex;
@@ -31,11 +31,11 @@ header nav a {
   transition: color 0.3s;
 }
 
-#no-data-message{
-  display: none; 
-  color: #16423C; 
-  font-size: 18px; 
-  text-align: center; 
+#no-data-message {
+  display: none;
+  color: #16423c;
+  font-size: 18px;
+  text-align: center;
   margin-top: 20px;
   position: fixed; /* Fixed to viewport */
   top: 20%;
@@ -95,7 +95,7 @@ canvas {
   font-size: 16px;
   font-weight: bold;
   border-radius: 8px;
-  background-color: #16423C;
+  background-color: #16423c;
   color: white;
   border: none;
   cursor: pointer;

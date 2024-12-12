@@ -226,7 +226,7 @@ app.post('/api/transactions', (req, res) => {
             amount,
             categoryid,
             description,
-            timestamp
+            timestamp,
           });
         }
       );
@@ -323,7 +323,7 @@ app.put('/api/users/budget', (req, res) => {
 // Fetch user details by ID
 app.get('/api/users/:userId', (req, res) => {
   const { userId } = req.params;
-  
+
   db.get('SELECT * FROM users WHERE userid = ?', [userId], (err, row) => {
     if (err) {
       console.error('Database error:', err.message);
@@ -334,7 +334,7 @@ app.get('/api/users/:userId', (req, res) => {
     if (!row) {
       res.status(404).json({ error: 'User not found' });
       return;
-    }    
+    }
 
     res.json({
       userid: row.userid,
@@ -344,8 +344,6 @@ app.get('/api/users/:userId', (req, res) => {
     });
   });
 });
-
-
 
 app.listen(3000, () => {
   console.log('Server is running on http://localhost:3000');

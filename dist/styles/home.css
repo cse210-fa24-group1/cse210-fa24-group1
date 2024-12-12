@@ -4,12 +4,12 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f0f4f8; /* Calming light blue-gray */
-  color: #16423C;
+  color: #16423c;
 }
 
 /* Header Section */
 .header {
-  background-color: #16423C; /* Deep soothing blue */
+  background-color: #16423c; /* Deep soothing blue */
   color: #fff;
   padding: 20px 30px;
   display: flex;
@@ -68,14 +68,14 @@ body {
   margin: 10px;
 }
 
-#edit-budget{
+#edit-budget {
   text-decoration: underline;
   border: none;
   background-color: #f0f4f8;
-  color: #16423C;
+  color: #16423c;
 }
 
-#edit-budget:hover{
+#edit-budget:hover {
   text-decoration: underline;
   border: none;
   color: #0c0e40;
@@ -85,8 +85,8 @@ body {
   padding: 10px;
   font-size: 16px;
   background-color: white;
-  color: #16423C;
-  border: 3px solid #16423C;
+  color: #16423c;
+  border: 3px solid #16423c;
   margin-left: 10px;
   border-radius: 6px;
   text-align: center;
@@ -98,7 +98,7 @@ body {
   padding: 10px 20px;
   font-size: 16px;
   background-color: white;
-  color: #16423C;
+  color: #16423c;
   /* border: 3px solid #16423C; */
   border-radius: 6px;
   cursor: pointer;
@@ -140,8 +140,8 @@ body {
 .history h3,
 .transaction-form h3 {
   font-size: 22px;
-  color: #16423C;
-  border-bottom: 2px solid #16423C;
+  color: #16423c;
+  border-bottom: 2px solid #16423c;
   padding-bottom: 5px;
   margin-top: 0px;
 }
@@ -160,7 +160,7 @@ body {
   border-bottom: 1px solid #ddd;
   word-wrap: break-word;
   margin: 15px 0px;
-  border: 2px solid #16423C;
+  border: 2px solid #16423c;
   border-radius: 5px;
 }
 
@@ -181,7 +181,7 @@ body {
  */
 
 #list li .description-space {
-  color: #16423C;
+  color: #16423c;
 }
 
 #list li .amount-space {
@@ -193,8 +193,8 @@ body {
 }
 
 #list li button {
-  color: #16423C;
-  border: 2px solid #16423C;
+  color: #16423c;
+  border: 2px solid #16423c;
   background-color: white;
   border-radius: 3px;
   cursor: pointer;
@@ -240,7 +240,7 @@ body {
   font-weight: bold;
   margin-top: 10px;
   display: block;
-  color: #16423C;
+  color: #16423c;
 }
 
 .transaction-form input,
@@ -248,7 +248,7 @@ body {
   width: -webkit-fill-available;
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #16423C;
+  border: 1px solid #16423c;
   border-radius: 5px;
   margin-top: 5px;
   margin-right: 10px;
@@ -298,7 +298,7 @@ body {
 /* Scrollbar thumb appearance */
 .history::-webkit-scrollbar-thumb,
 .transaction-form::-webkit-scrollbar-thumb {
-  background-color: #16423C;
+  background-color: #16423c;
   border-radius: 10px;
 }
 

@@ -12,7 +12,7 @@ async function fetchInitialBudgetLimit() {
     console.error('No user session found');
     return;
   }
-  
+
   try {
     const response = await fetch(
       `http://localhost:3000/api/users/${currentSession.userId}`
@@ -243,10 +243,10 @@ async function checkBudgetLimit() {
   const userData = await response.json();
   if (userData?.budgetLimit) {
     budgetLimit = userData.budgetLimit;
-  }  
+  }
 
-  if (Math.abs(currentTotal) > budgetLimit && currentTotal < 0) {    
-    budgetWarning && (budgetWarning.innerText = 'Exceeded the limit :(');    
+  if (Math.abs(currentTotal) > budgetLimit && currentTotal < 0) {
+    budgetWarning && (budgetWarning.innerText = 'Exceeded the limit :(');
   } else {
     budgetWarning && (budgetWarning.innerText = '');
   }
@@ -286,7 +286,7 @@ async function checkBudgetLimit() {
 
 //       const result = await response.json();
 //       console.log('Budget limit updated:', result);
-      
+
 //       budgetLimit = parsedLimit;
 //       budgetLimitInput.value = `$${budgetLimit}`;
 //       localStorage.setItem('budgetLimit', budgetLimit);
@@ -304,7 +304,7 @@ async function handleBudgetLimitChange() {
 
   if (isNaN(newLimit)) {
     alert('Invalid budget limit value');
-    budgetLimitInput.value = `$${budgetLimit}`; 
+    budgetLimitInput.value = `$${budgetLimit}`;
     return;
   }
 
@@ -332,35 +332,34 @@ async function handleBudgetLimitChange() {
   }
 }
 
-
 /**
  * Enter edit mode on click
  */
 editBudgetBtn &&
-editBudgetBtn.addEventListener('click', () => {
-  const isEditingBudgetLimit = !budgetLimitInput.disabled;
+  editBudgetBtn.addEventListener('click', () => {
+    const isEditingBudgetLimit = !budgetLimitInput.disabled;
 
-  if (isEditingBudgetLimit) {
-    budgetLimitInput.disabled = true;
-    editBudgetBtn.textContent = 'Edit Budget Limit';
-  } else {
-    budgetLimitInput.disabled = false;
-    budgetLimitInput.focus();
-    editBudgetBtn.textContent = 'Save Changes';
-  }
-});
+    if (isEditingBudgetLimit) {
+      budgetLimitInput.disabled = true;
+      editBudgetBtn.textContent = 'Edit Budget Limit';
+    } else {
+      budgetLimitInput.disabled = false;
+      budgetLimitInput.focus();
+      editBudgetBtn.textContent = 'Save Changes';
+    }
+  });
 
 // Handle when user leaves the input field after editing
 budgetLimitInput &&
-budgetLimitInput.addEventListener('blur', async () => {
-  if (budgetLimitInput.disabled) return; // Exit if already disabled
-  else{
-    await handleBudgetLimitChange();
-    budgetLimitInput.disabled = true;
-    editBudgetBtn.textContent = 'Edit Budget Limit';
-  }
-});
-
+  budgetLimitInput.addEventListener('blur', async () => {
+    if (budgetLimitInput.disabled)
+      return; // Exit if already disabled
+    else {
+      await handleBudgetLimitChange();
+      budgetLimitInput.disabled = true;
+      editBudgetBtn.textContent = 'Edit Budget Limit';
+    }
+  });
 
 /**
  * Initialize the UI by loading transactions and updating values.
