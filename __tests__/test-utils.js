@@ -35,42 +35,15 @@ class MockPopup {
 
 const mockErrorPopup = new MockPopup();
 
-// Global mock for showError
-global.showError = (message, title = 'Error') => {
+// Define showError function before exporting
+const showError = (message, title = 'Error') => {
   mockErrorPopup.show(message, title);
 };
 
-// Mock alert to use showError
-global.alert = (message) => {
-  showError(message);
-};
+// Make showError available globally
+global.showError = showError;
 
 module.exports = {
   mockErrorPopup,
-  // Common mocks
-  getMockWindow: () => ({
-    location: {
-      origin: 'http://example.com',
-      pathname: '/forgot-password-page.html',
-      search: '?token=validtoken',
-      href: '',
-    },
-    emailjs: {
-      init: jest.fn(),
-      send: jest.fn().mockResolvedValue({}),
-    },
-    addEventListener: jest.fn(),
-  }),
-  getMockLocalStorage: () => {
-    let store = {};
-    return {
-      getItem: jest.fn((key) => store[key] || null),
-      setItem: jest.fn((key, value) => {
-        store[key] = value.toString();
-      }),
-      clear: jest.fn(() => {
-        store = {};
-      }),
-    };
-  },
+  showError,
 };
