@@ -16,7 +16,7 @@
       const users = await response.json(); // Wait for the JSON data to be parsed
       return users; // Return the data after awaiting
     } catch (error) {
-      console.error('Error fetching users:', error);
+      // console.error('Error fetching users:', error);
       return [];
     }
   }
@@ -41,10 +41,10 @@
     const users = await getUsers();
     // console.log(users);
     const user = users && users.find((user) => user.username === username);
-    console.log(user);
+    // console.log(user);
 
     if (!user) {
-      console.log('Hi Over Here!!');
+      // console.log('Hi Over Here!!');
       showError('User not found. Please create an account.');
       return null;
     }

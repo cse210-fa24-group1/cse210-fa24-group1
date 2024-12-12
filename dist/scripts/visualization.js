@@ -415,4 +415,3 @@ function getRandomColor() {
 }
 
 // Export the functions for testing
-export { getUserTransactions, getRandomColor };
