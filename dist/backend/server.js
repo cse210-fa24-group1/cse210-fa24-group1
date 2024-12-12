@@ -50,7 +50,6 @@ db.serialize(() => {
             amount INTEGER NOT NULL,
             categoryid INTEGER NOT NULL,
             description TEXT,
-            description TEXT,
             timestamp TEXT NOT NULL
         )
     `,
