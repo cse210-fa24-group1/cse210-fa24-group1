@@ -232,28 +232,28 @@ async function checkBudgetLimit() {
   const budgetWarning = document.getElementById('budget-warning');
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
 
-  try{
-  const response = await fetch(
-    `http://localhost:3000/api/users/${currentSession.userId}`
-  );
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/users/${currentSession.userId}`
+    );
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch user data');
-  }
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data');
+    }
 
-  const userData = await response.json();
-  if (userData?.budgetLimit) {
-    budgetLimit = userData.budgetLimit;
-  }
+    const userData = await response.json();
+    if (userData?.budgetLimit) {
+      budgetLimit = userData.budgetLimit;
+    }
 
-  if (Math.abs(currentTotal) > budgetLimit && currentTotal < 0) {
-    budgetWarning && (budgetWarning.innerText = 'Exceeded the limit :(');
-  } else {
-    budgetWarning && (budgetWarning.innerText = '');
+    if (Math.abs(currentTotal) > budgetLimit && currentTotal < 0) {
+      budgetWarning && (budgetWarning.innerText = 'Exceeded the limit :(');
+    } else {
+      budgetWarning && (budgetWarning.innerText = '');
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error.message);
   }
-}catch (error) {
-  console.error('Error fetching data:', error.message);
-}
 }
 
 // /**
