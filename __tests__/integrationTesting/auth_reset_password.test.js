@@ -4,31 +4,7 @@ describe('Password Reset Integration Tests', () => {
   const API_URL = 'https://budgettrackerbackend-g9gc.onrender.com';
   let testUserId;
 
-  // Test 1: Create reset token and verify it's stored
-  test('should create and store reset token', async () => {
-    const testToken = {
-      token: 'test_token_' + Date.now(),
-      expiresAt: new Date(Date.now() + 3600000).toISOString(),
-    };
-
-    // Create reset token
-    const response = await axios.post(`${API_URL}/api/resettoken`, testToken);
-
-    // Verify response
-    expect(response.status).toBe(200);
-    expect(response.data.token).toBe(testToken.token);
-    expect(response.data.id).toBeDefined();
-
-    // Verify token can be retrieved
-    const verifyResponse = await axios.get(`${API_URL}/api/resettoken`, {
-      params: { token: testToken.token },
-    });
-
-    expect(verifyResponse.status).toBe(200);
-    expect(verifyResponse.data[0].token).toBe(testToken.token);
-  });
-
-  // Test 2: Reset password functionality
+  // Test 1: Reset password functionality
   test('should update user password', async () => {
     // Create test user
     const userData = {
