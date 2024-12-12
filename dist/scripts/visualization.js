@@ -5,22 +5,13 @@
  */
 async function getUserTransactions() {
   const currentSession = JSON.parse(localStorage.getItem('currentSession'));
-  const errorMessageElement = document.getElementById('error-message');
   try {
     const response = await fetch(
       `http://localhost:3000/api/transactions/${currentSession.userId}`
     );
-    const data = await response.json();
-    errorMessageElement.style.display = 'none';
-    if (data.length === 0) {
-      errorMessageElement.textContent = 'No transactions to visualize!';
-      errorMessageElement.style.display = 'block';
-    }
-    return data;
+    return (await response.json()) || [];
   } catch (error) {
     console.error('Error fetching transactions:', error);
-    errorMessageElement.textContent = 'Failed to get transactions!';
-    errorMessageElement.style.display = 'block';
     return [];
   }
 }
@@ -75,14 +66,12 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
   // Sort transactions for each category by timestamp
   Object.keys(transactionsByCategory).forEach((categoryId) => {
     transactionsByCategory[categoryId].sort(
-      (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+      (a, b) => a.timestamp - b.timestamp
     );
   });
 
   // Replace the existing date label generation with this improved version
-  const sortedTransactions = transactions.sort(
-    (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
-  );
+  const sortedTransactions = transactions.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
   const lineChartLabels = [
     ...new Set(
@@ -91,7 +80,7 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
         // Use a consistent date formatting method
         return date.toISOString().split('T')[0]; // YYYY-MM-DD format
       })
-    ),
+    )
   ];
 
   // Modify the line chart datasets generation to match this sorting
@@ -132,7 +121,7 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
             weight: 'bold',
             family: 'Poppins',
           },
-          color: '#16423C',
+          color: '#043f83',
           padding: { top: 10, bottom: 20 },
         },
       },
@@ -154,18 +143,15 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
   });
 
   // Function to filter transactions by date range
+  // MODIFICATION: Added default to most recent month's transactions
   function getDateRangeData(startDate, endDate) {
+    // If no dates are selected, default to the most recent month
     if (!startDate || !endDate) {
-      // If no dates are selected, reset to original data
-      lineChart.data.labels = lineChartLabels;
-      lineChart.data.datasets = lineChartDatasets;
-      lineChart.update();
-
-      pieChart.data.labels = pieChartLabels;
-      pieChart.data.datasets[0].data = pieChartData;
-      pieChart.data.datasets[0].backgroundColor = pieChartBackgroundColors;
-      pieChart.update();
-      return;
+      const now = new Date();
+      const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+      
+      startDate = oneMonthAgo.toISOString().split('T')[0];
+      endDate = now.toISOString().split('T')[0];
     }
 
     // Convert input dates to Date objects
@@ -174,29 +160,28 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
     end.setHours(23, 59, 59, 999); // Set end date to end of day
 
     // Filter transactions within the date range
-    const filteredTransactions = transactions.filter((t) => {
+    const filteredTransactions = transactions.filter(t => {
       const transactionDate = new Date(t.timestamp);
       return transactionDate >= start && transactionDate <= end;
     });
 
     // Update download data
     downloadData = filteredTransactions;
+
     // Prepare filtered line chart labels
     const newLineChartLabels = [
       ...new Set(
-        filteredTransactions.map((t) =>
-          new Date(t.timestamp).toLocaleDateString()
-        )
+        filteredTransactions.map((t) => new Date(t.timestamp).toLocaleDateString())
       ),
     ];
 
     // Prepare filtered line chart datasets
     const newLineChartDatasets = categories.map((category) => {
       const categoryTransactions = filteredTransactions
-        .filter((t) => t.categoryid === category.id)
-        .map((t) => ({
+        .filter(t => t.categoryid === category.id)
+        .map(t => ({
           timestamp: new Date(t.timestamp),
-          amount: t.amount,
+          amount: t.amount
         }))
         .sort((a, b) => a.timestamp - b.timestamp);
 
@@ -257,6 +242,11 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
   const startDateInput = document.getElementById('start-date');
   const endDateInput = document.getElementById('end-date');
 
+  // MODIFICATION: Add event listener on page load to default to most recent month
+  document.addEventListener('DOMContentLoaded', () => {
+    getDateRangeData(); // This will default to the most recent month
+  });
+
   // Add event listeners to date range inputs
   startDateInput.addEventListener('change', () => {
     getDateRangeData(startDateInput.value, endDateInput.value);
@@ -316,32 +306,25 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
             weight: 'bold',
             family: 'Poppins',
           },
-          color: '#16423C',
+          color: '#043f83',
           padding: { top: 10, bottom: 20 },
         },
         tooltip: {
-          enabled: true,
-          callbacks: {
-            label: function (context) {
-              const total = context.chart.data.datasets[0].data.reduce(
-                (sum, val) => sum + val,
-                0
-              );
-              const amount = parseInt(
-                context.formattedValue.replace(/,/g, ''),
-                10
-              );
-
-              const percentage = ((amount / total) * 100).toFixed(2) + '%';
-              // console.log(parseInt(context.formattedValue, 10));
-
-              return `${context.label}: ${percentage}`;
-            },
+        enabled: true,
+        callbacks: {
+          label: function (context) {
+            const total = context.chart.data.datasets[0].data.reduce((sum, val) => sum + val, 0);
+            const amount = parseInt(context.formattedValue.replace(/,/g, ''), 10);            
+            
+            const percentage = ((amount/ total) * 100).toFixed(2) + '%';
+            
+            return `${context.label}: ${percentage}`;
           },
         },
-        datalabels: {
-          display: false, // Disable static datalabels in favor of tooltips
-        },
+      },
+      datalabels: {
+        display: false, // Disable static datalabels in favor of tooltips
+      },
         datalabels: {
           formatter: function (value, context) {
             const data = context.chart.data.datasets[0].data;
@@ -365,8 +348,8 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
 
   // Download data from the currently displayed data timeframe
   function downloadDataCSV() {
-    console.log('Hi');
-
+    console.log("Hi");
+    
     const filename = 'data.csv';
     let csv = 'Category, Amount, Timestamp\n';
 
@@ -374,13 +357,9 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
       const categoryId = transaction.categoryid;
       const amount = transaction.amount;
       const timestamp = new Date(transaction.timestamp);
-      const date =
-        timestamp.getFullYear().toString() +
-        '/' +
-        timestamp.getMonth().toString() +
-        '/' +
-        timestamp.getDate().toString();
+      const date = timestamp.getFullYear().toString() + '/' + timestamp.getMonth().toString() + '/' + timestamp.getDate().toString();
       console.log(date);
+      
 
       const foundEntry = categories.find((item) => item.id === categoryId);
       const categoryName = foundEntry.name;
@@ -415,11 +394,4 @@ function getRandomColor() {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
-}
-
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = {
-    getUserTransactions,
-    getRandomColor,
-  };
 }
