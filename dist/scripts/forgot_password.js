@@ -39,7 +39,7 @@
         (user) => user.username === username || user.email === username
       );
     if (!user) {
-      alert('User not found');
+      showError('User not found');
       return null;
     }
 
@@ -99,12 +99,12 @@
       .send('service_0n5821h', 'template_02gap7y', templateParams)
       .then(() => {
         // console.log('Email sent successfully', response);
-        alert(`A password reset link has been sent to the email associated with ${username}. 
+        showError(`A password reset link has been sent to the email associated with ${username}. 
 The link is valid for 1 hour.`);
       })
       .catch(() => {
         // console.error('Failed to send email', error);
-        alert('Failed to send password reset email. Please try again.');
+        showError('Failed to send password reset email. Please try again.');
       });
 
     // need a way to return null/resetToken depending on if emailJS works
@@ -127,7 +127,7 @@ The link is valid for 1 hour.`);
         const username = usernameInput.value.trim();
 
         if (!username) {
-          alert('Please enter your username');
+          showError('Please enter your username');
           return;
         }
 

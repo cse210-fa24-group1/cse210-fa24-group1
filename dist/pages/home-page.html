@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="../styles/home.css" />
+    <link rel="stylesheet" href="../styles/pop-up.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
@@ -18,7 +19,9 @@
       <div class="header">
         <h1>EXPENSE TRACKER</h1>
         <nav>
-          <a href="./visualization-page.html" id="summary-link">Summary</a>
+          <a href="./visualization-page.html" id="summary-link"
+            >Visualization</a
+          >
           <a href="#" id="logout-link">Logout</a>
         </nav>
       </div>
@@ -75,8 +78,15 @@
         </div>
       </section>
     </main>
-
+    <div id="popup" class="popup-overlay">
+      <div class="popup-content">
+        <div class="popup-header">Error</div>
+        <div class="popup-message"></div>
+        <button class="popup-close">Close</button>
+      </div>
+    </div>
     <script src="../scripts/home_page.js"></script>
     <script src="../scripts/logout.js"></script>
+    <script src="../scripts/pop_up.js"></script>
   </body>
 </html>

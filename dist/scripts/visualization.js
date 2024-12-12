@@ -400,7 +400,7 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
     try {
       downloadDataCSV();
     } catch (err) {
-      alert('Error: ' + err.message);
+      showError('Error: ' + err.message);
     }
   });
 })();
@@ -412,4 +412,12 @@ function getRandomColor() {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
+}
+
+// Export the functions for testing
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    getUserTransactions,
+    getRandomColor,
+  };
 }

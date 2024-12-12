@@ -1,56 +1,21 @@
-// password-reset.test.js
+// __tests__/unitTesting/password_recovery.test.js
+const { mockErrorPopup } = require('../test-utils');
 const {
   handlePasswordReset,
   validatePasswords,
 } = require('../../dist/scripts/reset_password');
 
-// password-reset.test.js
-const {
-  sendPasswordResetEmail,
-  generateResetToken,
-} = require('../../dist/scripts/forgot_password');
-
-// Mock fetch and global objects
-global.fetch = jest.fn();
-global.window = {
-  location: {
-    origin: 'http://example.com',
-    pathname: '/forgot-password-page.html',
-    search: '?token=validtoken',
-  },
-  emailjs: {
-    init: jest.fn(),
-    send: jest.fn().mockResolvedValue({}),
-  },
-  addEventListener: jest.fn(),
-};
-global.document = {
-  querySelector: jest.fn(),
-  querySelectorAll: jest.fn(),
-};
-global.alert = jest.fn();
-
 describe('Password Reset Module', () => {
   beforeEach(() => {
-    // Clear all mocks before each test
+    mockErrorPopup.reset();
     jest.clearAllMocks();
   });
 
-  // Token Generation Tests
-  describe('Token Generation', () => {
-    test('generateResetToken creates a token of expected length', () => {
-      const token = generateResetToken();
-      expect(token).toBeTruthy();
-      expect(token.length).toBeGreaterThan(10);
-    });
-  });
-
-  // Password Validation Tests
   describe('Password Validation', () => {
     test('validatePasswords rejects short passwords', () => {
       const result = validatePasswords('short', 'short');
       expect(result).toBeFalsy();
-      expect(alert).toHaveBeenCalledWith(
+      expect(mockErrorPopup.getLastError().message).toBe(
         'Password must be at least 6 characters long!'
       );
     });
@@ -58,20 +23,22 @@ describe('Password Reset Module', () => {
     test('validatePasswords rejects non-matching passwords', () => {
       const result = validatePasswords('password123', 'differentpassword');
       expect(result).toBeFalsy();
-      expect(alert).toHaveBeenCalledWith('Passwords do not match!');
+      expect(mockErrorPopup.getLastError().message).toBe(
+        'Passwords do not match!'
+      );
     });
 
     test('validatePasswords accepts valid passwords', () => {
       const result = validatePasswords('validpassword', 'validpassword');
       expect(result).toBeTruthy();
+      expect(mockErrorPopup.getLastError().message).toBe('');
     });
   });
 
-  // Handle Password Reset Tests
   describe('Handle Password Reset', () => {
     test('handlePasswordReset fails with invalid token', async () => {
-      // Mock getUsers and getresetToken to return empty arrays
-      fetch
+      global.fetch = jest
+        .fn()
         .mockResolvedValueOnce({
           json: () => Promise.resolve([]),
         })
@@ -84,13 +51,13 @@ describe('Password Reset Module', () => {
         'newpassword',
         'newpassword'
       );
-
       expect(result).toBeFalsy();
-      expect(alert).toHaveBeenCalledWith('Invalid or expired reset token');
+      expect(mockErrorPopup.getLastError().message).toBe(
+        'Invalid or expired reset token'
+      );
     });
 
     test('handlePasswordReset succeeds with valid inputs', async () => {
-      // Mock successful reset scenario
       const mockUsers = [
         {
           id: '1',
@@ -104,7 +71,8 @@ describe('Password Reset Module', () => {
         },
       ];
 
-      fetch
+      global.fetch = jest
+        .fn()
         .mockResolvedValueOnce({
           json: () => Promise.resolve(mockUsers),
         })
@@ -119,10 +87,11 @@ describe('Password Reset Module', () => {
         'validtoken',
         'newpassword123',
         'newpassword123'
-      ); // Attempt to reset with expired token
-
+      );
       expect(result).toBeTruthy();
-      expect(alert).toHaveBeenCalledWith('Password successfully reset');
+      expect(mockErrorPopup.getLastError().message).toBe(
+        'Password successfully reset'
+      );
     });
   });
 });
