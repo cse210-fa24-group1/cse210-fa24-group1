@@ -71,7 +71,9 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
   });
 
   // Replace the existing date label generation with this improved version
-  const sortedTransactions = transactions.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  const sortedTransactions = transactions.sort(
+    (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+  );
 
   const lineChartLabels = [
     ...new Set(
@@ -80,7 +82,7 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
         // Use a consistent date formatting method
         return date.toISOString().split('T')[0]; // YYYY-MM-DD format
       })
-    )
+    ),
   ];
 
   // Modify the line chart datasets generation to match this sorting
@@ -148,8 +150,12 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
     // If no dates are selected, default to the most recent month
     if (!startDate || !endDate) {
       const now = new Date();
-      const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
-      
+      const oneMonthAgo = new Date(
+        now.getFullYear(),
+        now.getMonth() - 1,
+        now.getDate()
+      );
+
       startDate = oneMonthAgo.toISOString().split('T')[0];
       endDate = now.toISOString().split('T')[0];
     }
@@ -160,7 +166,7 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
     end.setHours(23, 59, 59, 999); // Set end date to end of day
 
     // Filter transactions within the date range
-    const filteredTransactions = transactions.filter(t => {
+    const filteredTransactions = transactions.filter((t) => {
       const transactionDate = new Date(t.timestamp);
       return transactionDate >= start && transactionDate <= end;
     });
@@ -171,17 +177,19 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
     // Prepare filtered line chart labels
     const newLineChartLabels = [
       ...new Set(
-        filteredTransactions.map((t) => new Date(t.timestamp).toLocaleDateString())
+        filteredTransactions.map((t) =>
+          new Date(t.timestamp).toLocaleDateString()
+        )
       ),
     ];
 
     // Prepare filtered line chart datasets
     const newLineChartDatasets = categories.map((category) => {
       const categoryTransactions = filteredTransactions
-        .filter(t => t.categoryid === category.id)
-        .map(t => ({
+        .filter((t) => t.categoryid === category.id)
+        .map((t) => ({
           timestamp: new Date(t.timestamp),
-          amount: t.amount
+          amount: t.amount,
         }))
         .sort((a, b) => a.timestamp - b.timestamp);
 
@@ -310,21 +318,27 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
           padding: { top: 10, bottom: 20 },
         },
         tooltip: {
-        enabled: true,
-        callbacks: {
-          label: function (context) {
-            const total = context.chart.data.datasets[0].data.reduce((sum, val) => sum + val, 0);
-            const amount = parseInt(context.formattedValue.replace(/,/g, ''), 10);            
-            
-            const percentage = ((amount/ total) * 100).toFixed(2) + '%';
-            
-            return `${context.label}: ${percentage}`;
+          enabled: true,
+          callbacks: {
+            label: function (context) {
+              const total = context.chart.data.datasets[0].data.reduce(
+                (sum, val) => sum + val,
+                0
+              );
+              const amount = parseInt(
+                context.formattedValue.replace(/,/g, ''),
+                10
+              );
+
+              const percentage = ((amount / total) * 100).toFixed(2) + '%';
+
+              return `${context.label}: ${percentage}`;
+            },
           },
         },
-      },
-      datalabels: {
-        display: false, // Disable static datalabels in favor of tooltips
-      },
+        datalabels: {
+          display: false, // Disable static datalabels in favor of tooltips
+        },
         datalabels: {
           formatter: function (value, context) {
             const data = context.chart.data.datasets[0].data;
@@ -348,8 +362,8 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
 
   // Download data from the currently displayed data timeframe
   function downloadDataCSV() {
-    console.log("Hi");
-    
+    console.log('Hi');
+
     const filename = 'data.csv';
     let csv = 'Category, Amount, Timestamp\n';
 
@@ -357,9 +371,13 @@ localStorage.setItem('category', JSON.stringify(categoriesData));
       const categoryId = transaction.categoryid;
       const amount = transaction.amount;
       const timestamp = new Date(transaction.timestamp);
-      const date = timestamp.getFullYear().toString() + '/' + timestamp.getMonth().toString() + '/' + timestamp.getDate().toString();
+      const date =
+        timestamp.getFullYear().toString() +
+        '/' +
+        timestamp.getMonth().toString() +
+        '/' +
+        timestamp.getDate().toString();
       console.log(date);
-      
 
       const foundEntry = categories.find((item) => item.id === categoryId);
       const categoryName = foundEntry.name;
@@ -395,3 +413,6 @@ function getRandomColor() {
   }
   return color;
 }
+
+// Export the functions for testing
+export { getUserTransactions, getRandomColor };
