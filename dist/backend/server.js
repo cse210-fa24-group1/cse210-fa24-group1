@@ -122,7 +122,7 @@ app.post('/api/users', (req, res) => {
         res.status(500).json({ error: err.message });
         return;
       }
-      res.json({userid: this.lastID, username, email, timestamp});
+      res.json({ userid: this.lastID, username, email, timestamp });
     }
   );
 });
