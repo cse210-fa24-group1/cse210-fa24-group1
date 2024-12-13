@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>cse210-fa24-group1</h1>
+<p><a href="https://app.codacy.com?utm_source=gh&amp;utm_medium=referral&amp;utm_content=&amp;utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/1e3059c9b8064e55be72df56ff93c157" alt="Codacy Badge"></a></p>
+<p><a href="https://app.codacy.com/gh/cse210-fa24-group1/cse210-fa24-group1/dashboard?utm_source=gh&amp;utm_medium=referral&amp;utm_content=&amp;utm_campaign=Badge_coverage"><img src="https://app.codacy.com/project/badge/Coverage/1e3059c9b8064e55be72df56ff93c157" alt="Codacy Badge"></a></p>
+<h1><a href="https://aquamarine-concha-0f81d5.netlify.app/">Expense Tracker</a></h1>
+<p>Welcome to the Group 1 — Agile Avengers project! For our project, we decided to build an intuitive and user-friendly expense tracker application that allows users to monitor, analyze, and control their expenses and budget. This app aims to promote better financial habits by offering personalized insights into their expenses, visualized reports, and ultimately helping users make informed financial decisions.</p>
+<p>Check out our hosted link to explore and use our website effortlessly! <a href="https://aquamarine-concha-0f81d5.netlify.app/">Link</a></p>
+<p>This project was built on top of the following existing codebase: <a href="https://github.com/MidhaTahir/Expense_Tracker_VanillaJS/tree/master">Expense_Tracker_VanillaJS</a></p>
+<p>To see our JSDocs, click on the link here: <a href="https://cse210-fa24-group1.github.io/cse210-fa24-group1/">JS Docs</a></p>
+<h1>Overview</h1>
+<p>Our project mainly contains 3 groups of pages: user authentication pages (login/create user/forget password), the home page where the user can see and edit their current expenses, and the summary visualizations page where the user can see a more detailed expense history in graphical form.</p>
+<p>This project mainly uses JS, HTML, and CSS for styling. Integration and unit tests are done with Jest. Our backend database, which holds user information and their transactional history, is implemented with SQLite.</p>
+<h2>User Authentication</h2>
+<p>When the user first opens our application, they are greeted with the login page as shown below:
+<img src="./images/loginpage.JPG" alt="login page"></p>
+<p>If the user has an account, they can input their email/username and password to be taken to the home page. If not, they can click on the &quot;Create Account&quot; link, where they can input their information to create their new account:
+<img src="./images/registerpage.JPG" alt="create account page">
+The user inputs their email, username, and password (twice!) to be added to our user database.</p>
+<p>If the user has forgotten their password, they can click on the &quot;Forgot Password&quot; link to be taken to the forgot password page:
+<img src="./images/forgotpasswordpage.JPG" alt="forgot password page">
+The user can input either their email or username so that an email is sent to them with a link to another page for them to reset their password:
+<img src="./images/resetpasswordpage.JPG" alt="reset password page"></p>
+<h2>Home Page</h2>
+<p>Once the user has logged in, they see our main home page:
+<img src="./images/homepage.JPG" alt="home page"></p>
+<p>Users can see and edit their current monthly expenses on the home page at the top. The &quot;History&quot; subsection lets users see their most recent transactions. The &quot;Enter Transaction&quot; subsection allows users to input their latest transactions. They input a transaction description, what category it falls under, and the amount. Then, clicking on &quot;Expense&quot; will subtract that amount from the current monthly expense, while clicking &quot;Credit&quot; will add the amount. Either way, this transaction will be added to the user's transactional history, meaning that the user can see this history in both the &quot;History&quot; subsection to the left and the visualizations page.</p>
+<p>In the header, clicking &quot;Visualizations&quot; will take the user to the visualization page, where they can see a more detailed summary of their expense history in graphs. Clicking on &quot;Logout&quot; will log the user out, and they will be taken back to the login page.</p>
+<h2>Visualizations</h2>
+<p>Clicking on the &quot;Visualizations&quot; link in the header from the home page will take the user to the visualization page:
+<img src="./images/visualizepage.JPG" alt="visualizations page"></p>
+<p>The visualizations page has two main graphs: the line graph and the pie chart. The line graph shows the user's transactional history over a period of time. Each line represents its own category. Meanwhile, the pie chart shows the percentage of spending on each category of the user's transactional history. It showcases how much of the total user expense went into which category.</p>
+<p>Above the two graphs, we have two calendars: one start date and one end date. By selecting dates in both calendars, the user can see a visualized breakdown of their expenses for that specified period of time. In other words, the two graphs above (the line and pie charts) will change to reflect the data in the given time period. We display the current month's transactional history if the user doesn't select a start or end date. Users can also click on the categories in the legend to filter them out of the graphs.</p>
+<p>Lastly, below everything, there is an &quot;Export&quot; button. This button will download the currently displayed data to the user as a CSV file. If the user has selected dates for the start date and end date, and then clicks the &quot;Export&quot; button, they will download a CSV file containing their expense history from that time. They will get the current month's data if no time period is selected.</p>
+<p>Clicking &quot;Home&quot; in the header will take the user back to the home page. Clicking on &quot;Logout&quot; will log the user out, and they will be taken back to the login page.</p>
+<h1>How to Contribute to the Expense Tracker Repository</h1>
+<p>We appreciate your interest in contributing to the Expense Tracker project! By following these steps, you can help improve and enhance the repository.</p>
+<h2>Steps to Contribute</h2>
+<h3>1. <strong>Clone the Repository</strong></h3>
+<ul>
+<li>Since you're a part of the repository, clone the repository to your local machine directly:</li>
+</ul>
+<pre class="prettyprint source lang-bash"><code>git clone https://github.com/your-username/cse210-fa24-group1.git
+</code></pre>
+<ul>
+<li>Replace <code>your-username</code> with your GitHub username.</li>
+</ul>
+<h3>2. <strong>Fetch and Pull Latest Changes</strong></h3>
+<ul>
+<li>After cloning, navigate to the project directory:</li>
+</ul>
+<pre class="prettyprint source lang-bash"><code>cd cse210-fa24-group1
+</code></pre>
+<ul>
+<li><strong>Fetch the latest changes</strong> from the repository:</li>
+</ul>
+<pre class="prettyprint source lang-bash"><code>git fetch origin
+</code></pre>
+<ul>
+<li><strong>Pull the latest changes</strong> from the <code>main</code> branch (or <code>master</code> if that’s the default branch) into your local repository:</li>
+</ul>
+<pre class="prettyprint source lang-bash"><code>git pull origin main
+</code></pre>
+<p>This ensures that your local copy is up-to-date with the remote repository before creating a new branch.</p>
+<h3>3. <strong>Create a New Branch</strong></h3>
+<ul>
+<li>It's best practice to create a new branch for your changes. You can do this by running:</li>
+</ul>
+<pre class="prettyprint source lang-bash"><code>git checkout -b add/feature-name
+</code></pre>
+<p>or,</p>
+<pre class="prettyprint source lang-bash"><code>git checkout -b bugfix/feature-name
+</code></pre>
+<ul>
+<li>Replace <code>feature-name</code> with a descriptive name for the feature you are working on.</li>
+</ul>
+<h3>4. <strong>Make Your Changes</strong></h3>
+<ul>
+<li>Navigate to the appropriate file(s) and make your changes.</li>
+<li>Be sure to write clear and concise commit messages that explain the purpose of the changes you’ve made.</li>
+<li><strong>Commit message format</strong>: Your commit message should include the tag to the current version of the project, e.g., <code>v1.2.0</code>, at the beginning of the message. For example:</li>
+</ul>
+<pre class="prettyprint source lang-bash"><code>git commit -m &quot;v1.2.0 - Add user authentication feature&quot;
+</code></pre>
+<h3>5. <strong>Commit Your Changes</strong></h3>
+<ul>
+<li>After making changes, commit them:</li>
+</ul>
+<pre class="prettyprint source lang-bash"><code>git add .
+git commit -m &quot;v1.2.0 - Add feature for expense categories&quot;
+</code></pre>
+<h3>6. <strong>Push Your Changes</strong></h3>
+<ul>
+<li>Push your changes to your branch in the repository:</li>
+</ul>
+<pre class="prettyprint source lang-bash"><code>git push origin feature-name
+</code></pre>
+<h3>7. <strong>Create a Pull Request (PR)</strong></h3>
+<ul>
+<li>Go to the original repository on GitHub and click on the <strong>New Pull Request</strong> button.</li>
+<li>Select your branch with the changes and the base branch (usually <code>main</code> or <code>master</code>) of the original repository.</li>
+<li><strong>Edit the Pull Request Template</strong>: Once the pull request template appears, make sure to fill it out with relevant details about your changes, including:</li>
+<li>A brief description of the changes you made.</li>
+<li>Any relevant issue numbers or links (if applicable).</li>
+<li>Testing details, if you added new functionality or fixed a bug.</li>
+<li>Provide a detailed description of your changes and why they are beneficial to the project.</li>
+</ul>
+<h3>8. <strong>Address Feedback</strong></h3>
+<ul>
+<li>If the maintainers request changes or provide feedback, make the necessary updates to your branch.</li>
+<li>After addressing the feedback, commit and push the changes again. Your pull request will automatically update.</li>
+</ul>
+<h3>9. <strong>Celebrate!</strong></h3>
+<ul>
+<li>Once your pull request is reviewed and merged, your contribution is officially part of the repository. Thank you for helping improve the Expense Tracker project!</li>
+</ul>
+<h2>Contribution Guidelines</h2>
+<ul>
+<li><strong>Code Style</strong>: Follow the existing <a href="./admin/code-practices.md">code style</a> in the repository. Pay attention to indentation, naming conventions, and spacing.</li>
+<li><strong>Testing</strong>: Please ensure that your changes do not break the existing code. If you add new features, include tests to validate your changes.</li>
+<li><strong>Issue Reporting</strong>: If you encounter any bugs or have suggestions for new features, feel free to open an issue in the repository.</li>
+</ul>
+<h2>Code of Conduct</h2>
+<p>We expect all contributors to adhere to our Code of Conduct and to be respectful and professional when engaging with others in the community.</p></article>
+    </section>
+
+
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>__tests__/setupTests.js</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Setup file for Jest tests to initialize DOM environment</p></div>
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="-__tests___setupTests.js.html">__tests__/setupTests.js</a>, <a href="-__tests___setupTests.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+        <h3 class="subsection-title">Requires</h3>
+
+        <ul>
+            <li>module:jest</li>
+        </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AuthenticationModule.html">AuthenticationModule</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addTransaction">addTransaction</a></li><li><a href="global.html#addTransactionDOM">addTransactionDOM</a></li><li><a href="global.html#checkBudgetLimit">checkBudgetLimit</a></li><li><a href="global.html#deleteTransaction">deleteTransaction</a></li><li><a href="global.html#getAllTransactions">getAllTransactions</a></li><li><a href="global.html#getUserTransactions">getUserTransactions</a></li><li><a href="global.html#removeTransaction">removeTransaction</a></li><li><a href="global.html#saveTransactionToDB">saveTransactionToDB</a></li><li><a href="global.html#updateUI">updateUI</a></li><li><a href="global.html#updateValues">updateValues</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Fri Dec 13 2024 07:09:06 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
