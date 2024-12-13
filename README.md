@@ -23,21 +23,21 @@ This project mainly uses JS, HTML, and CSS for styling. Intergration and unit te
 ## User Authentication
 
 When the user first opens our application, they are greeted with the login page as shown below:
-![login page](./images/login_page.png)
+![login page](./images/loginpage.JPG)
 
 If the user has an account, they can input their email/username and password to be taken to the home page. If not, they can click on the "Create Account" link, where they can input their information to create their new account:
-![create account page](./images/create_account_page.png)
+![create account page](./images/registerpage.JPG)
 The user inputs their own email, username, and password (twice!) to be added to our user database.
 
 If the user has forgotten their password, they can click on the "Forgot Password" link to be taken to the forgot password page:
-![forgot password page](./images/forgot_password_page.png)
+![forgot password page](./images/forgotpasswordpage.JPG)
 The user can input either their email or username so that an email is sent to them with a link to another page for them to reset their password:
-![reset password page](./images/reset_password_page.png)
+![reset password page](./images/resetpasswordpage.JPG)
 
 ## Home Page
 
 Once the user has logged in, they see our main home page:
-![home page](./images/home_page.png)
+![home page](./images/homepage.JPG)
 
 In the home page, the user can see and/or edit their current monthly expense at the top. The "History" subsection is for the user to see their most recent transactions. The "Enter Transaction" subsection is for the user to input their latest transaction. They input a description of the transaction, what category it falls under, and the amount. Then, clicking on "Expense" will subtract that amount from the current monthly expense, while clicking on "Credit" will add the amount. Either way, this transaction will be added to the user's transactional history, meaning that the user will be able to see this history in both the "History" subsection to the left, and the visualizations page.
 
@@ -46,8 +46,7 @@ In the header, clicking "Summary" will take the user to the visualization page, 
 ## Visualizations
 
 Clicking on the "Summary" link in the header from the home page will take the user to the visualization page:
-![visualizations page](./images/visualizations_page.png)
-![visualizations page 2](./images/visualizations_page2.png)
+![visualizations page](./images/visualizepage.JPG)
 
 There are two main graphs in the summary visualizations page: the line graph and the pie chart. The line graph is mainly concerned with showing the user's transactional history over a period of time. Each line represents its own category. Meanwhile, the pie chart is concerned with showing the percentage spending on each category of the user's transactional history. It showcases how much of the total user expense went into which category.
 
